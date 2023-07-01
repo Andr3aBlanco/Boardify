@@ -69,5 +69,14 @@ public class CoreController {
         // Handle the error and provide a custom error page or redirect
         return "home"; // Replace "error" with the appropriate template name or redirect path
     }
+
+
+    @GetMapping("/go-premium")
+    public String showPlansPage(Model model, HttpServletRequest request){
+
+        model.addAttribute("request", request);
+
+        return "plans";
+    }
 }
 
