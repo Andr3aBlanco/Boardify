@@ -70,24 +70,33 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
+<!--        <div class="w3_navigation_pos">-->
+<!--          <h1><a href="index.html" title="Gaming Wonderland">G-Wonderland</a></h1>-->
+<!--        </div>-->
         <div class="w3_navigation_pos">
-          <h1><a href="index.html" title="Gaming Wonderland">G-Wonderland</a></h1>
+          <h1>
+            <a href="home.html" th:href="@{/}">
+              <img src="/images/logowithtitle.png" alt="G-Wonderland Logo" />
+            </a>
+          </h1>
         </div>
+
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
+
         <nav class="cl-effect-5" id="cl-effect-5">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="index.html"><span data-hover="Home">Home</span></a></li>
-
-            <li><a href="#about" class="scroll"><span data-hover="About">About</span></a></li>
-            <li><a href="#services" class="scroll"><span data-hover="Services">Services</span></a></li>
-            <li><a href="#work" class="scroll"><span data-hover="Gallery">Gallery</span></a></li>
-            <li><a href="#projects" class="scroll"><span data-hover="News">News</span></a></li>
-            <li><a href="#mail" class="scroll"><span data-hover="Contact">Contact</span></a></li>
+            <li class="active"><a href="/"><span data-hover="Home">Home</span></a></li>
+            <li><a href="/join-tournament" class="scroll"><span data-hover="Join Tournament">Join Tournament</span></a></li>
+            <li><a href="/create-tournament" class="scroll"><span data-hover="Create Tournament">Create Tournament</span></a></li>
+            <li><a href="/leaderboard" class="scroll"><span data-hover="Leaderboard">Leaderboard</span></a></li>
           </ul>
         </nav>
-      </div>
+
+
+
+     </div>
     </nav>
   </div>
 </div>
@@ -100,7 +109,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
       <ul class="rslides" id="slider3">
         <li>
           <div class="slider-img">
-            <img src="images/banner1.jpg" class="img-responsive" alt="Gaming Wonderland">
+            <img src="/images/banner1.jpg" class="img-responsive" alt="Gaming Wonderland">
           </div>
           <div class="slider-info">
 
@@ -111,7 +120,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
         </li>
         <li>
           <div class="slider-img">
-            <img src="images/banner2.jpg" class="img-responsive" alt="Gaming Wonderland">
+            <img src="/images/banner2.jpg" class="img-responsive" alt="Gaming Wonderland">
           </div>
           <div class="slider-info">
 
@@ -122,7 +131,7 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
         </li>
         <li>
           <div class="slider-img">
-            <img src="images/banner3.jpg" class="img-responsive" alt="Gaming Wonderland">
+            <img src="/images/banner3.jpg" class="img-responsive" alt="Gaming Wonderland">
           </div>
           <div class="slider-info">
 
