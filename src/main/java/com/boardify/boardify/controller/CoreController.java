@@ -2,6 +2,8 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Controller
 public class CoreController {
+
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @Autowired
     private TournamentService tournamentService;
@@ -69,5 +74,17 @@ public class CoreController {
         // Handle the error and provide a custom error page or redirect
         return "home"; // Replace "error" with the appropriate template name or redirect path
     }
+
+
+    @GetMapping("/go-premium")
+    public String showPlansPage(Model model, HttpServletRequest request){
+
+        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+        model.addAttribute("subscriptions", subscriptions);
+
+        return "plans";
+    }
+
+    //saving changes to development
 }
 
