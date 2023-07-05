@@ -1,77 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Go Premium!</title>
+  <meta charset="UTF-8">
+  <title>Go Premium!</title>
 
   <!-- //for-mobile-apps -->
   <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+  <!--  <link href="/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />-->
   <link href="/css/gopremium.css" rel="stylesheet" type="text/css" media="all" />
-
+  <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
   <!-- font-awesome icons -->
-  <link href="../static/css/font-awesome.css" rel="stylesheet">
+  <!--  <link href="../static/css/font-awesome.css" rel="stylesheet">-->
+  <link href="/css/font-awesome.css" rel="stylesheet">
 
 
 </head>
 <body>
-<div class="container">
-  <div class="row justify-content-center pb-5">
-    <div class="col-lg-9 pb-lg-4 text-center">
-      <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-xs-small title-extra-large-2">Our Pricing</h3>
-      <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium">What we can offer for our customers</p>
-      <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
-    </div>
-  </div>
-
-  <div class="row m-lg-0">
-    <div class="col-md-6 col-lg-3 px-lg-0">
-      <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">
-        <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">
-          <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large">Starter</span>
-          <span class="price d-block mt-4 text-white">
-                        <span class="symbol title-medium">$</span>
-                        <span class="title-extra-large-5">18</span>
-                        <span class="text-medium">/Month</span>
-                    </span>
-          <p class="opacity-8 m-0 mt-3 text-small text-white"><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i></p>
-        </div>
-
-        <div class="pricing-body">
-          <span class="bg-gray d-block p-4 text-large">4 Core Processor</span>
-          <span class="bg-white d-block p-4 text-large">100GB Storage</span>
-          <span class="bg-gray d-block p-4 text-large">24/7 Free Support</span>
-          <span class="bg-white d-block p-4 text-large">Weekly Backups</span>
-        </div>
-
-        <div class="pricing-footer bg-base-color">
-          <a href="#" class="d-block font-alt font-w-600 letter-spacing-2 text-medium text-uppercase text-white p-3 w-100">Get Started</a>
-        </div>
+<div th:switch="${subscriptions}" class="container">
+  <div th:case="null">Sorry, we do not have any subscriptions available right now.</div>
+  <div th:case="*">
+    <!--  <div class="row justify-content-center pb-5 projects-grids">-->
+    <!--    <div class="col-lg-9 pb-lg-4 text-center">-->
+    <!--      <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-xs-small title-extra-large-2">Our Pricing</h3>-->
+    <!--      <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium">What we can offer for our customers</p>-->
+    <!--      <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>-->
+    <!--    </div>-->
+    <!--  </div>-->
+    <div class="row justify-content-center pb-5 projects-grids">
+      <div class="col-lg-9 pb-lg-4 text-center">
+        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2">Premium Subscription Plans</h3>
+        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium">What we can offer for our customers</p>
+        <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
       </div>
     </div>
 
-    <div class="col-md-6 col-lg-3 mt-5 mt-md-0 px-lg-0">
-      <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">
-        <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">
-          <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large">Basic</span>
-          <span class="price d-block mt-4 text-white">
-                        <span class="symbol title-medium">$</span>
-                        <span class="title-extra-large-5">29</span>
-                        <span class="text-medium">/Month</span>
-                    </span>
-          <p class="opacity-8 m-0 mt-3 text-small text-white"><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i></p>
-        </div>
 
-        <div class="pricing-body">
-          <span class="bg-gray d-block p-4 text-large">4 Core Processor</span>
-          <span class="bg-white d-block p-4 text-large">300GB Storage</span>
-          <span class="bg-gray d-block p-4 text-large">24/7 Free Support</span>
-          <span class="bg-white d-block p-4 text-large">Daily Backups</span>
-        </div>
 
-        <div class="pricing-footer bg-base-color">
-          <a href="#" class="d-block font-alt font-w-600 letter-spacing-2 text-medium text-uppercase text-white p-3 w-100">Get Started</a>
+    <div class="row m-lg-0">
+      <div th:each="subscription: ${subscriptions}" class="col-md-6 col-lg-3 px-lg-0">
+        <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">
+          <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">
+            <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large"><span th:text="${subscription.duration}"></span> Plan</span>
+            <span class="price d-block mt-4 text-white" style="color: white">
+                        <span class="title-medium">
+                          <span class="text-white title-medium" th:text="${'$' + #numbers.formatDecimal(subscription.cost, 1, 'COMMA', 2, 'POINT')}"></span></span>
+
+                        <span>/<span class="text-medium" th:text="${subscription.duration}"></span></span>
+          </span>
+            <p class="opacity-100 m-0 mt-3 text-small text-white" ><p th:text="${#numbers.formatDecimal(subscription.commissionRate*100, 1, 'COMMA', 2, 'POINT') + '% Boardify commission rate'}"></p> </p>
+          </div>
+
+          <div class="pricing-body">
+            <span class="bg-gray d-block p-4 text-large" th:text="${'You keep ' + (1 - subscription.commissionRate)*100 + '% of your revenues from entry fees'}"></span>
+            <!--          <span class="bg-white d-block p-4 text-large">100GB Storage</span>-->
+            <!--          <span class="bg-gray d-block p-4 text-large">24/7 Free Support</span>-->
+            <!--          <span class="bg-white d-block p-4 text-large">Weekly Backups</span>-->
+          </div>
+
+          <div class="pricing-footer bg-base-color">
+            <a href="#" class="d-block font-alt font-w-600 letter-spacing-2 text-medium text-uppercase text-white p-3 w-100">Get Monthly Premium!</a>
+          </div>
         </div>
       </div>
+
+      <!--  <div class="col-md-6 col-lg-3 mt-5 mt-md-0 px-lg-0">-->
+      <!--    <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">-->
+      <!--      <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">-->
+      <!--        <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large">Yearly Plan</span>-->
+      <!--        <span class="price d-block mt-4 text-white">-->
+      <!--                      <span class="symbol title-medium">$</span>-->
+      <!--                      <span class="title-extra-large-5">150</span>-->
+      <!--                      <span class="text-medium">/Year</span>-->
+      <!--                  </span>-->
+      <!--        <p class="opacity-8 m-0 mt-3 text-medium text-white"><i>5% Boardify commission rate</i></p>-->
+      <!--      </div>-->
+
+      <!--      <div class="pricing-body">-->
+      <!--        <span class="bg-gray d-block p-4 text-large">You keep 95% of your revenues from entry fees</span>-->
+      <!--        <span class="bg-white d-block p-4 text-large">Save $30 a year</span>-->
+      <!--        <span class="bg-gray d-block p-4 text-large">24/7 Free Support</span>-->
+      <!--        <span class="bg-white d-block p-4 text-large">Daily Backups</span>-->
+      <!--      </div>-->
+
+      <!--      <div class="pricing-footer bg-base-color">-->
+      <!--        <a href="#" class="d-block font-alt font-w-600 letter-spacing-2 text-medium text-uppercase text-white p-3 w-100">Get Yearly Premium</a>-->
+      <!--      </div>-->
+      <!--    </div>-->
+      <!--    </div>-->
     </div>
   </div>
 </div>
