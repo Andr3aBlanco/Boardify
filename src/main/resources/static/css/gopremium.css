@@ -2,7 +2,7 @@ body{margin-top:20px;
     background:#eee;
 }
 .border-base-color {
-    border-color: #ef4135 !important;
+    border-color: #ff5000 !important;
 }
 
 .box-shadow {
@@ -44,5 +44,119 @@ body{margin-top:20px;
     line-height: 1.313rem!important;
 }
 .bg-base-color {
-    background-color: #ef4135 !important;
+    background-color: #ff5000 !important;
+}
+.planscontainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    color: #fff;
+}
+
+.planscontainer .projects-grids h3 {
+    color: #fff;
+}
+
+.planscontainer .projects-grids p {
+    color: #fff;
+}
+
+.planscontainer .pricing {
+    background-color: #000!important;
+}
+
+.planscontainer .title-large {
+    font-size: 1.75rem!important;
+    line-height: 2.275rem!important;
+    color: #fff!important;
+}
+
+.planscontainer .price {
+    color: #fff;
+}
+
+.planscontainer .symbol {
+    color: #fff;
+}
+
+.planscontainer .title-medium {
+    font-size: 1.5rem!important;
+    line-height: 2.25rem!important;
+    color: #fff!important;
+}
+
+.planscontainer .title-extra-large-5 {
+    font-size: 5rem!important;
+    line-height: 5rem!important;
+    color: #fff!important;
+}
+
+.planscontainer .text-medium {
+    font-size: .875rem!important;
+    line-height: 1.313rem!important;
+    color: #fff!important;
+}
+
+.planscontainer .pricing-header {
+    background-color: #000!important;
+    color: #fff!important;
+}
+
+.planscontainer .pricing-body {
+    color: #fff!important;
+}
+
+.planscontainer .pricing-footer a {
+    padding: 1rem!important;
+    height: 5rem!important;
+}
+
+.bg-base-color {
+    background-color: #ff5000!important;
+}
+
+.getplantbutton {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+    background: #2098d1;
+    -webkit-transition-property: color;
+    transition-property: color;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+.getplantbutton:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #ff5000;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+.getplantbutton:hover, .getplantbutton:focus, .getplantbutton:active {
+    color: white;
+}
+.getplantbutton:hover:before, .getplantbutton:focus:before, .getplantbutton:active:before {
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
 }

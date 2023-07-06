@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navigation Bar</title>
+    <!-- //for-mobile-apps -->
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <!-- gallery -->
+    <link rel="stylesheet" href="../static/css/lightGallery.css" type="text/css" media="all" />
+    <!-- //gallery -->
+    <!-- font-awesome icons -->
+    <link href="../static/css/font-awesome.css" rel="stylesheet">
+
+    <!-- //font-awesome icons -->
+    <link href="//fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Jura:300,400,500,600" rel="stylesheet">
+    <link
+            href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
+            rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+<div class="header">
+    <div class="w3layouts_header_left">
+        <div class="top-nav-text">
+            <a href="/go-premium" class="premium-link">GO PREMIUM</a>
+        </div>
+    </div>
+    <div class="w3layouts_header_right">
+        <form action="#" method="post">
+            <input name="Search here" type="search" placeholder="Search" required="">
+            <input type="submit" value="">
+        </form>
+        <div class="header-buttons">
+            <a href="/contact-us" class="contact-us-button">Contact Us</a>
+            <a href="/login" class="login-button">Login</a>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+<div class="w3_navigation">
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header navbar-left">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <div class="w3_navigation_pos">
+                    <h1>
+                        <a href="home.html" th:href="@{/}" >
+                            <img src="/images/logowithtitle.png" alt="Boardify Logo" />
+                        </a>
+                    </h1>
+                </div>
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-left" id="bs-example-navbar-collapse-1">
+
+                <nav class="cl-effect-5" id="cl-effect-5">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/"><span data-hover="Home">Home</span></a></li>
+                        <li><a href="/join-tournament" class="scroll"><span data-hover="Join Tournament">Join Tournament</span></a></li>
+                        <li><a href="/create-tournament" class="scroll"><span data-hover="Create Tournament">Create Tournament</span></a></li>
+                        <li><a href="/leaderboard" class="scroll"><span data-hover="Leaderboard">Leaderboard</span></a></li>
+                    </ul>
+                </nav>
+
+
+
+            </div>
+        </nav>
+    </div>
+</div>
+<!-- //header -->
+</body>
+</html>
