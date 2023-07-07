@@ -131,7 +131,7 @@ input[type="submit"],input[type="reset"],.w3ls_footer_grid_leftl,.w3ls_footer_gr
        position: absolute;
     top: 50%;
     left: 35%;
-    transform: translateY(-60%);
+    transform: translateY(-70%);
     z-index: 999;
 }
 .w3_navigation_pos h1 a {
@@ -195,7 +195,7 @@ input[type="submit"],input[type="reset"],.w3ls_footer_grid_leftl,.w3ls_footer_gr
 }
 .w3_navigation_pos h1 a img {
     height: 100%;
-    max-height: 100%;
+    max-height: 85%;
 }
 .slider-info {
     position: absolute;
