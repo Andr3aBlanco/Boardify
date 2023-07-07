@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <meta charset="UTF-8">
   <title>Create Tournament</title>
 </head>
 <body>
-<h1>This is a blank page - Create Tournament</h1>
-<!-- Add your content here -->
+<h1>Create Tournament</h1>
+<form action="../Tournament.java" method="post" th:object="${tournament}">
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name" th:field="*{tournamentName}">
+
+  <label for="date">Date:</label>
+  <input type="date" id="date" name="date" th:field="*{date}">
+
+  <button type="submit">Create</button>
+</form>
 </body>
 </html>
