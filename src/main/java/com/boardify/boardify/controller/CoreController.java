@@ -85,6 +85,25 @@ public class CoreController {
         return "plans";
     }
 
+    @GetMapping("/login")
+    public String showLoginPage(Model model, HttpServletRequest request) {
+        // Add necessary logic or data retrieval here
+
+        // Manually add request as a context variable
+        model.addAttribute("request", request);
+
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model, HttpServletRequest request) {
+        // Add necessary logic or data retrieval here
+
+        // Manually add request as a context variable
+        model.addAttribute("request", request);
+
+        return "register";
+    }
     //saving changes to development
 }
 
