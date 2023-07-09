@@ -1,162 +1,232 @@
-body{margin-top:20px;
-    background:#eee;
-}
-.border-base-color {
-    border-color: #ff5000 !important;
-}
+/*body{margin-top:20px;*/
+/*    background:#eee;*/
+/*}*/
+/*.border-base-color {*/
+/*    border-color: #ff5000 !important;*/
+/*}*/
 
-.box-shadow {
-    box-shadow: 0 0 25px 0 rgba(0,0,0,.05);
-}
-.border-extra-thick {
-    border-width: 4px!important;
-}
-.border-top {
-    border-top: 1px solid rgba(0,0,0,.1);
-}
-.text-center {
-    text-align: center!important;
-}
-.border-top {
-    border-top: 1px solid #dee2e6!important;
-}
-.bg-black {
-    background-color: #000!important;
-}
-.title-large {
-    font-size: 1.75rem!important;
-    line-height: 2.275rem!important;
-}
-.pricing .price .symbol {
-    bottom: 36px;
-    position: relative;
-}
-.title-medium {
-    font-size: 1.5rem!important;
-    line-height: 2.25rem!important;
-}
-.title-extra-large-5 {
-    font-size: 5rem!important;
-    line-height: 5rem!important;
-}
-.text-medium {
-    font-size: .875rem!important;
-    line-height: 1.313rem!important;
-}
-.bg-base-color {
-    background-color: #ff5000 !important;
-}
-.planscontainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+/*.box-shadow {*/
+/*    box-shadow: 0 0 25px 0 rgba(0,0,0,.05);*/
+/*}*/
+/*.border-extra-thick {*/
+/*    border-width: 4px!important;*/
+/*}*/
+/*.border-top {*/
+/*    border-top: 1px solid rgba(0,0,0,.1);*/
+/*}*/
+/*.text-center {*/
+/*    text-align: center!important;*/
+/*}*/
+/*.border-top {*/
+/*    border-top: 1px solid #dee2e6!important;*/
+/*}*/
+/*.bg-black {*/
+/*    background-color: #000!important;*/
+/*}*/
+/*.title-large {*/
+/*    font-size: 1.75rem!important;*/
+/*    line-height: 2.275rem!important;*/
+/*}*/
+/*.pricing .price .symbol {*/
+/*    bottom: 36px;*/
+/*    position: relative;*/
+/*}*/
+/*.title-medium {*/
+/*    font-size: 1.5rem!important;*/
+/*    line-height: 2.25rem!important;*/
+/*}*/
+/*.title-extra-large-5 {*/
+/*    font-size: 5rem!important;*/
+/*    line-height: 5rem!important;*/
+/*}*/
+/*.text-medium {*/
+/*    font-size: .875rem!important;*/
+/*    line-height: 1.313rem!important;*/
+/*}*/
+/*.bg-base-color {*/
+/*    background-color: #ff5000 !important;*/
+/*}*/
+/*.planscontainer {*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    flex-direction: column;*/
+/*    text-align: center;*/
+/*    color: #fff;*/
+/*}*/
+
+/*.planscontainer .projects-grids h3 {*/
+/*    color: #fff;*/
+/*}*/
+
+/*.planscontainer .projects-grids p {*/
+/*    color: #fff;*/
+/*}*/
+
+/*.planscontainer .pricing {*/
+/*    background-color: #000!important;*/
+/*}*/
+
+/*.planscontainer .title-large {*/
+/*    font-size: 1.75rem!important;*/
+/*    line-height: 2.275rem!important;*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .price {*/
+/*    color: #fff;*/
+/*}*/
+
+/*.planscontainer .symbol {*/
+/*    color: #fff;*/
+/*}*/
+
+/*.planscontainer .title-medium {*/
+/*    font-size: 1.5rem!important;*/
+/*    line-height: 2.25rem!important;*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .title-extra-large-5 {*/
+/*    font-size: 5rem!important;*/
+/*    line-height: 5rem!important;*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .text-medium {*/
+/*    font-size: .875rem!important;*/
+/*    line-height: 1.313rem!important;*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .pricing-header {*/
+/*    background-color: #000!important;*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .pricing-body {*/
+/*    color: #fff!important;*/
+/*}*/
+
+/*.planscontainer .pricing-footer a {*/
+/*    padding: 1rem!important;*/
+/*    height: 5rem!important;*/
+/*}*/
+
+/*.bg-base-color {*/
+/*    background-color: #ff5000!important;*/
+/*}*/
+
+/*.getplantbutton {*/
+/*    display: block;*/
+/*    width: 100%;*/
+/*    vertical-align: middle;*/
+/*    -webkit-transform: translateZ(0);*/
+/*    transform: translateZ(0);*/
+/*    box-shadow: 0 0 1px rgba(0, 0, 0, 0);*/
+/*    -webkit-backface-visibility: hidden;*/
+/*    backface-visibility: hidden;*/
+/*    -moz-osx-font-smoothing: grayscale;*/
+/*    position: relative;*/
+/*    background: #2098d1;*/
+/*    -webkit-transition-property: color;*/
+/*    transition-property: color;*/
+/*    -webkit-transition-duration: 0.3s;*/
+/*    transition-duration: 0.3s;*/
+/*}*/
+/*.getplantbutton:before {*/
+/*    content: "";*/
+/*    position: absolute;*/
+/*    z-index: -1;*/
+/*    top: 0;*/
+/*    bottom: 0;*/
+/*    left: 0;*/
+/*    right: 0;*/
+/*    background: #ff5000;*/
+/*    -webkit-transform: scaleX(1);*/
+/*    transform: scaleX(1);*/
+/*    -webkit-transform-origin: 50%;*/
+/*    transform-origin: 50%;*/
+/*    -webkit-transition-property: transform;*/
+/*    transition-property: transform;*/
+/*    -webkit-transition-duration: 0.3s;*/
+/*    transition-duration: 0.3s;*/
+/*    -webkit-transition-timing-function: ease-out;*/
+/*    transition-timing-function: ease-out;*/
+/*}*/
+/*.getplantbutton:hover, .getplantbutton:focus, .getplantbutton:active {*/
+/*    color: white;*/
+/*}*/
+/*.getplantbutton:hover:before, .getplantbutton:focus:before, .getplantbutton:active:before {*/
+/*    -webkit-transform: scaleX(0);*/
+/*    transform: scaleX(0);*/
+/*}*/
+
+/* Add the following CSS to your existing CSS code */
+
+.pricing {
+    background-color: #f6f6f6;
+    border-radius: 5px;
     text-align: center;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.pricing-header {
+    background-color: #5c5c5c;
+    padding: 20px;
     color: #fff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
-.planscontainer .projects-grids h3 {
-    color: #fff;
+.pricing-header .title-large {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0;
 }
 
-.planscontainer .projects-grids p {
-    color: #fff;
+.pricing-header .price {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
-.planscontainer .pricing {
-    background-color: #000!important;
+.pricing-header p {
+    margin-bottom: 0;
 }
 
-.planscontainer .title-large {
-    font-size: 1.75rem!important;
-    line-height: 2.275rem!important;
-    color: #fff!important;
+.pricing-body {
+    background-color: #fff;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
-.planscontainer .price {
-    color: #fff;
-}
-
-.planscontainer .symbol {
-    color: #fff;
-}
-
-.planscontainer .title-medium {
-    font-size: 1.5rem!important;
-    line-height: 2.25rem!important;
-    color: #fff!important;
-}
-
-.planscontainer .title-extra-large-5 {
-    font-size: 5rem!important;
-    line-height: 5rem!important;
-    color: #fff!important;
-}
-
-.planscontainer .text-medium {
-    font-size: .875rem!important;
-    line-height: 1.313rem!important;
-    color: #fff!important;
-}
-
-.planscontainer .pricing-header {
-    background-color: #000!important;
-    color: #fff!important;
-}
-
-.planscontainer .pricing-body {
-    color: #fff!important;
-}
-
-.planscontainer .pricing-footer a {
-    padding: 1rem!important;
-    height: 5rem!important;
-}
-
-.bg-base-color {
-    background-color: #ff5000!important;
+.pricing-footer {
+    background-color: #f6f6f6;
+    padding: 20px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .getplantbutton {
     display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    position: relative;
-    background: #2098d1;
-    -webkit-transition-property: color;
-    transition-property: color;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    background-color: #5c5c5c;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
 }
-.getplantbutton:before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #ff5000;
-    -webkit-transform: scaleX(1);
-    transform: scaleX(1);
-    -webkit-transform-origin: 50%;
-    transform-origin: 50%;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
+
+.getplantbutton:hover {
+    background-color: #414141;
 }
-.getplantbutton:hover, .getplantbutton:focus, .getplantbutton:active {
-    color: white;
-}
-.getplantbutton:hover:before, .getplantbutton:focus:before, .getplantbutton:active:before {
-    -webkit-transform: scaleX(0);
-    transform: scaleX(0);
+
+.selected-price {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 20px;
 }

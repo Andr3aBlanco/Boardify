@@ -7,7 +7,10 @@ import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +27,9 @@ public class CoreController {
     @Autowired
     private TournamentService tournamentService;
 
+    @Value("${stripe.public.key}")
+    private String stripePublicKey;
+
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
         // Add any necessary logic or data retrieval here
@@ -38,6 +44,7 @@ public class CoreController {
         // Return the name of the Thymeleaf template for the home page
         return "home";
     }
+
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
@@ -81,6 +88,8 @@ public class CoreController {
 
         List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
         model.addAttribute("subscriptions", subscriptions);
+
+        model.addAttribute("stripePublicKey", stripePublicKey);
 
         return "plans";
     }
