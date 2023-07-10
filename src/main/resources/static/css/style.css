@@ -118,42 +118,38 @@ input[type="submit"],input[type="reset"],.w3ls_footer_grid_leftl,.w3ls_footer_gr
     text-transform: uppercase;
 }
 .navbar-nav > li:nth-child(3) a {
-        margin-right: 34em !important;
+        margin-left: 15em !important;
 }
-.navbar-nav > li:nth-child(6) a {
+
+.navbar-nav > li:nth-child(2) a {
+    margin-right: 15em !important;
+}
+.navbar-nav > li:nth-child(4) a {
         margin-right:0px!important;
 }
 .w3_navigation_pos {
        position: absolute;
     top: 50%;
     left: 35%;
-    transform: translateY(-50%);
+    transform: translateY(-70%);
     z-index: 999;
 }
 .w3_navigation_pos h1 a {
-    /* font-size: 1em;*/
-    /*color: #212121;*/
-    /*text-decoration: none;*/
-    /*!*border: 3px solid #ff5000;*!*/
-    /*padding: 0.1em .4em;*/
-    /*font-weight: 700;*/
-    /*text-transform: uppercase;*/
-    /*font-family: 'Jura', sans-serif;*/
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: 200px;
     font-size: 1em;
     color: #212121;
     text-decoration: none;
-    border: 3px solid #ff5000;
+    border: none;
     padding: 0.1em 0.4em;
     font-weight: 700;
     text-transform: uppercase;
     font-family: 'Jura', sans-serif;
 }
 .navbar-default .navbar-nav > li > a:hover{
-    color: #fa3d03;
+    color: #FA3D03FF;
 }
 /* Effect 5: same word slide in */
 .cl-effect-5 a {
@@ -199,7 +195,7 @@ input[type="submit"],input[type="reset"],.w3ls_footer_grid_leftl,.w3ls_footer_gr
 }
 .w3_navigation_pos h1 a img {
     height: 100%;
-    max-height: 100%;
+    max-height: 85%;
 }
 .slider-info {
     position: absolute;
@@ -1047,6 +1043,8 @@ ul#lightGallery {
 	-moz-opacity: 0;
 	filter: alpha(opacity=0);
 }
+
+
 /*-- //to-top --*/
 /*-- start-responsive-design --*/
 @media (max-width:1440px){

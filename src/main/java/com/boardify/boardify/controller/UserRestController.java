@@ -5,6 +5,7 @@ import com.boardify.boardify.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,14 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+    private UserDetailsService userDetailsService;
 
+
+    @Autowired
+    public UserRestController(UserService userService, UserDetailsService userDetailsService) {
+        this.userService = userService;
+        this.userDetailsService = userDetailsService;
+    }
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllUsers(){

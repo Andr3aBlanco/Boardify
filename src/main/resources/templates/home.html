@@ -42,85 +42,8 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 </head>
 
 <body>
-<!-- header -->
-<!--<div class="header">-->
-<!--  <div class="w3layouts_header_left">-->
-<!--    <div class="top-nav-text">-->
-<!--      <p>Call Us : <span class="call">+00 111 2222 333</span></p>-->
-<!--      <p>Email Us : <span class="mail"><a href="mailto:info@example.com">info@example.com</a></span></p>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="w3layouts_header_right">-->
-<!--    <form action="#" method="post">-->
-<!--      <input name="Search heare" type="search" placeholder="Search" required="">-->
+<div th:replace="_navbar.html"></div>
 
-<!--      <input type="submit" value="">-->
-<!--    </form>-->
-<!--  </div>-->
-<!--  <div class="clearfix"> </div>-->
-<!--</div>-->
-
-<div class="header">
-  <div class="w3layouts_header_left">
-    <div class="top-nav-text">
-      <a href="/go-premium" class="premium-link">GO PREMIUM</a>
-    </div>
-  </div>
-  <div class="w3layouts_header_right">
-    <form action="#" method="post">
-      <input name="Search here" type="search" placeholder="Search" required="">
-      <input type="submit" value="">
-    </form>
-    <div class="header-buttons">
-      <a href="/contact-us" class="contact-us-button">Contact Us</a>
-      <a href="/login" class="login-button">Login</a>
-    </div>
-  </div>
-  <div class="clearfix"></div>
-</div>
-
-
-<div class="w3_navigation">
-  <div class="container">
-    <nav class="navbar navbar-default">
-      <div class="navbar-header navbar-left">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-<!--        <div class="w3_navigation_pos">-->
-<!--          <h1><a href="index.html" title="Gaming Wonderland">G-Wonderland</a></h1>-->
-<!--        </div>-->
-        <div class="w3_navigation_pos">
-          <h1>
-            <a href="home.html" th:href="@{/}">
-              <img src="/images/logowithtitle.png" alt="G-Wonderland Logo" />
-            </a>
-          </h1>
-        </div>
-
-      </div>
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-
-        <nav class="cl-effect-5" id="cl-effect-5">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/"><span data-hover="Home">Home</span></a></li>
-            <li><a href="/join-tournament" class="scroll"><span data-hover="Join Tournament">Join Tournament</span></a></li>
-            <li><a href="/create-tournament" class="scroll"><span data-hover="Create Tournament">Create Tournament</span></a></li>
-            <li><a href="/leaderboard" class="scroll"><span data-hover="Leaderboard">Leaderboard</span></a></li>
-          </ul>
-        </nav>
-
-
-
-     </div>
-    </nav>
-  </div>
-</div>
 <!-- //header -->
 <!-- banner -->
 <div class="banner">

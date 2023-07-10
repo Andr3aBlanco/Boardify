@@ -2,6 +2,8 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Controller
 public class CoreController {
+
+    @Autowired
+    private SubscriptionService subscriptionService;
 
     @Autowired
     private TournamentService tournamentService;
@@ -74,11 +79,31 @@ public class CoreController {
     @GetMapping("/go-premium")
     public String showPlansPage(Model model, HttpServletRequest request){
 
-        model.addAttribute("request", request);
+        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+        model.addAttribute("subscriptions", subscriptions);
 
         return "plans";
     }
 
+    @GetMapping("/login")
+    public String showLoginPage(Model model, HttpServletRequest request) {
+        // Add necessary logic or data retrieval here
+
+        // Manually add request as a context variable
+        model.addAttribute("request", request);
+
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterPage(Model model, HttpServletRequest request) {
+        // Add necessary logic or data retrieval here
+
+        // Manually add request as a context variable
+        model.addAttribute("request", request);
+
+        return "register";
+    }
     //saving changes to development
 }
 
