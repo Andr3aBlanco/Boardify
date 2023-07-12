@@ -52,11 +52,9 @@
                     <td>
                        <form method="post" role="form" th:action="@{/users/edit/{email}(email=${user.email})}" th:object="${tempUser}">
                         <select class="form-control" id="accountStatus" name="accountStatus">
-<!--                           <select>-->
+
                             <option th:each="status: ${accStatuses}" th:value="${status}" th:text="${status}" th:selected="${status==user.accountStatus}"></option>
-<!--&lt;!&ndash;                            <option th:value="'Okay'" value="Okay">Okay</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <option th:value="'Banned'" value="Banned">Banned</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <option th:value="'Locked'" value="Locked">Locked</option>&ndash;&gt;-->
+
                         </select>
                            <button type="submit">Update Status</button>
                        </form>

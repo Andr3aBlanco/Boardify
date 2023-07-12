@@ -64,24 +64,10 @@ public class AuthController {
     }
 
     @PostMapping("/users/edit/{email}")
-    public String editUsers(@PathVariable("email") String email, @ModelAttribute("tempUser") UserDto tempUser){
+    public String changeUserAccountStatus(@PathVariable("email") String email, @ModelAttribute("tempUser") UserDto tempUser){
         userService.changeAccountStatus(email, tempUser.getAccountStatus());
 
         return "redirect:/users";
     }
 
-//    @RequestMapping(value = "/populateDropDownList", method = RequestMethod.GET)
-//    public String populateList(Model model) {
-//        List<String> options = new ArrayList<String>();
-//        options.add("option 1");
-//        options.add("option 2");
-//        options.add("option 3");
-//        model.addAttribute("options", options);
-//        return "dropDownList/dropDownList.html";
-//    }
-
-//    @GetMapping("/users/edit{@email}")
-//    public String changeAccountStatus(Model model) {
-//        return "redirect:/users";
-//    }
 }
