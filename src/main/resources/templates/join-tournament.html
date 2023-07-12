@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Join Tournament</title>
+  <title>Tournaments</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <div th:replace="_navbar.html"></div>
-<h1>This is a blank page - Join Tournament</h1>
-<!-- Add your content here -->
+<h1>Tournaments</h1>
+
+<div class="container">
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Date</th>
+      <th>Entry Fee</th>
+      <th>Prize</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="tournament : ${tournaments}">
+      <td th:text="${tournament.tournamentName}"></td>
+      <td th:text="${tournament.address}, ${tournament.city}, ${tournament.state}, ${tournament.zipCode}"></td>
+      <td th:text="${tournament.eventStart}"></td>
+      <td th:text="${tournament.entryFees}"></td>
+      <td th:text="${tournament.prize}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

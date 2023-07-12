@@ -4,16 +4,17 @@
   <title>Create Tournament</title>
 
   <!-- Google Maps API library -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBi6o29K0DxmLFWfNdoBaDI7EUk9_oNrqI&libraries=places"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
 
   <!-- Calendar and Time Picker library -->
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 </head>
 <body>
 <div th:replace="_navbar.html"></div>
+
 <h1>Create Tournament</h1>
 
 <div class="container">
@@ -22,7 +23,7 @@
       <div class="card mt-5">
         <div class="card-body">
           <h2 class="text-center mb-4">Create Tournament</h2>
-          <form th:action="@{/save-tournament}" method="post">
+          <form th:action="@{/tournaments/add}" method="get">
 
             <div class="form-group">
               <label for="location">Location</label>
@@ -40,7 +41,7 @@
             </div>
 
             <div class="form-group">
-              <label for="attendees">Attendees</label>
+              <label for="attendees">Maximum Attendees</label>
               <input type="number" class="form-control" id="attendees" name="attendees" placeholder="Enter number of attendees" required>
             </div>
 
@@ -74,15 +75,35 @@
 
 <!-- Initialize the location selector and date/time picker -->
 <script>
-  // Initialize the location selector
-  var locationInput = document.getElementById('location');
-  var autocomplete = new google.maps.places.Autocomplete(locationInput);
+  function createTournament() {
+    var form = document.getElementById('tournamentForm');
+    var formData = new FormData(form);
+    var tournament = {};
 
-  // Initialize the date/time picker
-  flatpickr('#datetime', {
-    enableTime: true,
-    dateFormat: "Y-m-d H:i",
-  });
+    formData.forEach(function(value, key) {
+      tournament[key] = value;
+    });
+
+    fetch('/tournaments/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(tournament)
+    })
+            .then(function(response) {
+              if (response.ok) {
+                alert('Tournament created successfully');
+                // Perform any desired actions upon successful creation
+              } else {
+                alert('Failed to create tournament');
+              }
+            })
+            .catch(function(error) {
+              console.error('Error:', error);
+            });
+  }
 </script>
+
 </body>
 </html>

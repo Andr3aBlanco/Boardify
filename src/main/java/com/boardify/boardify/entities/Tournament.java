@@ -4,6 +4,8 @@ package com.boardify.boardify.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.sql.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class Tournament {
     private String state;
     private String zipCode;
     private int status;
-    private String singupStart;
+    private String signupStart;
     private String signupEnd;
     private String eventStart;
     private String eventEnd;
