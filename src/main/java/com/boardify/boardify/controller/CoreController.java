@@ -85,6 +85,7 @@ public class CoreController {
         return "plans";
     }
 
+
 //    @GetMapping("/login")
 //    public String showLoginPage(Model model, HttpServletRequest request) {
 //        // Add necessary logic or data retrieval here

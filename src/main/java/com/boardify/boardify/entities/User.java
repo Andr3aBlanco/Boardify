@@ -28,6 +28,9 @@ public class User {
     @Column(nullable=false)
     private String password;
 
+    @Column(nullable=false)
+    private String accountStatus;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(
             name="users_roles",
@@ -44,7 +47,7 @@ public class User {
     private String zipCode;
     private String phone;
     private String stripeToken;
-    private int accountStatus;
+
     private int subscriptionType;
     private String subscriptionEnd;
 
