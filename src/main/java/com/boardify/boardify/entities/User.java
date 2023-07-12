@@ -3,7 +3,8 @@ package com.boardify.boardify.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,30 +12,32 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table( name = "user")
+@Table( name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userID;
+    private Long id;
 
-    //For authentication
-    private String username;
+    @Column(nullable=false)
+    private String name;
+
+    @Column(nullable=false, unique=true)
+    private String email;
+
+    @Column(nullable=false)
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-    )
-    private Set<Role> roles;
+            name="users_roles",
+            joinColumns={@JoinColumn(name="USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
+    private List<Role> roles = new ArrayList<>();
 
     // AUTH ends here
-
-    private int role;
     private String firstName;
-    private String lastaName;
+    private String lastName;
     private String address;
     private String city;
     private String state;

@@ -1,5 +1,6 @@
 package com.boardify.boardify.service;
 
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.User;
 
 import java.util.List;
@@ -7,15 +8,11 @@ import java.util.Optional;
 
 public interface UserService {
 
-    List<User> findAllUsers();
+    void saveUser(UserDto userDto);
 
-    User createUser(User user);
+    User findByEmail(String email);
 
-    void updateUser(User user);
-
-    void deleteUser(Long id);
-
-    Optional<User> findUserByID(Long id);
+    List<UserDto> findAllUsers();
 
 
 }
