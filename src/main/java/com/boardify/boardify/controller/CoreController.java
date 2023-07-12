@@ -41,10 +41,9 @@ public class CoreController {
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
+        List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);
 
         return "join-tournament";
     }

@@ -22,7 +22,7 @@
     <tbody>
     <tr th:each="tournament : ${tournaments}">
       <td th:text="${tournament.tournamentName}"></td>
-      <td th:text="${tournament.address}, ${tournament.city}, ${tournament.state}, ${tournament.zipCode}"></td>
+      <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
       <td th:text="${tournament.eventStart}"></td>
       <td th:text="${tournament.entryFees}"></td>
       <td th:text="${tournament.prize}"></td>
