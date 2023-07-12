@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
             role = checkRoleExist();
         }
         user.setRoles(Arrays.asList(role));
+        user.setAccountStatus("Okay");
         userRepository.save(user);
     }
 
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
         userDto.setFirstName(name[0]);
         userDto.setLastName(name[1]);
         userDto.setEmail(user.getEmail());
+        userDto.setAccountStatus(user.getAccountStatus());
         return userDto;
     }
 
@@ -72,5 +74,13 @@ public class UserServiceImpl implements UserService {
         Role role = new Role();
         role.setName("ROLE_ADMIN");
         return roleRepository.save(role);
+    }
+
+    // For changing accountStatus
+    public void changeAccountStatus(String email, String accStatus) {
+         User user = userRepository.findByEmail(email);
+
+         user.setAccountStatus(accStatus);
+         userRepository.save(user);
     }
 }

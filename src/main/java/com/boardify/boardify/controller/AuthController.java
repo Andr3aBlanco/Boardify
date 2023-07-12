@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,11 +20,6 @@ public class AuthController {
 
     public AuthController(UserService userService) {
         this.userService = userService;
-    }
-
-    @GetMapping("index")
-    public String home(){
-        return "index";
     }
 
     @GetMapping("/login")
@@ -62,6 +56,18 @@ public class AuthController {
     public String listRegisteredUsers(Model model){
         List<UserDto> users = userService.findAllUsers();
         model.addAttribute("users", users);
+        String[] accountStatuses = {"Okay", "Banned", "Locked"};
+        model.addAttribute("accStatuses", accountStatuses);
+        UserDto tempUser = new UserDto();
+        model.addAttribute("tempUser", tempUser);
         return "users";
     }
+
+    @PostMapping("/users/edit/{email}")
+    public String changeUserAccountStatus(@PathVariable("email") String email, @ModelAttribute("tempUser") UserDto tempUser){
+        userService.changeAccountStatus(email, tempUser.getAccountStatus());
+
+        return "redirect:/users";
+    }
+
 }

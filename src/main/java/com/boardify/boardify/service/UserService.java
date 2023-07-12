@@ -14,5 +14,6 @@ public interface UserService {
 
     List<UserDto> findAllUsers();
 
+    void changeAccountStatus(String email, String accStatus);
 
 }

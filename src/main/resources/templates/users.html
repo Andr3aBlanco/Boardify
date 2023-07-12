@@ -39,13 +39,27 @@
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Email</th>
+                <th>Account Status</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="user: ${users}">
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}"></td>
-                <td th:text="${user.email}"></td>
+
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.email}"></td>
+
+                    <td>
+                       <form method="post" role="form" th:action="@{/users/edit/{email}(email=${user.email})}" th:object="${tempUser}">
+                        <select class="form-control" id="accountStatus" name="accountStatus">
+
+                            <option th:each="status: ${accStatuses}" th:value="${status}" th:text="${status}" th:selected="${status==user.accountStatus}"></option>
+
+                        </select>
+                           <button type="submit">Update Status</button>
+                       </form>
+                    </td>
+                </form>
             </tr>
         </tbody>
     </table>
