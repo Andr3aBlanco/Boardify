@@ -74,7 +74,7 @@ public class CoreController implements ErrorController {
     @GetMapping("/error")
     public String handleError() {
         // Handle the error and provide a custom error page or redirect
-        return "home"; // Replace "error" with the appropriate template name or redirect path
+        return "redirect:/home"; // Replace "error" with the appropriate template name or redirect path
     }
 
 
@@ -87,12 +87,15 @@ public class CoreController implements ErrorController {
         return "plans";
     }
 
-    //saving changes to development
-    @RequestMapping("/error")
-    @ResponseBody
-    String error(HttpServletRequest request) {
-        return "<h1>Error occurred</h1>";
-    }
+
+
+//     //saving changes to development
+//     @RequestMapping("/error")
+//     @ResponseBody
+//     String error(HttpServletRequest request) {
+//         return "<h1>Error occurred</h1>";
+//     }
+
 
 
 
