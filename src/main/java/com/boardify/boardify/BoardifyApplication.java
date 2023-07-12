@@ -109,10 +109,10 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			user3.setId(Long.valueOf(3));
 			user3.setEmail("premium@premium.com");
 			user3.setName("premium premium");
-			user3.setPassword(passwordEncoder.encode("#premium"));
 			List<Role> premiumRoles = new ArrayList<Role>();
 			premiumRoles.add(premium);
 			user3.setRoles(premiumRoles);
+			user3.setPassword(passwordEncoder.encode("#premium"));
 
 			Arrays.asList(user1, user2, user3).forEach(user -> userRepository.save(user));
 			System.out.println("New users added to database");

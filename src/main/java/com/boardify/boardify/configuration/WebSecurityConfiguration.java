@@ -3,6 +3,7 @@ package com.boardify.boardify.configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,22 +28,30 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
+                .authorizeRequests((authorizeRequests) ->
+                        authorizeRequests.requestMatchers("/register", "/login").anonymous()
+                                .requestMatchers("/register/**").permitAll()
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/users").hasRole("ADMIN")
-                                .requestMatchers("/**").permitAll()
+                                .requestMatchers("/login").anonymous()// Allow access to /login for anonymous users only
+//                                .requestMatchers("/**").permitAll()
+//                                .anyRequest().authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users")
-                                .permitAll()
+                                .defaultSuccessUrl("/")
+
                 ).logout(
                         logout -> logout
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 .permitAll()
-                );
+                )
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling
+                                .accessDeniedPage("/"))
+        ;
+
         return http.build();
     }
 
