@@ -17,6 +17,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 import java.util.ArrayList;
@@ -25,8 +27,9 @@ import java.util.List;
 
 
 @PropertySource("classpath:application.properties")
-
+@EnableScheduling
 @SpringBootApplication
+@EnableJpaRepositories("com.boardify.boardify.repository")
 public class BoardifyApplication extends SpringBootServletInitializer implements ApplicationRunner {
 
 	@Autowired
@@ -90,6 +93,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			user1.setId(Long.valueOf(1));
 			user1.setEmail("admin@admin.com");
 			user1.setName("admin admin");
+			user1.setAccountStatus("Okay");
 			List<Role> adminRoles = new ArrayList<Role>();
 			adminRoles.add(admin);
 			user1.setRoles(adminRoles);
@@ -100,6 +104,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			user2.setId(Long.valueOf(2));
 			user2.setEmail("basic@basic.com");
 			user2.setName("basic basic");
+			user2.setAccountStatus("Okay");
 			List<Role> basicRoles = new ArrayList<Role>();
 			basicRoles.add(basic);
 			user2.setRoles(basicRoles);
@@ -109,6 +114,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			user3.setId(Long.valueOf(3));
 			user3.setEmail("premium@premium.com");
 			user3.setName("premium premium");
+			user3.setAccountStatus("Okay");
 			List<Role> premiumRoles = new ArrayList<Role>();
 			premiumRoles.add(premium);
 			user3.setRoles(premiumRoles);
