@@ -1,12 +1,16 @@
 package com.boardify.boardify.DTO;
 
-import lombok.Data;
+import lombok.*;
 
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class GameSearchResult {
 
     private String id;
     private String name;
-    private String imageUrl;
+
 }
 

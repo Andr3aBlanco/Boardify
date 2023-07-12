@@ -1,9 +1,14 @@
 package com.boardify.boardify.DTO;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BoardGameResponse {
 

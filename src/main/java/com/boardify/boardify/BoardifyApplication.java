@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 import java.util.Arrays;
@@ -16,8 +18,9 @@ import java.util.List;
 
 
 @PropertySource("classpath:application.properties")
-
+@EnableScheduling
 @SpringBootApplication
+@EnableJpaRepositories("com.boardify.boardify.repository")
 public class BoardifyApplication extends SpringBootServletInitializer implements ApplicationRunner {
 
 	@Autowired

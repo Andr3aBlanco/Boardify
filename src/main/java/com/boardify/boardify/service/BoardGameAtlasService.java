@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Optional;
+
 
 @Service
 public class BoardGameAtlasService {
@@ -24,24 +26,39 @@ public class BoardGameAtlasService {
     private final RestTemplate restTemplate;
     private final GameRepository gameRepository;
 
-    public BoardGameResponse searchGames(String gameName, int minPlayers, int maxPlayers, int releaseYear, int playtime) {
-        String url = UriComponentsBuilder.fromHttpUrl("https://api.boardgameatlas.com/api/search")
-                .queryParam("name", gameName)
-                .queryParam("min_players", minPlayers)
-                .queryParam("max_players", maxPlayers)
-                .queryParam("year_published", releaseYear)
-                .queryParam("min_playtime", playtime)
-                .queryParam("client_id", apiKey)
-                .toUriString();
+    public BoardGameResponse searchGames(String gameName, Integer minPlayers, Integer maxPlayers, Integer releaseYear, Integer playtime) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL)
+                .queryParamIfPresent("name", Optional.ofNullable(gameName));
+
+        if (minPlayers != null) {
+            builder.queryParam("min_players", minPlayers);
+        }
+        if (maxPlayers != null) {
+            builder.queryParam("max_players", maxPlayers);
+        }
+        if (releaseYear != null) {
+            builder.queryParam("year_published", releaseYear);
+        }
+        if (playtime != null) {
+            builder.queryParam("min_playtime", playtime);
+        }
+
+        builder.queryParam("client_id", apiKey);
+
+        String url = builder.toUriString();
+
+        System.out.println("Generated URI: " + url);
 
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(url, BoardGameResponse.class);
     }
 
 
+
+
     public BoardGameAtlasService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-        gameRepository = null;
+        this.gameRepository = null;
     }
 
     public BoardGameResponse searchGamesByName(String name) {
@@ -79,10 +96,12 @@ public class BoardGameAtlasService {
 
     public BoardGameResponse retrieveAllGames() {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
-                .queryParam("limit", 1000) // Adjust the limit based on your needs
                 .queryParam("client_id", apiKey)
+                .queryParam("limit", 100)
                 .build()
                 .toUriString();
+
+        System.out.println("Calling retrieve all games " + url);
 
         return restTemplate.getForObject(url, BoardGameResponse.class);
     }

@@ -8,15 +8,17 @@ import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
 @Controller
-public class CoreController {
+public class CoreController implements ErrorController {
 
     @Autowired
     private SubscriptionService subscriptionService;
@@ -86,5 +88,13 @@ public class CoreController {
     }
 
     //saving changes to development
+    @RequestMapping("/error")
+    @ResponseBody
+    String error(HttpServletRequest request) {
+        return "<h1>Error occurred</h1>";
+    }
+
+
+
 }
 

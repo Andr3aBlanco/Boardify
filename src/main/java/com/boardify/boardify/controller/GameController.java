@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api")
 public class GameController {
 
     private final BoardGameAtlasService boardGameAtlasService;
@@ -30,7 +31,15 @@ public class GameController {
             @RequestParam(value = "releaseYear", required = false) Integer releaseYear,
             @RequestParam(value = "playtime", required = false) Integer playtime
     ) {
+
+
         return boardGameAtlasService.searchGames(name, minPlayers, maxPlayers, releaseYear, playtime);
     }
+
+    @GetMapping
+    public String handleDefault() {
+        return "Welcome to the Boardify API!";
+    }
+
 
 }
