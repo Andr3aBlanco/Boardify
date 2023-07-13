@@ -33,9 +33,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
+        user.setUsername(userDto.getUsername());
         user.setEmail(userDto.getEmail());
-
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setAddress(userDto.getAddress());
+        user.setCity(userDto.getCity());
+        user.setCountry(userDto.getCountry());
+        user.setZipCode(userDto.getZipCode());
+        user.setPhone(userDto.getPhone());
         //encrypt the password once we integrate spring security
         //user.setPassword(userDto.getPassword());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -62,17 +68,22 @@ public class UserServiceImpl implements UserService {
 
     private UserDto convertEntityToDto(User user){
         UserDto userDto = new UserDto();
-        String[] name = user.getName().split(" ");
-        userDto.setFirstName(name[0]);
-        userDto.setLastName(name[1]);
+        userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
+        userDto.setFirstName(user.getFirstName());
+        userDto.setLastName(user.getLastName());
+        userDto.setAddress(user.getAddress());
+        userDto.setCity(user.getCity());
+        userDto.setCountry(user.getCountry());
+        userDto.setZipCode(user.getZipCode());
+        userDto.setPhone(user.getPhone());
         userDto.setAccountStatus(user.getAccountStatus());
         return userDto;
     }
 
     private Role checkRoleExist() {
         Role role = new Role();
-        role.setName("ROLE_ADMIN");
+        role.setName("ROLE_BASIC");
         return roleRepository.save(role);
     }
 

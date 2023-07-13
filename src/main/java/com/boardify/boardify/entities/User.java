@@ -20,7 +20,7 @@ public class User {
     private Long id;
 
     @Column(nullable=false)
-    private String name;
+    private String username;
 
     @Column(nullable=false, unique=true)
     private String email;
@@ -43,11 +43,12 @@ public class User {
     private String lastName;
     private String address;
     private String city;
+    private String country;
     private String state;
     private String zipCode;
     private String phone;
-    private String stripeToken;
 
+    private String stripeToken;
     private int subscriptionType;
     private String subscriptionEnd;
 
