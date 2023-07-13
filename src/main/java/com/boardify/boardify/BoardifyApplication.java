@@ -92,7 +92,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			User user1 = new User();
 			user1.setId(Long.valueOf(1));
 			user1.setEmail("admin@admin.com");
-			user1.setName("admin admin");
+			user1.setUsername("admin admin");
 			user1.setAccountStatus("Okay");
 			List<Role> adminRoles = new ArrayList<Role>();
 			adminRoles.add(admin);
@@ -103,7 +103,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			User user2 = new User();
 			user2.setId(Long.valueOf(2));
 			user2.setEmail("basic@basic.com");
-			user2.setName("basic basic");
+			user2.setUsername("basic basic");
 			user2.setAccountStatus("Okay");
 			List<Role> basicRoles = new ArrayList<Role>();
 			basicRoles.add(basic);
@@ -113,7 +113,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			User user3 = new User();
 			user3.setId(Long.valueOf(3));
 			user3.setEmail("premium@premium.com");
-			user3.setName("premium premium");
+			user3.setUsername("premium premium");
 			user3.setAccountStatus("Okay");
 			List<Role> premiumRoles = new ArrayList<Role>();
 			premiumRoles.add(premium);
