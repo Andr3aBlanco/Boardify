@@ -36,9 +36,10 @@ public class TournamentRestController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/add")
+    @PostMapping("tournaments/add")
     public ResponseEntity<Tournament> createTournament(@RequestBody Tournament tournament) {
         Tournament createdTournament = tournamentService.createTournament(tournament);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdTournament);
     }
 
@@ -46,7 +47,7 @@ public class TournamentRestController {
     public ResponseEntity<Void> updateTournament(@PathVariable Long id, @RequestBody Tournament tournament) {
         Optional<Tournament> existingTournament = tournamentService.findTournamentByID(id);
         if (existingTournament.isPresent()) {
-            tournament.setTournamentID(id);
+            tournament.setTournamentId(id);
             tournamentService.updateTournament(tournament);
             return ResponseEntity.ok().build();
         }
