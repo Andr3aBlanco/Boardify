@@ -79,7 +79,8 @@ public class AuthController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String userEmail = userDetails.getUsername();
-//        UserDto userDto = userService.findByEmail(userEmail);
+        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
+        model.addAttribute("currentUser", userDto);
         return "logged-in-profile";
     }
 
