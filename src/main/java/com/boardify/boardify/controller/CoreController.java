@@ -2,16 +2,22 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.entities.User;
 import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
+import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -40,6 +46,7 @@ public class CoreController implements ErrorController {
         // Return the name of the Thymeleaf template for the home page
         return "home";
     }
+
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
@@ -97,8 +104,27 @@ public class CoreController implements ErrorController {
 //         return "<h1>Error occurred</h1>";
 //     }
 
+    private UserService userService;
 
+    @Autowired
+    public CoreController(UserService userService) {
+        this.userService = userService;
+    }
 
-
+    @ModelAttribute("currentUser")
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            User currentUser = userService.findByEmail(email);
+            if (currentUser != null) {
+                UserDto userDto = new UserDto();
+                userDto.setUsername(currentUser.getUsername());
+                userDto.setFirstName(currentUser.getFirstName());
+                return userDto;
+            }
+        }
+        return null;
+    }
 }
 
