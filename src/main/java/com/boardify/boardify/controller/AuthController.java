@@ -3,8 +3,10 @@ package com.boardify.boardify.controller;
 
 import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.User;
+import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +19,16 @@ import java.util.List;
 public class AuthController {
 
     private UserService userService;
+    private UserRepository userRepository;
 
-    public AuthController(UserService userService) {
+
+    public AuthController(UserService userService, UserRepository userRepository) {
+
         this.userService = userService;
+        this.userRepository = userRepository;
+
     }
+
 
     @GetMapping("/login")
     public String loginForm() {
@@ -68,6 +76,17 @@ public class AuthController {
         userService.changeAccountStatus(email, tempUser.getAccountStatus());
 
         return "redirect:/users";
+    }
+
+    @PostMapping("/users/delete")
+    public String deleteUser(@RequestParam("email") String email) {
+        // Fetch the user from the database based on the email
+        User user = userRepository.findByEmail(email);
+
+        // Delete the user from the database
+        userRepository.delete(user);
+
+        return "redirect:/users"; // Redirect to the user list page
     }
 
 }
