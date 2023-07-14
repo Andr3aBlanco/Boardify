@@ -16,4 +16,6 @@ public interface UserService {
 
     void changeAccountStatus(String email, String accStatus);
 
+//    UserDto convertEntityToDto(User user);
+
 }

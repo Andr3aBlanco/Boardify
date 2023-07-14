@@ -1,15 +1,19 @@
 package com.boardify.boardify.controller;
 
-
 import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.User;
 import com.boardify.boardify.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +72,15 @@ public class AuthController {
         userService.changeAccountStatus(email, tempUser.getAccountStatus());
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/your-profile")
+    public String viewYourProfile(Model model, HttpServletRequest request) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        String userEmail = userDetails.getUsername();
+//        UserDto userDto = userService.findByEmail(userEmail);
+        return "logged-in-profile";
     }
 
 }

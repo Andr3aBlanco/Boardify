@@ -74,7 +74,7 @@ public class CoreController implements ErrorController {
     @GetMapping("/error")
     public String handleError() {
         // Handle the error and provide a custom error page or redirect
-        return "redirect:/home"; // Replace "error" with the appropriate template name or redirect path
+        return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
     }
 
 
@@ -86,6 +86,7 @@ public class CoreController implements ErrorController {
 
         return "plans";
     }
+
 
 
 
