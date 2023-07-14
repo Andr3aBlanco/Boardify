@@ -45,7 +45,7 @@ public class CoreController implements ErrorController {
             String email = authentication.getName();
             User user = userRepository.findByEmail(email);
             if (user != null) {
-                String username = user.getName();
+                String username = user.getUsername();
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
                 model.addAttribute("message", "Hello " + username + "!");
