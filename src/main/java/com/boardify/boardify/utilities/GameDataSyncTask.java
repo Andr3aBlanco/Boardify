@@ -53,7 +53,7 @@ public class GameDataSyncTask implements ApplicationRunner {
         if (gameRepository.count() == 0) {
             BoardGameResponse gameData = boardGameAtlasService.retrieveAllGames();
 
-            System.out.println("Len of repsonse " + gameData.getGames().size());
+            System.out.println("Len of response " + gameData.getGames().size());
             for (GameSearchResult result : gameData.getGames()) {
                 Game game = Game.builder()
                         .apiId(result.getId())

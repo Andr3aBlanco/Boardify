@@ -42,13 +42,13 @@ public class CoreController implements ErrorController {
     public String showHomePage(Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();
-            User user = userRepository.findByEmail(email);
+          String email = authentication.getName();
+          User user = userRepository.findByEmail(email);
             if (user != null) {
-                String username = user.getName();
+            String username = user.getUsername();
                 // Add the necessary data to the model
-                model.addAttribute("username", username);
-                model.addAttribute("message", "Hello " + username + "!");
+               model.addAttribute("username", username);
+        model.addAttribute("message", "Hello " + username + "!");
             }
         }
 
