@@ -54,8 +54,8 @@ public class WebSecurityConfiguration {
                 )
                 .exceptionHandling(
                         exceptionHandling -> exceptionHandling
-                                .accessDeniedPage("/"))
-        ;
+                                .accessDeniedPage("/"));
+
 
         return http.build();
     }
