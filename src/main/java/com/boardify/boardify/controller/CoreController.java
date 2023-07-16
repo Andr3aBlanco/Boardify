@@ -45,7 +45,7 @@ public class CoreController implements ErrorController {
             String email = authentication.getName();
             User user = userRepository.findByEmail(email);
             if (user != null) {
-                String username = user.getName();
+                String username = user.getUsername();
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
                 model.addAttribute("message", "Hello " + username + "!");
@@ -102,15 +102,15 @@ public class CoreController implements ErrorController {
 //        return "redirect:/home"; // Replace "error" with the appropriate template name or redirect path
 //    }
 
-
-    @GetMapping("/go-premium")
-    public String showPlansPage(Model model, HttpServletRequest request){
-
-        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
-        model.addAttribute("subscriptions", subscriptions);
-
-        return "plans";
-    }
+//
+//    @GetMapping("/go-premium")
+//    public String showPlansPage(Model model, HttpServletRequest request){
+//
+//        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+//        model.addAttribute("subscriptions", subscriptions);
+//
+//        return "plans";
+//    }
 
 
 
