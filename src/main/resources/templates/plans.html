@@ -11,42 +11,41 @@
 
   <link href="/css/font-awesome.css" rel="stylesheet">
 
-
-  <!-- font-awesome icons -->
+  <script href="/js/StripePayment.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var getPriceButton = document.getElementsByClassName("getplantbutton");
-      var amountInput = document.getElementById("amount-input");
-      var currencyInput = document.getElementById("currency-input");
-      var selectedPrice = document.createElement("div");
-      selectedPrice.className = "selected-price";
+<!--  <script>-->
+<!--    document.addEventListener("DOMContentLoaded", function () {-->
+<!--      var getPriceButton = document.getElementsByClassName("getplantbutton");-->
+<!--      var amountInput = document.getElementById("amount-input");-->
+<!--      var currencyInput = document.getElementById("currency-input");-->
+<!--      var selectedPrice = document.createElement("div");-->
+<!--      selectedPrice.className = "selected-price";-->
 
 
-      for (var i = 0; i < getPriceButton.length; i++) {
-        getPriceButton[i].addEventListener("click", function () {
-          var price = this.getAttribute("data-amount-th");
-          var currency = "CAD";
-          amountInput.value = price;
-          currencyInput.value = currency;
-          selectedPrice.innerText = "Selected Price: $" + price + " " + currency;
-          this.parentNode.parentNode.appendChild(selectedPrice);
-          updateStripeButtonAttributes(price, currency);
-        });
-      }
-    });
+<!--      for (var i = 0; i < getPriceButton.length; i++) {-->
+<!--        getPriceButton[i].addEventListener("click", function () {-->
+<!--          var price = this.getAttribute("data-amount-th");-->
+<!--          var currency = "CAD";-->
+<!--          amountInput.value = price;-->
+<!--          currencyInput.value = currency;-->
+<!--          selectedPrice.innerText = "Selected Price: $" + price + " " + currency;-->
+<!--          this.parentNode.parentNode.appendChild(selectedPrice);-->
+<!--          updateStripeButtonAttributes(price, currency);-->
+<!--        });-->
+<!--      }-->
+<!--    });-->
 
-    function updateStripeButtonAttributes(amount, currency) {
-      var stripeButton = document.getElementsByClassName("stripe-button")[0];
-      var spanPrice = document.getElementById('spanprice');
-      stripeButton.setAttribute("data-amount", amount);
-      stripeButton.setAttribute("data-currency", currency);
-      stripeButton.setAttribute("data-name", "HOLA");
+<!--    function updateStripeButtonAttributes(amount, currency) {-->
+<!--      var stripeButton = document.getElementsByClassName("stripe-button")[0];-->
+<!--      var spanPrice = document.getElementById('spanprice');-->
+<!--      stripeButton.setAttribute("data-amount", amount);-->
+<!--      stripeButton.setAttribute("data-currency", currency);-->
+<!--      stripeButton.setAttribute("data-name", "HOLA");-->
 
-      spanPrice.setAttribute('text', 'veinte');
-    }
-  </script>
+<!--      spanPrice.setAttribute('text', 'veinte');-->
+<!--    }-->
+<!--  </script>-->
 
 
 
@@ -100,30 +99,37 @@
   </div>
 </div>
 
-<form action='/charge' method='POST' id='checkout-form'>
-<!--  <input type='hidden' th:value='${amount}' name='amount' />-->
-  <input type="hidden" id="amount-input" name="amount" />
-  <input type="hidden" id="currency-input" name="currency" />
+<!--<form action='/charge' method='POST' id='checkout-form'>-->
+<!--&lt;!&ndash;  <input type='hidden' th:value='${amount}' name='amount' />&ndash;&gt;-->
+<!--  <input type="hidden" id="amount-input" name="amount" />-->
+<!--  <input type="hidden" id="currency-input" name="currency" />-->
 
-  <label>Price:<span th:text='${amount}' id='spanprice' name='spanprice'/></label>
-  <script
+<!--  <label>Price:<span th:text='${amount}' id='spanprice' name='spanprice'/></label>-->
+<!--  <script-->
 
 
-          src='https://checkout.stripe.com/checkout.js'
-          class='stripe-button'
-          id='paymentbutton'
-          th:attr='data-key=${stripePublicKey},
-         data-amount=${amount},
-         data-currency=${currency}'
-          data-name='Boardify'
-          data-description='Premium Subscription'
-          data-image
-                  ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
-          data-locale='auto'
-          data-zip-code='false'>
+<!--          src='https://checkout.stripe.com/checkout.js'-->
+<!--          class='stripe-button'-->
+<!--          id='paymentbutton'-->
+<!--          th:attr='data-key=${stripePublicKey},-->
+<!--         data-amount=${amount},-->
+<!--         data-currency=${currency}'-->
+<!--          data-name='Boardify'-->
+<!--          data-description='Premium Subscription'-->
+<!--          data-image-->
+<!--                  ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'-->
+<!--          data-locale='auto'-->
+<!--          data-zip-code='false'>-->
 
-  </script>
+<!--  </script>-->
+<!--</form>-->
+
+<form id="payment-form" th:action="@{/charge}" method="post">
+  <input type="text" name="cardholder-name" placeholder="Cardholder Name" />
+  <div id="card-element"></div>
+  <button type="submit">Submit Payment</button>
 </form>
+
 
 </body>
 </html>

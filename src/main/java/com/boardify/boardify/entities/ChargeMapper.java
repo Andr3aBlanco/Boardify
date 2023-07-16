@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 public class ChargeMapper {
 
     public ChargeResponse toChargeResponse(Charge charge) {
-        // Perform the necessary mapping from Charge to ChargeResponse
         ChargeResponse chargeResponse = new ChargeResponse();
-        chargeResponse.setStatus(charge.getStatus());
-        chargeResponse.setId(charge.getId());
-        chargeResponse.setTransactionId(charge.getBalanceTransaction());
-        // Map other properties as needed
+        chargeResponse.setSuccess(charge.getPaid());
+        chargeResponse.setMessage(charge.getPaid() ? "Payment successful" : "Payment failed");
+        chargeResponse.setPaymentId(charge.getId());
+        chargeResponse.setErrorMessage(charge.getPaid() ? null : charge.getFailureMessage());
         return chargeResponse;
     }
 }

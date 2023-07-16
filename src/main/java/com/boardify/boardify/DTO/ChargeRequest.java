@@ -8,12 +8,11 @@ import java.util.Currency;
 @Data
 public class ChargeRequest {
 
-    public enum Currency {
-        EUR, USD, CAD;
-    }
-    private String description;
-    private int amount;
-    private Currency currency;
-//    private String stripeEmail;
-    private String stripeToken;
+    private String cardNumber;
+    private String cardHolderName;
+    private String expirationMonth;
+    private String expirationYear;
+    private String cvc;
+    private double amount;
+    private String currency;
 }

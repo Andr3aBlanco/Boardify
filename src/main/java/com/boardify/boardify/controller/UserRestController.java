@@ -34,7 +34,7 @@ public class UserRestController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return new ResponseEntity(insertedUser.getUserID(), HttpStatus.OK);
+        return new ResponseEntity(insertedUser.getId(), HttpStatus.OK);
     }
 
     @PostMapping("/update")

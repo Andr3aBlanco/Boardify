@@ -19,17 +19,15 @@ public class StripeService {
     @Value("${stripe.api.key}")
     private String secretKey;
 
-    @PostConstruct
-    public void init() {
+    public Charge charge(ChargeRequest chargeRequest) throws StripeException {
         Stripe.apiKey = secretKey;
-    }
-    public Charge charge(ChargeRequest chargeRequest)
-            throws StripeException {
+
         Map<String, Object> chargeParams = new HashMap<>();
-        chargeParams.put("amount", chargeRequest.getAmount());
+        chargeParams.put("amount", (int) (chargeRequest.getAmount() * 100)); // Stripe expects the amount in cents
         chargeParams.put("currency", chargeRequest.getCurrency());
-        chargeParams.put("description", chargeRequest.getDescription());
-        chargeParams.put("source", chargeRequest.getStripeToken());
+        chargeParams.put("source", chargeRequest.getCardNumber());
+        chargeParams.put("description", "Charge for " + chargeRequest.getCardHolderName());
+
         return Charge.create(chargeParams);
     }
 }
