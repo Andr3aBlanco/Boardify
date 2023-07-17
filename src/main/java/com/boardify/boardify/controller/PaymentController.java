@@ -1,17 +1,23 @@
 package com.boardify.boardify.controller;
 
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.entities.User;
 import com.boardify.boardify.service.StripeService;
 import com.boardify.boardify.service.SubscriptionService;
+import com.boardify.boardify.service.UserService;
 import com.boardify.boardify.utilities.Response;
 import com.stripe.model.Coupon;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,10 +33,12 @@ public class PaymentController {
 	@Value("${stripe.key.public}")
 	private String API_PUBLIC_KEY;
 
+	private UserService userService;
 	private StripeService stripeService;
 
-	public PaymentController(StripeService stripeService) {
+	public PaymentController(StripeService stripeService, UserService userService) {
 		this.stripeService = stripeService;
+		this.userService = userService;
 	}
 
 //	@GetMapping("/")
@@ -46,6 +54,13 @@ public class PaymentController {
 
 	@GetMapping("/go-premium")
 	public String chargePage(Model model, HttpServletRequest request) {
+//		        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Object obj = auth.getPrincipal();
+//        model.addAttribute("testUser", obj);
+//        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+//        String userEmail = userDetails.getUsername();
+//        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
+//        model.addAttribute("currentUser", userDto);
 		model.addAttribute("stripePublicKey", API_PUBLIC_KEY);
 		List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
 		model.addAttribute("subscriptions", subscriptions);
@@ -116,5 +131,21 @@ public class PaymentController {
 		// You may want to store charge id along with order information
 
 		return new Response(true, "Success your charge id is " + chargeId);
+	}
+
+	@ModelAttribute("currentUser")
+	public UserDto getCurrentUser() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated()) {
+			String email = authentication.getName();
+			User currentUser = userService.findByEmail(email);
+			if (currentUser != null) {
+				UserDto userDto = new UserDto();
+				userDto.setUsername(currentUser.getUsername());
+				userDto.setFirstName(currentUser.getFirstName());
+				return userDto;
+			}
+		}
+		return null;
 	}
 }

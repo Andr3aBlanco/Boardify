@@ -59,10 +59,10 @@
           </div>
 
           <div th:unless="${currentUser}" class="pricing-footer bg-base-color">
-            <a href="/login" class="getplantbutton">Get Monthly Premium</a>
+            <a href="/login" class="getplantbutton">Get Monthly Premium(login)</a>
           </div>
           <div th:if="${currentUser}" class="pricing-footer bg-base-color">
-            <a href="#" class="getplantbutton">Get Monthly Premium</a>
+            <a href="#" class="getplantbutton activegetplantbutton">Get Monthly Premium</a>
           </div>
         </div>
       </div>
@@ -204,7 +204,7 @@
     // Other JavaScript code
 
     // Handle the click event on the "Get Monthly Premium!" button
-    $('.getplantbutton').click(function(event) {
+    $('.activegetplantbutton').click(function(event) {
 
       event.preventDefault();
       var subscription = $(this).closest('.pricing').find('.title-large').text();

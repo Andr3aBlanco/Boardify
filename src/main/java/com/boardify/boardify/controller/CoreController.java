@@ -86,21 +86,21 @@ public class CoreController implements ErrorController {
     }
 
 
-    @GetMapping("/go-premium")
-    public String showPlansPage(Model model, HttpServletRequest request){
-
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        Object obj = auth.getPrincipal();
-//        model.addAttribute("testUser", obj);
-//        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-//        String userEmail = userDetails.getUsername();
-//        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
-//        model.addAttribute("currentUser", userDto);
-        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
-        model.addAttribute("subscriptions", subscriptions);
-
-        return "plans";
-    }
+//    @GetMapping("/go-premium")
+//    public String showPlansPage(Model model, HttpServletRequest request){
+//
+////        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+////        Object obj = auth.getPrincipal();
+////        model.addAttribute("testUser", obj);
+////        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+////        String userEmail = userDetails.getUsername();
+////        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
+////        model.addAttribute("currentUser", userDto);
+//        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+//        model.addAttribute("subscriptions", subscriptions);
+//
+//        return "plans";
+//    }
 
     @GetMapping("/edit-plan")
     public String showEditPlanPage(Model model, HttpServletRequest request){
