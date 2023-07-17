@@ -80,8 +80,19 @@ public class AuthController {
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
         String userEmail = userDetails.getUsername();
         UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
-        model.addAttribute("currentUser", userDto);
+        model.addAttribute("loggedInUser", userDto);
         return "logged-in-profile";
+    }
+
+    @PostMapping("/edit-profile/{email}")
+    public String editYourProfile(@PathVariable("email") String email, @ModelAttribute("loggedInUser") UserDto user) {
+        User currentUser = userService.findByEmail(email);
+        if (currentUser != null) {
+            System.out.println(user.getState());
+            userService.editLoggedInUser(email, user);
+        }
+        System.out.println("Step 2");
+        return "redirect:/your-profile";
     }
 
 }

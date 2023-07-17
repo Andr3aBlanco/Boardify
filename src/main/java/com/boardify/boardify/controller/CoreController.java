@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -88,10 +89,26 @@ public class CoreController implements ErrorController {
     @GetMapping("/go-premium")
     public String showPlansPage(Model model, HttpServletRequest request){
 
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        Object obj = auth.getPrincipal();
+//        model.addAttribute("testUser", obj);
+//        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+//        String userEmail = userDetails.getUsername();
+//        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
+//        model.addAttribute("currentUser", userDto);
         List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
         model.addAttribute("subscriptions", subscriptions);
 
         return "plans";
+    }
+
+    @GetMapping("/edit-plan")
+    public String showEditPlanPage(Model model, HttpServletRequest request){
+
+        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+        model.addAttribute("subscriptions", subscriptions);
+
+        return "edit-plan";
     }
 
 

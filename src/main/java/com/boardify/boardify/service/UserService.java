@@ -18,4 +18,5 @@ public interface UserService {
 
     UserDto convertEntityToDto(User user);
 
+    void editLoggedInUser(String email, UserDto userDto);
 }

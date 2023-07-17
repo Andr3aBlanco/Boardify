@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Go Premium!</title>
@@ -54,8 +54,11 @@
             <span class="bg-gray d-block p-4 text-large" th:text="${'You keep ' + (1 - subscription.commissionRate)*100 + '% of your revenues from entry fees'}"></span>
           </div>
 
-          <div class="pricing-footer bg-base-color">
-            <a href="#" class="getplantbutton">Get Monthly Premium!</a>
+          <div th:unless="${currentUser}" class="pricing-footer bg-base-color">
+            <a href="/login" class="getplantbutton">Get Monthly Premium</a>
+          </div>
+          <div th:if="${currentUser}" class="pricing-footer bg-base-color">
+            <a href="#" class="getplantbutton">Get Monthly Premium</a>
           </div>
         </div>
       </div>

@@ -35,8 +35,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests((authorizeRequests) ->
-                        authorizeRequests.requestMatchers("/register", "/login").anonymous()
-                                .requestMatchers("/register/**").anonymous()
+                        authorizeRequests.requestMatchers("/register", "/login", "/register/**").anonymous()
                                 .requestMatchers("/users").hasRole("ADMIN")
                                 .requestMatchers("/login").anonymous()// Allow access to /login for anonymous users only
                                 .requestMatchers("/**").permitAll()
