@@ -4,10 +4,12 @@ package com.boardify.boardify.controller;
 
 import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.entities.Transaction;
 import com.boardify.boardify.entities.User;
 import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
+import com.boardify.boardify.service.TransactionService;
 import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class CoreController implements ErrorController {
 
     @Autowired
     private SubscriptionService subscriptionService;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @Autowired
     private TournamentService tournamentService;
@@ -111,6 +116,12 @@ public class CoreController implements ErrorController {
         return "edit-plan";
     }
 
+    @GetMapping("/transactions")
+    public String showTransactionsPage(Model model) {
+        List<Transaction> transactions = transactionService.findAllTransactions();
+        model.addAttribute("transactions", transactions);
+        return "transactions";
+    }
 
 
 
@@ -143,5 +154,7 @@ public class CoreController implements ErrorController {
         }
         return null;
     }
+
+
 }
 
