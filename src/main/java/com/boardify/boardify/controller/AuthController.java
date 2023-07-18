@@ -58,7 +58,7 @@ public class AuthController {
 
     @GetMapping("/users")
     public String listRegisteredUsers(Model model){
-        List<UserDto> users = userService.findAllUsers();
+        List<UserDto> users = userService.findAllNonAdmins();
         model.addAttribute("users", users);
         String[] accountStatuses = {"Okay", "Banned", "Locked"};
         model.addAttribute("accStatuses", accountStatuses);

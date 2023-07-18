@@ -66,6 +66,13 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<UserDto> findAllNonAdmins() {
+        List<User> nonAdminUsers = userRepository.findAllNonAdmins();
+        return nonAdminUsers.stream().map((user) -> convertEntityToDto(user))
+                .collect(Collectors.toList());
+    }
+
     public UserDto convertEntityToDto(User user){
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
