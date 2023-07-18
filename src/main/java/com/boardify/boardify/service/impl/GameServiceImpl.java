@@ -4,6 +4,7 @@ import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.repository.GameRepository;
 import com.boardify.boardify.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +21,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<Game> findAll() {
-        return gameRepository.findAll();
-    }
-
-    @Override
     public Game findGameById(Long gameId) {
         Optional<Game> game = gameRepository.findById(gameId);
         return game.orElse(null);
+    }
+
+    public List<Game> findAll() {
+        Sort sortByGameName = Sort.by(Sort.Direction.ASC, "name"); // Sort by the "name" property of the "game" association
+        return gameRepository.findAll(sortByGameName);
     }
 }

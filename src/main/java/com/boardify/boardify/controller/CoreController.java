@@ -2,9 +2,11 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.Subscription;
 import com.boardify.boardify.entities.User;
 import com.boardify.boardify.repository.UserRepository;
+import com.boardify.boardify.service.GameService;
 import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
@@ -32,6 +34,9 @@ public class CoreController implements ErrorController {
     private TournamentService tournamentService;
 
     private final UserRepository userRepository;
+    @Autowired
+
+    private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -60,9 +65,16 @@ public class CoreController implements ErrorController {
     }
 
 
+/*
+    @GetMapping("/edit-tournament")
+    public String showEditTournamentPage(Model model, HttpServletRequest request)
+    {
+        List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);
 
-
-
+        return "tournament-to-edit";
+    }
+*/
 
 
 
@@ -74,6 +86,16 @@ public class CoreController implements ErrorController {
 
         return "join-tournament";
     }
+    @GetMapping("/edit-tournament")
+    public String showEditTournamentPage(Model model, HttpServletRequest request) {
+
+        List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);
+        List<Game> games = gameService.findAll();
+        model.addAttribute("games", games);
+
+        return "tournament-to-edit";
+    }
 
     @GetMapping("/create-tournament")
     public String showCreateTournamentPage(Model model, HttpServletRequest request) {
@@ -83,8 +105,11 @@ public class CoreController implements ErrorController {
         model.addAttribute("request", request);
         Tournament tournament = new Tournament();
         model.addAttribute("tournament", tournament);
+        List<Game> games = gameService.findAll();
+        model.addAttribute("games", games);
         return "create-tournament";
     }
+
 
     @GetMapping("/leaderboard")
     public String showLeaderboardPage(Model model, HttpServletRequest request) {

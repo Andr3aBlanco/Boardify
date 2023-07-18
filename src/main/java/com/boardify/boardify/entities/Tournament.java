@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -23,11 +24,13 @@ public class Tournament {
     @Column(name = "tournament_id")
     private Long tournamentId;
 
-    // Other fields
-
+    private String tournamentName;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id", referencedColumnName = "game_id")
     private Game game;
+
+    @Transient
+    private Long gameId; // Add the gameId property
 
     @ManyToMany
     @JoinTable(
@@ -36,6 +39,13 @@ public class Tournament {
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> players;
+    @ManyToMany
+    @JoinTable(
+            name = "tournament_games",
+            joinColumns = @JoinColumn(name = "tournament_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private List<Game> games;
 
     @NotBlank(message = "Address is required")
     private String address;
@@ -71,6 +81,14 @@ public class Tournament {
     @Column(name = "organizer_id")
     private Long organizerId;
 
+    // Add the gameId getter and setter methods
+    public Long getGameId() {
+        return game != null ? game.getGameId() : null;
+    }
+
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
+    }
 
 
 
