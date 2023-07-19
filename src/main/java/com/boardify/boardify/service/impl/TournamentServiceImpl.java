@@ -41,4 +41,10 @@ public class TournamentServiceImpl implements TournamentService {
     public Optional<Tournament> findTournamentByID(Long id) {
         return tournamentRepository.findById(id);
     }
+
+    @Override
+    public List<Tournament> findAllTournaments() {
+        return tournamentRepository.findAll();
+    }
+
 }

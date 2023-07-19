@@ -51,7 +51,8 @@ public class User {
     private String stripeToken;
     private int subscriptionType;
     private String subscriptionEnd;
-
+    private int won;
+    private int joined;
 
 
 }

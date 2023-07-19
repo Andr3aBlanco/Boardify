@@ -2,12 +2,14 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
 import com.boardify.boardify.entities.User;
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
+import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -20,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -32,6 +36,10 @@ public class CoreController implements ErrorController {
     private TournamentService tournamentService;
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
 
     public CoreController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -86,15 +94,29 @@ public class CoreController implements ErrorController {
         return "create-tournament";
     }
 
-    @GetMapping("/leaderboard")
-    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
+//    @GetMapping("/leaderboard")
+//    public String showLeaderboardPage(Model model, HttpServletRequest request) {
+//        // Add necessary logic or data retrieval here
+//
+//        // Manually add request as a context variable
+//        model.addAttribute("request", request);
+//
+//        return "leaderboard";
+//    }
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
+
+    @GetMapping("/leaderboard")
+    public String showLeaderboard(Model model) {
+        List<Tournament> allTournaments = tournamentService.findAllTournaments();
+        model.addAttribute("tournaments", allTournaments);
+
+        List<UserDto> allUsers = userService.findAllUsers();
+        model.addAttribute("users", allUsers);
 
         return "leaderboard";
     }
+
+
 
 //    @GetMapping("/error")
 //    public String handleError() {
@@ -111,6 +133,7 @@ public class CoreController implements ErrorController {
 
         return "plans";
     }
+
 
 
 
