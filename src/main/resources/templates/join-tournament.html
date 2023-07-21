@@ -7,6 +7,92 @@
 <body>
 <div th:replace="_navbar.html"></div>
 <h1>Tournaments</h1>
+<!-- Add the "My Tournaments" section before the main list of tournaments -->
+<div class="container mt-5">
+  <h3>My Tournaments</h3>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Date</th>
+      <th>Entry Fee</th>
+      <th>Prize</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Iterate through the user's enrolled tournaments -->
+    <tr th:each="enrolledTournament : ${userEnrolledTournaments}">
+      <td th:text="${enrolledTournament.tournamentName}"></td>
+      <td th:text="${enrolledTournament.address + ', ' + enrolledTournament.city + ', ' + enrolledTournament.state + ', ' + enrolledTournament.zipCode}"></td>
+      <td th:text="${enrolledTournament.eventStart}"></td>
+      <td th:text="${enrolledTournament.entryFees}"></td>
+      <td th:text="${enrolledTournament.prize}"></td>
+      <td>
+        <!-- Check if the tournament is created by the logged-in user -->
+        <th:block th:if="${enrolledTournament.organizerId == loggedInUserId}">
+          <!-- Display "Cancel Tournament" button for user-enrolled tournaments created by the logged-in user -->
+          <form th:action="@{'/tournaments/cancel/' + ${enrolledTournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to cancel this tournament?');">
+            <button type="submit" class="btn btn-danger">Cancel Tournament</button>
+          </form>
+        </th:block>
+        <!-- Check if the tournament is NOT created by the logged-in user -->
+        <th:block th:unless="${enrolledTournament.organizerId == loggedInUserId}">
+          <!-- Display "Cancel" button for user-enrolled tournaments NOT created by the logged-in user -->
+          <form th:action="@{'/tournaments/cancel/' + ${enrolledTournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to cancel your enrollment in this tournament?');">
+            <button type="submit" class="btn btn-danger">Cancel</button>
+          </form>
+        </th:block>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <!-- Add the star rating section for finished tournaments -->
+  <div class="container mt-5">
+    <h3>Rate Tournaments</h3>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Entry Fee</th>
+        <th>Prize</th>
+        <th>Your Rating</th>
+        <th>Tournament Host's Rating</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iterate through the finished tournaments -->
+      <tr th:each="finishedTournament : ${finishedTournaments}">
+        <td th:text="${finishedTournament.tournamentName}"></td>
+        <td th:text="${finishedTournament.address + ', ' + finishedTournament.city + ', ' + finishedTournament.state + ', ' + finishedTournament.zipCode}"></td>
+        <td th:text="${finishedTournament.eventStart}"></td>
+        <td th:text="${finishedTournament.entryFees}"></td>
+        <td th:text="${finishedTournament.prize}"></td>
+        <td>
+          <!-- Display the star rating for the user's rating of the tournament -->
+          <form th:action="@{'/tournaments/rate/' + ${finishedTournament.tournamentId}}" method="post">
+            <select name="userRating" onchange="this.form.submit()">
+              <option value="1">1 star</option>
+              <option value="2">2 stars</option>
+              <option value="3">3 stars</option>
+              <option value="4">4 stars</option>
+              <option value="5">5 stars</option>
+            </select>
+          </form>
+        </td>
+        <td>
+          <!-- Display the star rating for the tournament host's rating -->
+          <span th:text="${finishedTournament.hostRating}"></span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
 
 <div class="container">
   <table class="table">

@@ -1,12 +1,15 @@
 package com.boardify.boardify.entities;
 
 
+import com.boardify.boardify.service.UserService;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +55,7 @@ public class Tournament {
 
     @NotBlank(message = "City is required")
     private String city;
-@Column(name="state")
+    @Column(name="state")
     private String state;
 
     @Column(name = "zip_code")
@@ -60,15 +63,23 @@ public class Tournament {
 
     private int status;
 
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    /*@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name= "event_start")
     private String eventStart;
 
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="event_end")
-    private String eventEnd;
+    private String eventEnd;*/
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "event_start")
+    private LocalDate eventStart;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "event_end")
+    private LocalDate eventEnd;
+
 
     private int currEnrolled;
     private int maxEnrolled;
@@ -89,7 +100,29 @@ public class Tournament {
     public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
+    // Inside the Tournament class
+    @Column(name = "user_rating")
+    private int userRating;
 
+    // Add getter and setter for userRating
+    public int getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
+    }
+    @Transient
+    private List<Tournament> tournaments;
+
+    // Getter and Setter for the tournaments property
+    public List<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(List<Tournament> tournaments) {
+        this.tournaments = tournaments;
+    }
 
 
 }

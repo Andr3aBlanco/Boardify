@@ -8,22 +8,29 @@ import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDate;
+import java.util.Optional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Controller
 public class TournamentController {
     private TournamentService tournamentService;
     private GameService gameService;
+    @Autowired
     private UserService userService;
+    // Inside the TournamentController class
+    private List<Tournament> userEnrolledTournaments;
+
 
     @Autowired
     public TournamentController(TournamentService tournamentService, GameService gameService, UserService userService) {
@@ -32,8 +39,77 @@ public class TournamentController {
         this.userService = userService;
 
 
+    }//added join,rate  and cancel tournament
+    @GetMapping("/join-tournament")
+    public String joinTournamentPage(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Retrieve the currently logged-in user
+        User user = userService.findByEmail(currentPrincipalName);
+
+        // Retrieve the list of tournaments where the user is enrolled
+        List<Tournament> userEnrolledTournaments = tournamentService.findTournamentsByPlayer(user);
+        model.addAttribute("userEnrolledTournaments", userEnrolledTournaments);
+
+        // Retrieve all tournaments except the ones where the user is already enrolled
+        List<Tournament> allTournamentsExceptEnrolled = tournamentService.findAllExceptTournaments(userEnrolledTournaments);
+        model.addAttribute("tournaments", allTournamentsExceptEnrolled);
+        // Retrieve the list of finished tournaments (event_end before today)
+        List<Tournament> finishedTournaments = tournamentService.findFinishedTournaments();
+        model.addAttribute("finishedTournaments", finishedTournaments);
+
+
+        // ... Other model attributes ...
+
+        return "join-tournament";
+    }
+    @PostMapping("/tournaments/rate/{id}")
+    public String rateTournament(@PathVariable Long id, @RequestParam("userRating") int userRating) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Retrieve the currently logged-in user
+        User user = userService.findByEmail(currentPrincipalName);
+
+        Optional<Tournament> optionalTournament = tournamentService.findTournamentByID(id);
+        if (optionalTournament.isPresent()) {
+            Tournament tournament = optionalTournament.get();
+            // Check if the tournament is a finished tournament
+            if (tournament.getEventEnd().compareTo(LocalDate.now()) <= 0) {
+                // Set the user's rating for the tournament
+                tournament.setUserRating(userRating);
+                // Save the updated tournament
+                tournamentService.updateTournament(tournament);
+            }
+        }
+        return "redirect:/join-tournament";
     }
 
+
+    @PostMapping("/tournaments/cancel/{id}")
+    public String cancelTournamentEnrollment(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+
+        // Retrieve the currently logged-in user
+        User user = userService.findByEmail(currentPrincipalName);
+
+        Optional<Tournament> optionalTournament = tournamentService.findTournamentByID(id);
+        if (optionalTournament.isPresent()) {
+            Tournament tournament = optionalTournament.get();
+            // Check if the tournament is in the user's enrolled tournaments
+            if (tournament.getPlayers().contains(user)) {
+                // Remove the user from the tournament's players list
+                tournament.getPlayers().remove(user);
+                // Decrement the currentEnrolled count
+                tournament.setCurrEnrolled(tournament.getCurrEnrolled() - 1);
+                // Save the updated tournament
+                tournamentService.updateTournament(tournament);
+            }
+        }
+        return "redirect:/join-tournament";
+    }
 
     @GetMapping("/tournaments/edit/{id}")
     public String showEditTournamentPage(@PathVariable Long id, Model model) {

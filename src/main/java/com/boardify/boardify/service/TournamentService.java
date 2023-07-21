@@ -18,4 +18,11 @@ public interface TournamentService {
     void deleteTournament(Long id);
 
     Optional<Tournament> findTournamentByID(Long id);
+
+    List<Tournament> findTournamentsByPlayer(User user);
+
+    List<Tournament> findAllExceptTournaments(List<Tournament> tournaments);
+
+    List<Tournament> findFinishedTournaments();
+
 }

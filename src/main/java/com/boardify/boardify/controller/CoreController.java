@@ -42,6 +42,9 @@ public class CoreController implements ErrorController {
         this.userRepository = userRepository;
     }
 
+    // Inside the TournamentController class
+    private List<Tournament> userEnrolledTournaments;
+
 
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
@@ -80,9 +83,28 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                // Add the currently logged-in user ID to the model
+                model.addAttribute("loggedInUserId", user.getId());
+                // Retrieve the list of tournaments where the user is enrolled
+                List<Tournament> userEnrolledTournaments = tournamentService.findTournamentsByPlayer(user);
+                model.addAttribute("userEnrolledTournaments", userEnrolledTournaments);
+            }
+        }
 
-        List<Tournament> tournaments = tournamentService.findAll();
-        model.addAttribute("tournaments", tournaments);
+        // Retrieve all tournaments except the ones where the user is already enrolled
+        List<Tournament> allTournamentsExceptEnrolled = tournamentService.findAllExceptTournaments(userEnrolledTournaments);
+        model.addAttribute("tournaments", allTournamentsExceptEnrolled);
+
+        // Retrieve the list of finished tournaments (event_end before today)
+        List<Tournament> finishedTournaments = tournamentService.findFinishedTournaments();
+        model.addAttribute("finishedTournaments", finishedTournaments);
+
+        // ... Other model attributes ...
 
         return "join-tournament";
     }
