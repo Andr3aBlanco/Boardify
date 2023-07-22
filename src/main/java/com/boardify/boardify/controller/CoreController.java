@@ -19,12 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -122,6 +120,16 @@ public class CoreController implements ErrorController {
         model.addAttribute("transactions", transactions);
         return "transactions";
     }
+
+    @GetMapping("/transactions/filter")
+    public String showTransactionsPageFiltered(@RequestParam Map<String, String> customQuery, Model model) {
+        List<Transaction> transactions = transactionService.findByFilter(customQuery);
+//        System.out.println(transactions.get(0));
+        System.out.println(customQuery.get("item"));
+        model.addAttribute("transactions", transactions);
+        return "transactions";
+    }
+
 
 
 

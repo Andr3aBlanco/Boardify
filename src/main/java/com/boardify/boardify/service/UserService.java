@@ -1,6 +1,7 @@
 package com.boardify.boardify.service;
 
 import com.boardify.boardify.DTO.UserDto;
+import com.boardify.boardify.entities.Transaction;
 import com.boardify.boardify.entities.User;
 
 import java.util.List;

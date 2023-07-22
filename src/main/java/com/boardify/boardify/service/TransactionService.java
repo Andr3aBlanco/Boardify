@@ -4,6 +4,7 @@ import com.boardify.boardify.entities.Transaction;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface TransactionService {
 
@@ -14,4 +15,6 @@ public interface TransactionService {
     List<Transaction> findByUserId(Long userId);
 
     List<Transaction> findAllTransactions();
+
+    List<Transaction> findByFilter(Map<String, String> customQuery);
 }
