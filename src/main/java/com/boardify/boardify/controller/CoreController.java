@@ -35,15 +35,15 @@ public class CoreController implements ErrorController {
     @Autowired
     private TournamentService tournamentService;
 
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
 
     @Autowired
     private UserService userService;
 
 
-    public CoreController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+//    public CoreController(UserRepository userRepository) {
+//        this.userRepository = userRepository;
+//    }
 
 
     @GetMapping("/")
@@ -51,7 +51,7 @@ public class CoreController implements ErrorController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();
-            User user = userRepository.findByEmail(email);
+            User user = userService.findByEmail(email);
             if (user != null) {
                 String username = user.getUsername();
                 // Add the necessary data to the model
