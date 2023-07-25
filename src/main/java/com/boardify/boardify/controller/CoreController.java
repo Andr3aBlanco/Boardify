@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -68,12 +69,6 @@ public class CoreController implements ErrorController {
     }
 
 
-
-
-
-
-
-
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
 
@@ -118,11 +113,19 @@ public class CoreController implements ErrorController {
 
 
 
+
 //    @GetMapping("/error")
 //    public String handleError() {
 //        // Handle the error and provide a custom error page or redirect
 //        return "redirect:/home"; // Replace "error" with the appropriate template name or redirect path
 //    }
+
+    @GetMapping("/error")
+    public String handleError() {
+        // Handle the error and provide a custom error page or redirect
+        return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
+    }
+
 
 
     @GetMapping("/go-premium")
@@ -144,8 +147,27 @@ public class CoreController implements ErrorController {
 //         return "<h1>Error occurred</h1>";
 //     }
 
+    private UserService userService;
 
+    @Autowired
+    public CoreController(UserService userService) {
+        this.userService = userService;
+    }
 
-
+    @ModelAttribute("currentUser")
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            User currentUser = userService.findByEmail(email);
+            if (currentUser != null) {
+                UserDto userDto = new UserDto();
+                userDto.setUsername(currentUser.getUsername());
+                userDto.setFirstName(currentUser.getFirstName());
+                return userDto;
+            }
+        }
+        return null;
+    }
 }
 

@@ -16,7 +16,10 @@ public interface UserService {
 
     void changeAccountStatus(String email, String accStatus);
 
+
     List<UserDto> findAllPlayers();
     List<UserDto> findAllOrganizers();
+    UserDto convertEntityToDto(User user);
+
 
 }
