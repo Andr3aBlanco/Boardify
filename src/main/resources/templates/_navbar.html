@@ -25,24 +25,26 @@
 <body>
 
 <style>
-    .greeting-message {
-        display: inline-block;
-        margin-right: 20px;
+    .greeting {
+        font-family: Arial, sans-serif;
+        color: #8e8e8e;
+        margin-right: 10px;
         font-size: 16px;
-        color: #9f9f9f;
     }
 </style>
 
 <div class="header">
-
     <div class="w3layouts_header_left">
         <div class="top-nav-text">
-            <!-- Add the greeting message below -->
-            <div th:if="${username}" class="greeting-message">
-                Hello <span th:text="${username}"></span>!
-            </div>
-            <!-- Add the greeting message above -->
-            <a href="/go-premium" class="premium-link">GO PREMIUM</a>
+            <!--            insert greetings message below-->
+
+            <span th:if="${currentUser}" class="greeting" th:text="'Hello, ' + ${currentUser.firstName}"></span>
+
+            <!--            insert greetings message above-->
+
+
+            <a class="nav-link" href="/go-premium">Go Premium</a>
+
         </div>
     </div>
     <div class="w3layouts_header_right">
@@ -50,11 +52,23 @@
             <input name="Search here" type="search" placeholder="Search" required="">
             <input type="submit" value="">
         </form>
+
         <div class="header-buttons">
             <a href="/contact-us" class="contact-us-button">Contact Us</a>
+            <span th:unless="${currentUser}">
             <a href="/login" class="login-button">Login</a>
             <a href="/register" class="register-button">Register</a>
+            </span>
+            <span th:if="${currentUser}">
+            <a href="/logout" class="logout-button">Logout</a>
+            </span>
         </div>
+
+
+
+
+
+
     </div>
     <div class="clearfix"></div>
 </div>

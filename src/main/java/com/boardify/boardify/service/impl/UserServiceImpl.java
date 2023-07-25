@@ -66,7 +66,14 @@ public class UserServiceImpl implements UserService {
                 .collect(Collectors.toList());
     }
 
-    private UserDto convertEntityToDto(User user){
+    @Override
+    public List<UserDto> findAllNonAdmins() {
+        List<User> nonAdminUsers = userRepository.findAllNonAdmins();
+        return nonAdminUsers.stream().map((user) -> convertEntityToDto(user))
+                .collect(Collectors.toList());
+    }
+
+    public UserDto convertEntityToDto(User user){
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
         userDto.setEmail(user.getEmail());
@@ -74,6 +81,7 @@ public class UserServiceImpl implements UserService {
         userDto.setLastName(user.getLastName());
         userDto.setAddress(user.getAddress());
         userDto.setCity(user.getCity());
+        userDto.setState(user.getState());
         userDto.setCountry(user.getCountry());
         userDto.setZipCode(user.getZipCode());
         userDto.setPhone(user.getPhone());
@@ -93,5 +101,22 @@ public class UserServiceImpl implements UserService {
 
          user.setAccountStatus(accStatus);
          userRepository.save(user);
+    }
+
+    public void editLoggedInUser(String email, UserDto userDto) {
+        User user = userRepository.findByEmail(email);
+        user.setUsername(userDto.getUsername());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setAddress(userDto.getAddress());
+        user.setCity(userDto.getCity());
+        user.setState(userDto.getState());
+
+        System.out.println(userDto.getState());
+        user.setCountry(userDto.getCountry());
+        user.setZipCode(userDto.getZipCode());
+        user.setPhone(userDto.getPhone());
+        System.out.println("Step 1.5");
+        userRepository.save(user);
     }
 }
