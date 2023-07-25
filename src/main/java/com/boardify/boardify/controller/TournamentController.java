@@ -35,6 +35,7 @@ public class TournamentController {
     }
 
 
+
     @GetMapping("/tournaments/edit/{id}")
     public String showEditTournamentPage(@PathVariable Long id, Model model) {
         Optional<Tournament> tournament = tournamentService.findTournamentByID(id);
@@ -65,11 +66,11 @@ public class TournamentController {
     }
 
     // Delete the selected tournament
-    @GetMapping("/tournaments/delete/{id}")
+    @PostMapping("/tournaments/delete/{id}")
     public String deleteTournament(@PathVariable Long id) {
         tournamentService.deleteTournament(id);
 
-        return "redirect:/tournament-to-edit";
+        return "redirect:/join-tournament";
     }
 
     @PostMapping("/tournaments/add")

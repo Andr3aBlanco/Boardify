@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -47,7 +49,7 @@ public class CoreController implements ErrorController {
     public String showHomePage(Model model, HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userRepository.findByEmail(email);
             if (user != null) {
                 String username = user.getUsername();
@@ -80,10 +82,24 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                String username = user.getUsername();
+                // Add the necessary data to the model
+                model.addAttribute("username", username);
 
-        List<Tournament> tournaments = tournamentService.findAll();
-        model.addAttribute("tournaments", tournaments);
-
+            }
+        }
+        Date today = new Date();
+        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
+        model.addAttribute("pastTournaments", pastTournaments);
+        /*List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);*/
+        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
+        model.addAttribute("openTournaments",openTournaments);
         return "join-tournament";
     }
     @GetMapping("/edit-tournament")

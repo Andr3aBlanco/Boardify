@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,12 +62,12 @@ public class Tournament {
     private int status;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name= "event_start")
-    private String eventStart;
+    private Date eventStart;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name="event_end")
     private String eventEnd;
 
