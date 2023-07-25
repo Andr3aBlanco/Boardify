@@ -1,11 +1,194 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Join Tournament</title>
+  <title>Tournaments</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    .star-rating {
+      white-space: nowrap;
+    }
+    .star-rating [type="radio"] {
+      appearance: none;
+    }
+    .star-rating i {
+      font-size: 1.2em;
+      transition: 0.3s;
+    }
+
+    .star-rating label:is(:hover, :has(~ :hover)) i {
+      transform: scale(1.35);
+      color: #fffdba;
+      animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
+    }
+    .star-rating label:has(~ :checked) i {
+      color: #faec1b;
+      text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
+    }
+
+    @keyframes jump {
+      0%,
+      50% {
+        transform: translatey(0) scale(1.35);
+      }
+      100% {
+        transform: translatey(-15%) scale(1.35);
+      }
+    }
+
+  </style>
 </head>
 <body>
 <div th:replace="_navbar.html"></div>
-<h1>This is a blank page - Join Tournament</h1>
-<!-- Add your content here -->
+<!-- Add the "My Tournaments" section before the main list of tournaments -->
+<div class="container mt-5">
+  <div class="container mt-5">
+    <h3>My Past Tournaments</h3>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Entry Fee</th>
+        <th>Prize</th>
+        <th>Rate Tournament</th>
+        <th>Rate Host</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="tournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
+        <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
+        <td th:text="${tournament.eventStart}"></td>
+        <td th:text="${tournament.entryFees}"></td>
+        <td th:text="${tournament.prize}"></td>
+        <td>
+      <span class="star-rating">
+        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-5-[[${row.index}]]" value="5">
+        <label th:for="'rate-tournament-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-4-[[${row.index}]]" value="4">
+        <label th:for="'rate-tournament-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-3-[[${row.index}]]" value="3">
+        <label th:for="'rate-tournament-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-2-[[${row.index}]]" value="2">
+        <label th:for="'rate-tournament-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-1-[[${row.index}]]" value="1">
+        <label th:for="'rate-tournament-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
+      </span>
+        </td>
+        <td>
+      <span class="star-rating">
+        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-5-[[${row.index}]]" value="5">
+        <label th:for="'rate-host-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-4-[[${row.index}]]" value="4">
+        <label th:for="'rate-host-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-3-[[${row.index}]]" value="3">
+        <label th:for="'rate-host-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-2-[[${row.index}]]" value="2">
+        <label th:for="'rate-host-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
+        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-1-[[${row.index}]]" value="1">
+        <label th:for="'rate-host-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
+      </span>
+          <div class="btn-group mt-2" role="group" style="display: none;">
+            <button type="button" class="btn btn-primary">Your Button</button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Open Tournaments</h2>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Entry Fee</th>
+        <th>Prize</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="tournament : ${openTournaments}">
+        <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
+        <td th:text="${tournament.eventStart}"></td>
+        <td th:text="${tournament.entryFees}"></td>
+        <td th:text="${tournament.prize}"></td>
+        <td>
+          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId}}" class="btn btn-primary">Join Tournament</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>My Created Tournaments</h2>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Entry Fee</th>
+        <th>Prize</th>
+        <th>Actions</th>
+        <th>Organizer</th>
+        <th>Current user</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="tournament : ${openTournaments}">
+        <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
+        <td th:text="${tournament.eventStart}"></td>
+        <td th:text="${tournament.entryFees}"></td>
+        <td th:text="${tournament.prize}"></td>
+
+        <td>
+          <a th:href="@{'/tournaments/edit/' + ${tournament.tournamentId}}" class="btn btn-primary">Edit</a>
+          <form th:action="@{'/tournaments/delete/' + ${tournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+        <td th:text="${tournament.organizerId}"></td>
+        <td th:text="${username}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Function to handle star rating selection
+    function handleStarRating(radioBtn) {
+      // Your existing code to handle star rating selection (from previous script)
+
+      // Get the button group in the same row as the selected star rating
+      const buttonGroup = $(radioBtn).closest('td').find('.btn-group');
+
+      // Show or hide the button group based on the selected star rating
+      if (currentIndex > 0) {
+        buttonGroup.show();
+      } else {
+        buttonGroup.hide();
+      }
+    }
+
+    // Your existing event listeners to handle star rating selection (from previous script)
+
+  });
+</script>
 </body>
 </html>
