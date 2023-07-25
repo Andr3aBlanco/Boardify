@@ -147,8 +147,6 @@ public class CoreController implements ErrorController {
 //         return "<h1>Error occurred</h1>";
 //     }
 
-    private UserService userService;
-
     @Autowired
     public CoreController(UserService userService) {
         this.userService = userService;
