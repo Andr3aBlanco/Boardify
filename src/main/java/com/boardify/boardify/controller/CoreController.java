@@ -47,20 +47,20 @@ public class CoreController implements ErrorController {
 
     private TournamentService tournamentService;
 
-    private final UserRepository userRepository;
+
+    //private final UserRepository userRepository;
     @Autowired
 
     private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+       // this.userRepository = userRepository;
     }
 
     private TransactionService transactionService;
 
 
-    @Autowired
-    private TournamentService tournamentService;
+
 
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
@@ -68,7 +68,7 @@ public class CoreController implements ErrorController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
-            User user = userRepository.findByEmail(email);
+            User user = userService.findByEmail(email);
             if (user != null) {
                 String username = user.getUsername();
                 // Add the necessary data to the model
@@ -104,7 +104,7 @@ public class CoreController implements ErrorController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
-            User user = userRepository.findByEmail(email);
+            User user = userService.findByEmail(email);
             if (user != null) {
                 String username = user.getUsername();
                 // Add the necessary data to the model
