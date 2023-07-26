@@ -41,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
         String type = customQuery.get("type");
         String startDate = customQuery.get("startDate");
         String endDate = customQuery.get("endDate");
-
+        System.out.println(item);
         if (item.equals("All")) {
             item = "%";
         }

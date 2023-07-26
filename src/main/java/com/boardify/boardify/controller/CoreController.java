@@ -57,6 +57,7 @@ public class CoreController implements ErrorController {
        // this.userRepository = userRepository;
     }
 
+    @Autowired
     private TransactionService transactionService;
 
 
@@ -188,18 +189,22 @@ public class CoreController implements ErrorController {
         return "edit-plan";
     }
 
-    @GetMapping("/transactions")
-    public String showTransactionsPage(Model model) {
-        List<Transaction> transactions = transactionService.findAllTransactions();
-        model.addAttribute("transactions", transactions);
-        return "transactions";
-    }
+//    @GetMapping("/transactions")
+//    public String showTransactionsPage(Model model) {
+//        List<Transaction> transactions = transactionService.findAllTransactions();
+//        model.addAttribute("transactions", transactions);
+//        return "transactions";
+//    }
 
-    @GetMapping("/transactions/filter")
-    public String showTransactionsPageFiltered(@RequestParam Map<String, String> customQuery, Model model) {
-        List<Transaction> transactions = transactionService.findByFilter(customQuery);
-//        System.out.println(transactions.get(0));
+    @GetMapping("/transactions")
+    public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
+        List<Transaction> transactions;
         System.out.println(customQuery.get("item"));
+        if (customQuery.size() < 1) {
+            transactions = transactionService.findAllTransactions();
+        } else {
+            transactions = transactionService.findByFilter(customQuery);
+        }
         model.addAttribute("transactions", transactions);
         return "transactions";
     }

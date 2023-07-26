@@ -48,6 +48,9 @@ public class AuthController {
         if (existing != null) {
             result.rejectValue("email", null, "There is already  an account registered with that email");
         }
+        if (user.getPassword().length() < 8) {
+            result.rejectValue("password", null, "Password should be at least 8 characters long");
+        }
         if (result.hasErrors()) {
             model.addAttribute("user", user);
             return "register";
