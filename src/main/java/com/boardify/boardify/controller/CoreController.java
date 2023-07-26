@@ -19,6 +19,7 @@ import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.TransactionService;
 import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -144,6 +147,11 @@ public class CoreController implements ErrorController {
         List<Game> games = gameService.findAll();
         model.addAttribute("games", games);
         return "create-tournament";
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public void HandleError(HttpServletResponse response) throws IOException {
+        response.sendRedirect("/go-premium");
     }
 
 

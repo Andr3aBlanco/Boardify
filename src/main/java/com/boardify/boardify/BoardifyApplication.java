@@ -49,6 +49,41 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
+		CreateDefaultSubscriptions();
+		CreateDefaultRoles();
+		CreateInitialUsers();
+	}
+
+	public void CreateInitialUsers() {
+		List<UserDto> usersDto = userService.findAllUsers();
+		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		if(usersDto != null && usersDto.isEmpty()) {
+			List<Role> roles = roleRepository.findAll();
+
+			List<Role> adminRoles = new ArrayList<Role>();
+			adminRoles.add(roles.get(0));
+			User user1 = new User(Long.valueOf(1), "Thanos", "admin@admin.com", passwordEncoder.encode("#admin"), "Okay", adminRoles,
+					"Thanos", "Power Glover", "1337 Street", "Delta", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null);
+
+			List<Role> basicRoles = new ArrayList<Role>();
+			basicRoles.add(roles.get(1));
+			User user2 = new User(Long.valueOf(2), "Captain America", "basic@basic.com", passwordEncoder.encode("#basic"), "Okay", basicRoles,
+					"Steve", "Rogers", "1337 Street", "Surrey", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null);
+
+			List<Role> premiumRoles = new ArrayList<Role>();
+			premiumRoles.add(roles.get(2));
+			User user3 = new User(Long.valueOf(3), "Iron Man", "premium@premium.com", passwordEncoder.encode("#premium"), "Okay", premiumRoles,
+					"Tony", "Stark", "1337 Street", "Vancouver", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 2, null);
+
+			User user4 = new User(Long.valueOf(4), "Batman", "batman@batman.com", passwordEncoder.encode("#batman"), "Okay", basicRoles,
+					"Bruce", "Wayne", "1337 Street", "Gotham City", "United States", "New Jersey", "I'm Batman", "778-778-7788", null, 0, null);
+			System.out.println("Initial users added to database");
+
+			Arrays.asList(user1, user2, user3, user4).forEach(user -> userRepository.save(user));
+		}
+	}
+
+	public void CreateDefaultSubscriptions() {
 		List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
 
 		if(subscriptions != null && subscriptions.isEmpty()) {
@@ -58,73 +93,29 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 
 			Arrays.asList(sub1, sub2).forEach(s -> subscriptionService.createSubscription(s));
 
-			System.out.println("New subscriptions added to database");
+			System.out.println("Default subscriptions added to database");
 		}
+	}
 
+	public void CreateDefaultRoles() {
 		List<Role> roles = roleRepository.findAll();
 
-		Role admin = new Role();
-		Role basic = new Role();
-		Role premium = new Role();
 		if(roles != null && roles.isEmpty()) {
+			Role admin = new Role();
+			Role basic = new Role();
+			Role premium = new Role();
 
 			admin.setId(Long.valueOf(1));
 			admin.setName("ROLE_ADMIN");
 
-
 			basic.setId(Long.valueOf(2));
 			basic.setName("ROLE_BASIC");
-
 
 			premium.setId(Long.valueOf(3));
 			premium.setName("ROLE_PREMIUM");
 
 			Arrays.asList(admin, basic, premium).forEach(role -> roleRepository.save(role));
-			System.out.println("New roles added to database");
-		}
-
-
-
-		List<UserDto> usersDto = userService.findAllUsers();
-		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		if(usersDto != null && usersDto.isEmpty()) {
-
-			User user1 = new User();
-			user1.setId(Long.valueOf(1));
-			user1.setEmail("admin@admin.com");
-			user1.setUsername("admin admin");
-			user1.setFirstName("admin");
-			user1.setLastName("admin");
-			user1.setAccountStatus("Okay");
-			List<Role> adminRoles = new ArrayList<Role>();
-			adminRoles.add(admin);
-			user1.setRoles(adminRoles);
-			user1.setPassword(passwordEncoder.encode("#admin"));
-
-
-			User user2 = new User();
-			user2.setId(Long.valueOf(2));
-			user2.setEmail("basic@basic.com");
-			user2.setUsername("basic basic");
-			user2.setAccountStatus("Okay");
-			List<Role> basicRoles = new ArrayList<Role>();
-			basicRoles.add(basic);
-			user2.setRoles(basicRoles);
-			user2.setPassword(passwordEncoder.encode("#basic"));
-
-			User user3 = new User();
-			user3.setId(Long.valueOf(3));
-			user3.setEmail("premium@premium.com");
-			user3.setUsername("premium premium");
-			user3.setAccountStatus("Okay");
-			List<Role> premiumRoles = new ArrayList<Role>();
-			premiumRoles.add(premium);
-			user3.setRoles(premiumRoles);
-			user3.setPassword(passwordEncoder.encode("#premium"));
-
-			Arrays.asList(user1, user2, user3).forEach(user -> userRepository.save(user));
-			System.out.println("New users added to database");
-
+			System.out.println("Default roles added to database");
 		}
 	}
 }
