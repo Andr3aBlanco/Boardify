@@ -149,12 +149,6 @@ public class CoreController implements ErrorController {
         return "create-tournament";
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public void HandleError(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/go-premium");
-    }
-
-
     @GetMapping("/leaderboard")
     public String showLeaderboardPage(Model model, HttpServletRequest request) {
         // Add necessary logic or data retrieval here
