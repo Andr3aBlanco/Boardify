@@ -6,5 +6,19 @@
 </head>
 <body>
 
+<div class="container">
+    <div class="card-group">
+        <!-- Thymeleaf loop to iterate through the list of games -->
+        <div th:each="game : ${games}" class="card">
+            <img th:src="${game.imageUrl}" class="card-img-top" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${game.name}">Card title</h5>
+                <p class="card-text" th:text="${game.description}">This card has supporting text below as a natural lead-in to additional content.</p>
+                <p class="card-text"><small class="text-muted" th:text="'Last updated ' + ${game.lastUpdated} + ' mins ago'">Last updated 3 mins ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
