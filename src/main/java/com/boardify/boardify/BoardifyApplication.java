@@ -93,6 +93,8 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			user1.setId(Long.valueOf(1));
 			user1.setEmail("admin@admin.com");
 			user1.setUsername("admin admin");
+			user1.setFirstName("admin");
+			user1.setLastName("admin");
 			user1.setAccountStatus("Okay");
 			List<Role> adminRoles = new ArrayList<Role>();
 			adminRoles.add(admin);

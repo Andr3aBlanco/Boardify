@@ -1,6 +1,7 @@
 package com.boardify.boardify.service;
 
 import com.boardify.boardify.DTO.UserDto;
+import com.boardify.boardify.entities.Transaction;
 import com.boardify.boardify.entities.User;
 
 import java.util.List;
@@ -16,4 +17,9 @@ public interface UserService {
 
     void changeAccountStatus(String email, String accStatus);
 
+    UserDto convertEntityToDto(User user);
+
+    void editLoggedInUser(String email, UserDto userDto);
+
+    List<UserDto> findAllNonAdmins();
 }

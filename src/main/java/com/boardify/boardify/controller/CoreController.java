@@ -2,25 +2,40 @@ package com.boardify.boardify.controller;
 
 
 
+
+import com.boardify.boardify.entities.Game;
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.entities.Transaction;
 import com.boardify.boardify.entities.User;
+
 import com.boardify.boardify.repository.UserRepository;
+import com.boardify.boardify.service.GameService;
+
+
 import com.boardify.boardify.service.SubscriptionService;
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
+import com.boardify.boardify.service.TransactionService;
+import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 
 import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -29,28 +44,39 @@ public class CoreController implements ErrorController {
     private SubscriptionService subscriptionService;
 
     @Autowired
+
     private TournamentService tournamentService;
 
-    private final UserRepository userRepository;
+
+    //private final UserRepository userRepository;
+    @Autowired
+
+    private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+       // this.userRepository = userRepository;
     }
+
+    private TransactionService transactionService;
+
+
 
 
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-          String email = authentication.getName();
-          User user = userRepository.findByEmail(email);
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
             if (user != null) {
-            String username = user.getUsername();
+                String username = user.getUsername();
                 // Add the necessary data to the model
-               model.addAttribute("username", username);
-        model.addAttribute("message", "Hello " + username + "!");
+                model.addAttribute("username", username);
+                model.addAttribute("message", "Hello " + username + "!");
             }
         }
+
 
         // Manually add request as a context variable
         model.addAttribute("request", request);
@@ -61,19 +87,49 @@ public class CoreController implements ErrorController {
 
 
 
+/*
+    @GetMapping("/edit-tournament")
+    public String showEditTournamentPage(Model model, HttpServletRequest request)
+    {
+        List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);
 
-
-
+        return "tournament-to-edit";
+    }
+*/
 
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                String username = user.getUsername();
+                // Add the necessary data to the model
+                model.addAttribute("username", username);
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
-
+            }
+        }
+        Date today = new Date();
+        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
+        model.addAttribute("pastTournaments", pastTournaments);
+        /*List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);*/
+        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
+        model.addAttribute("openTournaments",openTournaments);
         return "join-tournament";
+    }
+    @GetMapping("/edit-tournament")
+    public String showEditTournamentPage(Model model, HttpServletRequest request) {
+
+        List<Tournament> tournaments = tournamentService.findAll();
+        model.addAttribute("tournaments", tournaments);
+        List<Game> games = gameService.findAll();
+        model.addAttribute("games", games);
+
+        return "tournament-to-edit";
     }
 
     @GetMapping("/create-tournament")
@@ -82,9 +138,13 @@ public class CoreController implements ErrorController {
 
         // Manually add request as a context variable
         model.addAttribute("request", request);
-
+        Tournament tournament = new Tournament();
+        model.addAttribute("tournament", tournament);
+        List<Game> games = gameService.findAll();
+        model.addAttribute("games", games);
         return "create-tournament";
     }
+
 
     @GetMapping("/leaderboard")
     public String showLeaderboardPage(Model model, HttpServletRequest request) {
@@ -96,21 +156,54 @@ public class CoreController implements ErrorController {
         return "leaderboard";
     }
 
-//    @GetMapping("/error")
-//    public String handleError() {
-//        // Handle the error and provide a custom error page or redirect
-//        return "redirect:/home"; // Replace "error" with the appropriate template name or redirect path
+    @GetMapping("/error")
+    public String handleError() {
+        // Handle the error and provide a custom error page or redirect
+        return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
+    }
+
+
+//    @GetMapping("/go-premium")
+//    public String showPlansPage(Model model, HttpServletRequest request){
+//
+////        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+////        Object obj = auth.getPrincipal();
+////        model.addAttribute("testUser", obj);
+////        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+////        String userEmail = userDetails.getUsername();
+////        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
+////        model.addAttribute("currentUser", userDto);
+//        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
+//        model.addAttribute("subscriptions", subscriptions);
+//
+//        return "plans";
 //    }
 
-
-    @GetMapping("/go-premium")
-    public String showPlansPage(Model model, HttpServletRequest request){
+    @GetMapping("/edit-plan")
+    public String showEditPlanPage(Model model, HttpServletRequest request){
 
         List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
         model.addAttribute("subscriptions", subscriptions);
 
-        return "plans";
+        return "edit-plan";
     }
+
+    @GetMapping("/transactions")
+    public String showTransactionsPage(Model model) {
+        List<Transaction> transactions = transactionService.findAllTransactions();
+        model.addAttribute("transactions", transactions);
+        return "transactions";
+    }
+
+    @GetMapping("/transactions/filter")
+    public String showTransactionsPageFiltered(@RequestParam Map<String, String> customQuery, Model model) {
+        List<Transaction> transactions = transactionService.findByFilter(customQuery);
+//        System.out.println(transactions.get(0));
+        System.out.println(customQuery.get("item"));
+        model.addAttribute("transactions", transactions);
+        return "transactions";
+    }
+
 
 
 
@@ -121,7 +214,28 @@ public class CoreController implements ErrorController {
 //         return "<h1>Error occurred</h1>";
 //     }
 
+    private UserService userService;
 
+    @Autowired
+    public CoreController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @ModelAttribute("currentUser")
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();
+            User currentUser = userService.findByEmail(email);
+            if (currentUser != null) {
+                UserDto userDto = new UserDto();
+                userDto.setUsername(currentUser.getUsername());
+                userDto.setFirstName(currentUser.getFirstName());
+                return userDto;
+            }
+        }
+        return null;
+    }
 
 
 }

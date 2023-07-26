@@ -16,6 +16,7 @@ public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "game_id")
     private Long gameId;
     private String name;
     private String apiId;
