@@ -79,8 +79,13 @@ public class Tournament {
     private String compLevel;
     private double  prize;
     private double entryFees;
+
     @Column(name = "organizer_id")
     private Long organizerId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "organizer_id", nullable = false)
+//    private User user;
 
     // Add the gameId getter and setter methods
     public Long getGameId() {

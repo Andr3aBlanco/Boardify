@@ -183,7 +183,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 						break;
 				}
 				User userObj = new User(Long.valueOf(user[0]), user[14], user[5], passwordEncoder.encode(user[8]), user[1], userRole,
-						user[6], user[7], user[2], user[3], user[4], user[10], user[15], user[9], user[11], Integer.valueOf(user[13]), user[12]);
+						user[6], user[7], user[2], user[3], user[4], user[10], user[15], user[9], user[11], Integer.valueOf(user[13]), user[12], 0, 0);
 				userService.saveUserObj(userObj);
 			}
 			if(!usersDto.isEmpty()) {
