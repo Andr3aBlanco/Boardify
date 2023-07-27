@@ -149,12 +149,23 @@ public class CoreController implements ErrorController {
         return "create-tournament";
     }
 
-    @GetMapping("/leaderboard")
-    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
+//    @GetMapping("/leaderboard")
+//    public String showLeaderboardPage(Model model, HttpServletRequest request) {
+//        // Add necessary logic or data retrieval here
+//
+//        // Manually add request as a context variable
+//        model.addAttribute("request", request);
+//
+//        return "leaderboard";
+//    }
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
+    @GetMapping("/leaderboard")
+    public String showLeaderboard(Model model) {
+        List<Tournament> allTournaments = tournamentService.findAllTournaments();
+        model.addAttribute("tournaments", allTournaments);
+
+        List<UserDto> allUsers = userService.findAllUsers();
+        model.addAttribute("users", allUsers);
 
         return "leaderboard";
     }

@@ -22,4 +22,6 @@ public interface UserService {
     void editLoggedInUser(String email, UserDto userDto);
 
     List<UserDto> findAllNonAdmins();
+    List<UserDto> findAllPlayers();
+    List<UserDto> findAllOrganizers();
 }
