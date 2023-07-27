@@ -119,4 +119,8 @@ public class UserServiceImpl implements UserService {
         System.out.println("Step 1.5");
         userRepository.save(user);
     }
+
+    public void saveUserObj(User user) {
+        userRepository.save(user);
+    }
 }
