@@ -18,6 +18,7 @@ import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.TransactionService;
 import com.boardify.boardify.service.UserService;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ import java.util.Date;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -57,13 +59,12 @@ public class CoreController implements ErrorController {
     private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
-       // this.userRepository = userRepository;
+        // this.userRepository = userRepository;
     }
+    
 
     @Autowired
     private TransactionService transactionService;
-
-
 
 
     @GetMapping("/")
@@ -105,24 +106,37 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
+        Date today = new Date();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
+
             if (user != null) {
                 String username = user.getUsername();
+
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
 
+                List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
+
+                model.addAttribute("myTournaments",myTournaments);
+                if (user.getId() != null)
+                {
+                    Long myId = user.getId();
+                    model.addAttribute("userId",myId);
+                }
+
             }
         }
-        Date today = new Date();
+
         List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
         model.addAttribute("pastTournaments", pastTournaments);
         /*List<Tournament> tournaments = tournamentService.findAll();
         model.addAttribute("tournaments", tournaments);*/
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
+
         return "join-tournament";
     }
     @GetMapping("/edit-tournament")
@@ -149,15 +163,6 @@ public class CoreController implements ErrorController {
         return "create-tournament";
     }
 
-//    @GetMapping("/leaderboard")
-//    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-//        // Add necessary logic or data retrieval here
-//
-//        // Manually add request as a context variable
-//        model.addAttribute("request", request);
-//
-//        return "leaderboard";
-//    }
 
     @GetMapping("/leaderboard")
     public String showLeaderboard(Model model) {
@@ -169,10 +174,12 @@ public class CoreController implements ErrorController {
 
         return "leaderboard";
     }
-
+/* If you don't need custom error handling I'm going to comment this
     @GetMapping("/error")
     public String handleError() {
-        // Handle the error and provide a custom error page or redirect
+        // Get the error status code
+
+        // Your custom error handling code here
         return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
     }
 
@@ -209,6 +216,8 @@ public class CoreController implements ErrorController {
 //        return "transactions";
 //    }
 
+
+ */
     @GetMapping("/transactions")
     public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
         List<Transaction> transactions;

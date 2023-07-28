@@ -56,11 +56,19 @@ public class TournamentServiceImpl implements TournamentService {
     }
 
     @Override
-    public List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId) {
-        return tournamentRepository.findAllOpenTournamentsByUser(today,userId);
+    public List<Tournament> findAllOpenTournamentsByUser(Date today, String email) {
+        return tournamentRepository.findAllOpenTournamentsByUser(today,email);
+    }
+
+    @Override
+    public Double findRating(Long tournamentId) {
+        return tournamentRepository.findRating(tournamentId);
     }
     @Override
     public List<Tournament> findAllTournaments() {
         return tournamentRepository.findAll();
     }
+
+
 }
+

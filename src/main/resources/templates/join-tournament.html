@@ -43,6 +43,7 @@
 <!-- Add the "My Tournaments" section before the main list of tournaments -->
 <div class="container mt-5">
   <div class="container mt-5">
+
     <h3>My Past Tournaments</h3>
     <table class="table">
       <thead>
@@ -54,6 +55,7 @@
         <th>Prize</th>
         <th>Rate Tournament</th>
         <th>Rate Host</th>
+        <th class="button-column">Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -90,8 +92,10 @@
         <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-1-[[${row.index}]]" value="1">
         <label th:for="'rate-host-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
       </span>
-          <div class="btn-group mt-2" role="group" style="display: none;">
-            <button type="button" class="btn btn-primary">Your Button</button>
+        </td>
+        <td class="button-column" style="display: none;">
+          <div class="btn-group mt-2" role="group">
+            <button type="button" class="btn btn-primary">Rate</button>
           </div>
         </td>
       </tr>
@@ -121,7 +125,7 @@
         <td th:text="${tournament.entryFees}"></td>
         <td th:text="${tournament.prize}"></td>
         <td>
-          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId}}" class="btn btn-primary">Join Tournament</a>
+          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId} + '/'+${userId}}" class="btn btn-primary">Join Tournament</a>
         </td>
       </tr>
       </tbody>
@@ -173,22 +177,36 @@
   $(document).ready(function() {
     // Function to handle star rating selection
     function handleStarRating(radioBtn) {
-      // Your existing code to handle star rating selection (from previous script)
+      // Get the index of the selected star rating (i.e., the value of the selected radio button)
+      const currentIndex = $(radioBtn).val();
 
       // Get the button group in the same row as the selected star rating
       const buttonGroup = $(radioBtn).closest('td').find('.btn-group');
 
-      // Show or hide the button group based on the selected star rating
+      // Get the new column for the button
+      const buttonColumn = $(radioBtn).closest('tr').find('.button-column');
+
+      // Show or hide the button group and the new column based on the selected star rating
       if (currentIndex > 0) {
         buttonGroup.show();
+        buttonColumn.show();
       } else {
         buttonGroup.hide();
+        buttonColumn.hide();
       }
     }
 
-    // Your existing event listeners to handle star rating selection (from previous script)
+    // Event listener to handle star rating selection
+    $('.star-rating input[type="radio"]').on('change', function() {
+      handleStarRating(this);
+    });
 
+    // Initialize the button group visibility and new column on page load
+    $('.star-rating input[type="radio"]').each(function() {
+      handleStarRating(this);
+    });
   });
 </script>
+
 </body>
 </html>

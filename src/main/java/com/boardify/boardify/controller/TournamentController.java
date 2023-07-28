@@ -8,12 +8,14 @@ import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,60 @@ public class TournamentController {
 
 
     }
+    @PostMapping("/tournaments/updateRating")
+    public String updateRatings(Long tournamentId, Long userId,Double ratingTournament,Double ratingHost)
+    {
+        Double rateTournament = tournamentService.findRating(tournamentId);
+        //Double rateHost = userService.findRating(userId);
+        Double newTournamentRating = ratingTournament * rateTournament;
+        //Double newHostRating = ratingHost * rateHost;
+        //tournamentService.updateRatingTournament(tournamentId,newTournamentRating);
+        //tournamentService.updateRatingHost(userId,newHostRating);
+
+        return "join-tournament";
+    }
+    @GetMapping("/tournaments/join/{tournamentId}/null")
+    public String handleNull(@PathVariable Long tournamentId)
+    {
+        return "redirect:../../../login";
+    }
+    @GetMapping("tournaments/join/{tournamentId}/{userId}")
+    public RedirectView getTournament(@PathVariable Long tournamentId, @PathVariable Long userId, Model model) {
+        try {
+            // Check if userId is null
+            if (userId == null) {
+                // Redirect to the login page
+                return new RedirectView("login");
+            }
+
+            // Check if the user is authenticated
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                // Redirect to the login page
+                return new RedirectView("/login");
+            }
+
+            Optional<Tournament> tournament = tournamentService.findTournamentByID(tournamentId);
+
+            if (tournament.isPresent()) {
+                // Add the necessary data to the model
+                model.addAttribute("tournament", tournament.get());
+                model.addAttribute("userId", userId);
+                return new RedirectView("/dummy"); // change this for the URL you want to redirect
+                // It is not going to show the button if it is full or it has ended
+                // Every tournament you get will be ready to process
+            } else {
+                return new RedirectView("/join-tournament");
+            }
+        } catch (Exception e) {
+            // Handle the exception here (log or show a friendly error message)
+            e.printStackTrace();
+            return new RedirectView("/");
+        }
+    }
+
+
+
 
 
 
