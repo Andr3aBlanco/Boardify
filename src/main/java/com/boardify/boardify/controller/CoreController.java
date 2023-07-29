@@ -3,23 +3,20 @@ package com.boardify.boardify.controller;
 
 
 
-import com.boardify.boardify.entities.Game;
+import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
-import com.boardify.boardify.entities.Subscription;
-import com.boardify.boardify.entities.Transaction;
-import com.boardify.boardify.entities.User;
 
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.GameService;
 
 
 import com.boardify.boardify.service.SubscriptionService;
-import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.TransactionService;
 import com.boardify.boardify.service.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
@@ -30,6 +27,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,10 +57,10 @@ public class CoreController implements ErrorController {
     public CoreController(UserRepository userRepository) {
         // this.userRepository = userRepository;
     }
+    
 
+    @Autowired
     private TransactionService transactionService;
-
-
 
 
     @GetMapping("/")
@@ -125,7 +124,6 @@ public class CoreController implements ErrorController {
                 }
 
             }
-
         }
 
         List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
@@ -150,24 +148,50 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/create-tournament")
     public String showCreateTournamentPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
-
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
-        Tournament tournament = new Tournament();
-        model.addAttribute("tournament", tournament);
-        List<Game> games = gameService.findAll();
-        model.addAttribute("games", games);
-        return "create-tournament";
+//         Add necessary logic or data retrieval here
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                System.out.println(user.getRoles() + " " + user.getRoles().size());
+                String role = user.getRoles().get(0).getName();
+                if (role.equals("ROLE_BASIC")) {
+                    return "redirect:/go-premium";
+                } else if (role.equals("ROLE_PREMIUM")) {
+                    model.addAttribute("request", request);
+                    Tournament tournament = new Tournament();
+                    model.addAttribute("tournament", tournament);
+                    List<Game> games = gameService.findAll();
+                    model.addAttribute("games", games);
+                    return "create-tournament";
+                } else if (role.equals("ROLE_ADMIN")) {
+                    return "redirect:/";
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "redirect:/login";
+//                    model.addAttribute("request", request);
+//                    Tournament tournament = new Tournament();
+//                    model.addAttribute("tournament", tournament);
+//                    List<Game> games = gameService.findAll();
+//                    model.addAttribute("games", games);
+//                    System.out.println("premium");
+//                    return "create-tournament";
     }
 
 
     @GetMapping("/leaderboard")
-    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
+    public String showLeaderboard(Model model) {
+        List<Tournament> allTournaments = tournamentService.findAllTournaments();
+        model.addAttribute("tournaments", allTournaments);
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
+        List<UserDto> allUsers = userService.findAllUsers();
+        model.addAttribute("users", allUsers);
 
         return "leaderboard";
     }
@@ -179,7 +203,7 @@ public class CoreController implements ErrorController {
         // Your custom error handling code here
         return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
     }
-*/
+
 
 //    @GetMapping("/go-premium")
 //    public String showPlansPage(Model model, HttpServletRequest request){
@@ -206,18 +230,24 @@ public class CoreController implements ErrorController {
         return "edit-plan";
     }
 
-    @GetMapping("/transactions")
-    public String showTransactionsPage(Model model) {
-        List<Transaction> transactions = transactionService.findAllTransactions();
-        model.addAttribute("transactions", transactions);
-        return "transactions";
-    }
+//    @GetMapping("/transactions")
+//    public String showTransactionsPage(Model model) {
+//        List<Transaction> transactions = transactionService.findAllTransactions();
+//        model.addAttribute("transactions", transactions);
+//        return "transactions";
+//    }
 
-    @GetMapping("/transactions/filter")
-    public String showTransactionsPageFiltered(@RequestParam Map<String, String> customQuery, Model model) {
-        List<Transaction> transactions = transactionService.findByFilter(customQuery);
-//        System.out.println(transactions.get(0));
+
+ */
+    @GetMapping("/transactions")
+    public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
+        List<Transaction> transactions;
         System.out.println(customQuery.get("item"));
+        if (customQuery.size() < 1) {
+            transactions = transactionService.findAllTransactions();
+        } else {
+            transactions = transactionService.findByFilter(customQuery);
+        }
         model.addAttribute("transactions", transactions);
         return "transactions";
     }

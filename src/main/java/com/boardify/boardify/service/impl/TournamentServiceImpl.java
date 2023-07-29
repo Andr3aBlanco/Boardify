@@ -64,6 +64,10 @@ public class TournamentServiceImpl implements TournamentService {
     public Double findRating(Long tournamentId) {
         return tournamentRepository.findRating(tournamentId);
     }
+    @Override
+    public List<Tournament> findAllTournaments() {
+        return tournamentRepository.findAll();
+    }
 
 
 }
