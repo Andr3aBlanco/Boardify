@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,6 +39,8 @@ public class User {
             inverseJoinColumns={@JoinColumn(name="ROLE_ID", referencedColumnName="ID")})
     private List<Role> roles = new ArrayList<>();
 
+
+
     // AUTH ends here
     private String firstName;
     private String lastName;
@@ -54,5 +57,6 @@ public class User {
     private int won;
     private int joined;
 
-
+    @OneToMany(mappedBy = "player")
+    private Set<TournamentPlayer> tournamentPlayers;
 }

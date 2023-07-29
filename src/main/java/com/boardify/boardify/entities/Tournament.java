@@ -8,8 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,8 +33,6 @@ public class Tournament {
     @Transient
     private Long gameId; // Add the gameId property
     // Properties for storing tournament and host ratings
-
-
 
     @NotBlank(message = "Address is required")
     private String address;
@@ -81,13 +79,8 @@ public class Tournament {
     @Column(name = "host_rating")
     private Double hostRating;
     //Tournament_players
-    @ManyToMany
-    @JoinTable(
-            name = "tournament_players",
-            joinColumns = @JoinColumn(name = "tournament_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<User> players;
+    @OneToMany(mappedBy = "tournament")
+    private Set<TournamentPlayer> tournamentPlayers;
     //Tournament_games
     @ManyToMany
     @JoinTable(
@@ -96,14 +89,14 @@ public class Tournament {
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private List<Game> games;
-    @ManyToMany
-    @JoinTable(
-            name= "ratings",
-            joinColumns = @JoinColumn(name = "tournament_rating"),
-            inverseJoinColumns = @JoinColumn(name = "host_Rating")
-
-    )
-    private List<Tournament> tournamentRatings; // not sure if this should be like that
+//    @ManyToMany
+//    @JoinTable(
+//            name= "ratings",
+//            joinColumns = @JoinColumn(name = "tournament_rating"),
+//            inverseJoinColumns = @JoinColumn(name = "host_Rating")
+//
+//    )
+//    private List<Tournament> tournamentRatings; // not sure if this should be like that
 
     // Add the gameId getter and setter methods
     public Long getGameId() {

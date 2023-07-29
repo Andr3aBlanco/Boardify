@@ -69,20 +69,20 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			List<Role> adminRoles = new ArrayList<Role>();
 			adminRoles.add(roles.get(0));
 			User user1 = new User(Long.valueOf(1), "Thanos", "admin@admin.com", passwordEncoder.encode("#admin"), "Okay", adminRoles,
-					"Thanos", "Power Glover", "1337 Street", "Delta", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null,0,0);
+					"Thanos", "Power Glover", "1337 Street", "Delta", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null,0,0, null);
 
 			List<Role> basicRoles = new ArrayList<Role>();
 			basicRoles.add(roles.get(1));
 			User user2 = new User(Long.valueOf(2), "Captain America", "basic@basic.com", passwordEncoder.encode("#basic"), "Okay", basicRoles,
-					"Steve", "Rogers", "1337 Street", "Surrey", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null,0,0);
+					"Steve", "Rogers", "1337 Street", "Surrey", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 0, null,0,0, null);
 
 			List<Role> premiumRoles = new ArrayList<Role>();
 			premiumRoles.add(roles.get(2));
 			User user3 = new User(Long.valueOf(3), "Iron Man", "premium@premium.com", passwordEncoder.encode("#premium"), "Okay", premiumRoles,
-					"Tony", "Stark", "1337 Street", "Vancouver", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 2, null,0,0);
+					"Tony", "Stark", "1337 Street", "Vancouver", "Canada", "British Columbia", "V4N 4V4", "778-778-7788", null, 2, null,0,0, null);
 
 			User user4 = new User(Long.valueOf(4), "Batman", "batman@batman.com", passwordEncoder.encode("#batman"), "Okay", basicRoles,
-					"Bruce", "Wayne", "1337 Street", "Gotham City", "United States", "New Jersey", "I'm Batman", "778-778-7788", null, 0, null,0,0);
+					"Bruce", "Wayne", "1337 Street", "Gotham City", "United States", "New Jersey", "I'm Batman", "778-778-7788", null, 0, null,0,0, null);
 			System.out.println("Initial users added to database");
 
 			Arrays.asList(user1, user2, user3, user4).forEach(user -> userService.saveUserObj(user));
@@ -156,7 +156,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			basicRoles.add(roles.get(1));
 			premiumRoles.add(roles.get(2));
 			int count = 0;
-			ArrayList<String[]> users = ReadCSV("user.csv");
+			ArrayList<String[]> users = ReadCSV("users.csv");
 			if (users.size() < 1) {
 				CreateInitialUsers();
 			}
@@ -183,7 +183,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 						break;
 				}
 				User userObj = new User(Long.valueOf(user[0]), user[14], user[5], passwordEncoder.encode(user[8]), user[1], userRole,
-						user[6], user[7], user[2], user[3], user[4], user[10], user[15], user[9], user[11], Integer.valueOf(user[13]), user[12], 0, 0);
+						user[6], user[7], user[2], user[3], user[4], user[10], user[15], user[9], user[11], Integer.valueOf(user[13]), user[12], 0, 0, null);
 				userService.saveUserObj(userObj);
 			}
 			if(!usersDto.isEmpty()) {
@@ -192,10 +192,10 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-//	public void SaveTransactionsToDB() {
-//		List<Transaction> transactionsList = transactionService.findAllTransactions();
-//		if (transactionsList != null && transactionsList.isEmpty()) {
-//
-//		}
-//	}
+	public void SaveTransactionsToDB() {
+		List<Transaction> transactionsList = transactionService.findAllTransactions();
+		if (transactionsList != null && transactionsList.isEmpty()) {
+
+		}
+	}
 }

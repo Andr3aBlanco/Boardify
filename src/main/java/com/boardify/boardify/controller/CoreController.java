@@ -3,18 +3,14 @@ package com.boardify.boardify.controller;
 
 
 
-import com.boardify.boardify.entities.Game;
+import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
-import com.boardify.boardify.entities.Subscription;
-import com.boardify.boardify.entities.Transaction;
-import com.boardify.boardify.entities.User;
 
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.GameService;
 
 
 import com.boardify.boardify.service.SubscriptionService;
-import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.TransactionService;
 import com.boardify.boardify.service.UserService;
@@ -152,15 +148,40 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/create-tournament")
     public String showCreateTournamentPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
-
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
-        Tournament tournament = new Tournament();
-        model.addAttribute("tournament", tournament);
-        List<Game> games = gameService.findAll();
-        model.addAttribute("games", games);
-        return "create-tournament";
+//         Add necessary logic or data retrieval here
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                System.out.println(user.getRoles() + " " + user.getRoles().size());
+                String role = user.getRoles().get(0).getName();
+                if (role.equals("ROLE_BASIC")) {
+                    return "redirect:/go-premium";
+                } else if (role.equals("ROLE_PREMIUM")) {
+                    model.addAttribute("request", request);
+                    Tournament tournament = new Tournament();
+                    model.addAttribute("tournament", tournament);
+                    List<Game> games = gameService.findAll();
+                    model.addAttribute("games", games);
+                    return "create-tournament";
+                } else if (role.equals("ROLE_ADMIN")) {
+                    return "redirect:/";
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "redirect:/login";
+//                    model.addAttribute("request", request);
+//                    Tournament tournament = new Tournament();
+//                    model.addAttribute("tournament", tournament);
+//                    List<Game> games = gameService.findAll();
+//                    model.addAttribute("games", games);
+//                    System.out.println("premium");
+//                    return "create-tournament";
     }
 
 

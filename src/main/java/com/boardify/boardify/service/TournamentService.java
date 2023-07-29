@@ -24,6 +24,7 @@ public interface TournamentService {
     List<Tournament>findAllOpenTournaments(Date today);
     List<Tournament> findAllOpenTournamentsByUser(Date today, String email);
     Double findRating(Long tournamentId);
-    List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId);
+//    List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId);
+
     List<Tournament> findAllTournaments();
 }
