@@ -21,6 +21,10 @@
       color: #fffdba;
       animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
     }
+    .star-rating label:is(:checked) i {
+      color: #faec1b ;
+      text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
+    }
     .star-rating label:has(~ :checked) i {
       color: #faec1b;
       text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
@@ -67,30 +71,31 @@
         <td th:text="${tournament.prize}"></td>
         <td>
       <span class="star-rating">
-        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-5-[[${row.index}]]" value="5">
-        <label th:for="'rate-tournament-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-4-[[${row.index}]]" value="4">
-        <label th:for="'rate-tournament-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-3-[[${row.index}]]" value="3">
-        <label th:for="'rate-tournament-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-2-[[${row.index}]]" value="2">
-        <label th:for="'rate-tournament-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-tournament-[[${row.index}]]" id="rate-tournament-1-[[${row.index}]]" value="1">
         <label th:for="'rate-tournament-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-1-'+${row.index}" value="1">
+        <label th:for="'rate-tournament-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-2-'+${row.index}" value="2">
+        <label th:for="'rate-tournament-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-3-'+${row.index}" value="3">
+        <label th:for="'rate-tournament-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-4-'+${row.index}" value="4">
+        <label th:for="'rate-tournament-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-5-'+${row.index}" value="5">
+
       </span>
         </td>
         <td>
       <span class="star-rating">
-        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-5-[[${row.index}]]" value="5">
-        <label th:for="'rate-host-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-4-[[${row.index}]]" value="4">
-        <label th:for="'rate-host-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-3-[[${row.index}]]" value="3">
-        <label th:for="'rate-host-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-2-[[${row.index}]]" value="2">
-        <label th:for="'rate-host-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
-        <input type="radio" name="rate-host-[[${row.index}]]" id="rate-host-1-[[${row.index}]]" value="1">
         <label th:for="'rate-host-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-1-'+${row.index}" value="1">
+        <label th:for="'rate-host-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-2-'+${row.index}" value="2">
+        <label th:for="'rate-host-3-' + ${row.index}" style="--i:3"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-3-'+${row.index}" value="3">
+        <label th:for="'rate-host-4-' + ${row.index}" style="--i:4"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-4-'+${row.index}" value="4">
+        <label th:for="'rate-host-5-' + ${row.index}" style="--i:5"><i class="fas fa-star"></i></label>
+        <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-5-'+${row.index}" value="5">
       </span>
         </td>
         <td class="button-column" style="display: none;">
@@ -194,18 +199,35 @@
         buttonGroup.hide();
         buttonColumn.hide();
       }
+      console.log(currentIndex);
     }
 
     // Event listener to handle star rating selection
     $('.star-rating input[type="radio"]').on('change', function() {
       handleStarRating(this);
+      console.log("giving on function")
     });
 
+    // $('.star-rating label').click( function () {
+    //   console.log("clicked");
+    //   console.log($(this).childNodes)
+    // })
     // Initialize the button group visibility and new column on page load
     $('.star-rating input[type="radio"]').each(function() {
       handleStarRating(this);
+      console.log("giving handStarRating function")
     });
-  });
+
+
+    });
+
+  // $('.star-rating input[type="radio"]').each(function() {
+  //   handleStarRating(this);
+  // });
+  //
+  // $('.star-rating input[type="radio"]').on('change', function() {
+  //   handleStarRating(this);
+  // });
 </script>
 
 </body>
