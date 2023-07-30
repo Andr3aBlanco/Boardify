@@ -14,8 +14,13 @@ import java.util.Optional;
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
-    @Query(value = "SELECT * FROM tournament WHERE STR_TO_DATE(event_end, '%Y-%m-%d') < :today", nativeQuery = true)
-    List<Tournament> findAllByEventEndBefore(Date today);
+    @Query(value = "SELECT t.* FROM tournament t " +
+            "INNER JOIN tournament_players tp ON t.tournament_id = tp.tournament_id " +
+            "INNER JOIN users as u ON tp.player_id = u.id " +
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') < :today AND u.id = :userId",
+            nativeQuery = true)
+    List<Tournament> findAllByEventEndBeforeAndUser(@Param("today") Date today, @Param("userId") Long userId);
+
     /* @Query(value = "SELECT * FROM tournament WHERE STR_TO_DATE(event_end, '%Y-%m-%d')< : today) AND organizerID = user_selected",nativeQuery = true);
      List<Tournament> findAllByEventEndBefore(Date today, Lond userID);*/
     @Query(value = "SELECT * FROM tournament WHERE STR_TO_DATE(event_end, '%Y-%m-%d') >= :today AND curr_enrolled < max_enrolled", nativeQuery = true)
@@ -23,11 +28,12 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
 
     @Query(value = "SELECT t.* FROM tournament t " +
-            "INNER JOIN tournament_players tp ON t.tournament_id = tp.tournament_id " +
-            "INNER JOIN users as u ON tp.player_id = u.id " +
-            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.email = :email",
+            "INNER JOIN users u ON t.organizer_id = u.id " +
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.id = :id",
             nativeQuery = true)
-    List<Tournament> findAllOpenTournamentsByUser(Date today, String email);
+    List<Tournament> findAllOpenTournamentsByUser(Date today, Long id);
+
+
 
     @Query(value = "SELECT rating FROM tournament WHERE tournament_id = :tournamentId",nativeQuery = true)
     Double findRating(Long tournamentId);

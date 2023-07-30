@@ -48,7 +48,7 @@
 <div class="container mt-5">
   <div class="container mt-5">
 
-    <h3>My Past Tournaments</h3>
+    <h2>My Past Tournaments</h2>
     <table class="table">
       <thead>
       <tr>
@@ -154,7 +154,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="tournament : ${openTournaments}">
+      <tr th:each="tournament : ${myTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
         <td th:text="${tournament.eventStart}"></td>
