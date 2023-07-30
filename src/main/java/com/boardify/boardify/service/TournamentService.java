@@ -20,9 +20,9 @@ public interface TournamentService {
 
     Optional<Tournament> findTournamentByID(Long id);
 
-    List<Tournament> findAllTournamentsBeforeToday(Date today);
+    public List<Tournament> findAllTournamentsBeforeTodayAndUser(Date today, Long userId);
     List<Tournament>findAllOpenTournaments(Date today);
-    List<Tournament> findAllOpenTournamentsByUser(Date today, String email);
+    List<Tournament> findAllOpenTournamentsByUser(Date today, Long id);
     Double findRating(Long tournamentId);
 //    List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId);
 

@@ -31,12 +31,12 @@ public class TournamentController {
     private TournamentPlayerService tournamentPlayerService;
 
     @Autowired
-    public TournamentController(TournamentService tournamentService, GameService gameService, UserService userService, TournamentPlayerService tournamentPlayerService) {
+    public TournamentController(TournamentService tournamentService, GameService gameService,
+                                UserService userService, TournamentPlayerService tournamentPlayerService) {
         this.tournamentService = tournamentService;
         this.gameService = gameService;
         this.userService = userService;
         this.tournamentPlayerService = tournamentPlayerService;
-
     }
 //    @PostMapping("/tournaments/updateRating")
 //    public String updateRatings(Long tournamentId, Long userId,Double ratingTournament,Double ratingHost)
@@ -99,8 +99,11 @@ public class TournamentController {
         Optional<Tournament> tournament = tournamentService.findTournamentByID(id);
         if (tournament.isPresent()) {
             model.addAttribute("tournament", tournament.get());
+            List<Game> games = gameService.findAll();
+            model.addAttribute("games", games);
             return "edit-tournament";
         }
+
         return "redirect:/tournament-to-edit";
     }
 

@@ -112,28 +112,32 @@ public class CoreController implements ErrorController {
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
 
-                List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
-                model.addAttribute("myTournaments",myTournaments);
-
-                List<TournamentPlayer> playerPastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, email);
-                model.addAttribute("pastTournaments", playerPastTournaments);
                 if (user.getId() != null)
                 {
                     Long myId = user.getId();
                     model.addAttribute("userId",myId);
-                }
+                    List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
 
+                    model.addAttribute("myTournaments",myTournaments);
+                    List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                    model.addAttribute("pastTournaments", pastTournaments);
+                }
             }
         }
-
 
         /*List<Tournament> tournaments = tournamentService.findAll();
         model.addAttribute("tournaments", tournaments);*/
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
 
+
+        /*List<Tournament> myCreatedOpenTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
+        model.addAttribute("myTournaments",myCreatedOpenTournaments);
+*/
+
         TournamentPlayer ratingObj = new TournamentPlayer();
         model.addAttribute("ratingObj", ratingObj);
+
 
         return "join-tournament";
     }
