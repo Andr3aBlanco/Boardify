@@ -5,7 +5,11 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="_navbar.html"></div>
+
+<!-- <div th:replace="_navbar.html"></div> -->
+
+<div th:replace="~{_navbar.html}"></div>
+
 <h1>Leaderboard</h1>
 
 <div class="container">
@@ -69,7 +73,11 @@
           </td>
           <td th:text="${tournament.tournamentId}"></td>
           <td>
-            <span th:text="${tournament.players}"></span>
+
+<!--             <span th:text="${tournament.players}"></span> -->
+
+            <span th:text="${tournament.organizerId}"></span>
+
           </td>
           <td th:text="${tournament.eventStart}"></td>
           <td th:text="${tournament.eventEnd}"></td>

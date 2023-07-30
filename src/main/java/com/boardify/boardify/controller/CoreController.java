@@ -17,6 +17,7 @@ import com.boardify.boardify.service.*;
 
 import com.boardify.boardify.entities.Tournament;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.security.core.Authentication;
@@ -28,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,6 +59,7 @@ public class CoreController implements ErrorController {
        // this.userRepository = userRepository;
     }
 
+    @Autowired
     private TransactionService transactionService;
 
     @Autowired
@@ -153,13 +157,23 @@ public class CoreController implements ErrorController {
         return "create-tournament";
     }
 
+//    @GetMapping("/leaderboard")
+//    public String showLeaderboardPage(Model model, HttpServletRequest request) {
+//        // Add necessary logic or data retrieval here
+//
+//        // Manually add request as a context variable
+//        model.addAttribute("request", request);
+//
+//        return "leaderboard";
+//    }
 
     @GetMapping("/leaderboard")
-    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
+    public String showLeaderboard(Model model) {
+        List<Tournament> allTournaments = tournamentService.findAllTournaments();
+        model.addAttribute("tournaments", allTournaments);
 
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
+        List<UserDto> allUsers = userService.findAllUsers();
+        model.addAttribute("users", allUsers);
 
         return "leaderboard";
     }
@@ -196,18 +210,22 @@ public class CoreController implements ErrorController {
         return "edit-plan";
     }
 
-    @GetMapping("/transactions")
-    public String showTransactionsPage(Model model) {
-        List<Transaction> transactions = transactionService.findAllTransactions();
-        model.addAttribute("transactions", transactions);
-        return "transactions";
-    }
+//    @GetMapping("/transactions")
+//    public String showTransactionsPage(Model model) {
+//        List<Transaction> transactions = transactionService.findAllTransactions();
+//        model.addAttribute("transactions", transactions);
+//        return "transactions";
+//    }
 
-    @GetMapping("/transactions/filter")
-    public String showTransactionsPageFiltered(@RequestParam Map<String, String> customQuery, Model model) {
-        List<Transaction> transactions = transactionService.findByFilter(customQuery);
-//        System.out.println(transactions.get(0));
+    @GetMapping("/transactions")
+    public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
+        List<Transaction> transactions;
         System.out.println(customQuery.get("item"));
+        if (customQuery.size() < 1) {
+            transactions = transactionService.findAllTransactions();
+        } else {
+            transactions = transactionService.findByFilter(customQuery);
+        }
         model.addAttribute("transactions", transactions);
         return "transactions";
     }

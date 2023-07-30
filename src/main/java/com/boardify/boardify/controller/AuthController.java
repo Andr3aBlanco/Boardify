@@ -2,6 +2,7 @@ package com.boardify.boardify.controller;
 
 import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.User;
+import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,9 +22,14 @@ import java.util.List;
 public class AuthController {
 
     private UserService userService;
+    private UserRepository userRepository;
 
-    public AuthController(UserService userService) {
+
+    public AuthController(UserService userService, UserRepository userRepository) {
+
         this.userService = userService;
+        this.userRepository = userRepository;
+
     }
 
     @GetMapping("/login")
@@ -47,6 +53,9 @@ public class AuthController {
         User existing = userService.findByEmail(user.getEmail());
         if (existing != null) {
             result.rejectValue("email", null, "There is already  an account registered with that email");
+        }
+        if (user.getPassword().length() < 8) {
+            result.rejectValue("password", null, "Password should be at least 8 characters long");
         }
         if (result.hasErrors()) {
             model.addAttribute("user", user);
@@ -94,5 +103,17 @@ public class AuthController {
         System.out.println("Step 2");
         return "redirect:/your-profile";
     }
+
+    @PostMapping("/users/delete")
+    public String deleteUser(@RequestParam("email") String email) {
+        // Fetch the user from the database based on the email
+        User user = userRepository.findByEmail(email);
+
+        // Delete the user from the database
+        userRepository.delete(user);
+
+        return "redirect:/users"; // Redirect to the user list page
+    }
+
 
 }

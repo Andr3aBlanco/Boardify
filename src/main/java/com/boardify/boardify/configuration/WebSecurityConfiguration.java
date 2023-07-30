@@ -36,8 +36,8 @@ public class WebSecurityConfiguration {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests((authorizeRequests) ->
                         authorizeRequests.requestMatchers("/register", "/login", "/register/**").anonymous()
-                                .requestMatchers("/users").hasRole("ADMIN")
-                                .requestMatchers("/login").anonymous()// Allow access to /login for anonymous users only
+                                .requestMatchers("/users", "/transactions").hasRole("ADMIN")
+                                .requestMatchers("/create-tournament").hasAnyRole("ADMIN", "PREMIUM")
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated()
                 ).formLogin(
