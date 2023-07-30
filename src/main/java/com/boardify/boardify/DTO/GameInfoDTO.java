@@ -1,15 +1,18 @@
 package com.boardify.boardify.DTO;
 
-import lombok.*;
 
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-@Data
-public class GameSearchResult {
+@AllArgsConstructor
+public class GameInfoDTO {
 
-    private String id;
+
     private String name;
     private int minPlayers;
     private int maxPlayers;
@@ -18,4 +21,3 @@ public class GameSearchResult {
     private int minAge;
 
 }
-
