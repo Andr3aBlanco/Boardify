@@ -98,8 +98,11 @@ public class TournamentController {
         Optional<Tournament> tournament = tournamentService.findTournamentByID(id);
         if (tournament.isPresent()) {
             model.addAttribute("tournament", tournament.get());
+            List<Game> games = gameService.findAll();
+            model.addAttribute("games", games);
             return "edit-tournament";
         }
+
         return "redirect:/tournament-to-edit";
     }
 
