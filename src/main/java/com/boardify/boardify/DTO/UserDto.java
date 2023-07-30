@@ -40,4 +40,6 @@ public class UserDto
     @NotEmpty(message = "Phone number should not be empty")
     private String phone;
     private String stripeToken;
+    private int won;
+    private int joined;
 }

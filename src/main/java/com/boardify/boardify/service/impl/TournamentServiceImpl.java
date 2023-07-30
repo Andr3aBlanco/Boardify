@@ -59,5 +59,8 @@ public class TournamentServiceImpl implements TournamentService {
     public List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId) {
         return tournamentRepository.findAllOpenTournamentsByUser(today,userId);
     }
-
+    @Override
+    public List<Tournament> findAllTournaments() {
+        return tournamentRepository.findAll();
+    }
 }

@@ -11,24 +11,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Registration and Login System</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:replace="~{_navbar.html}"></div>
 <div class="container">
     <div class="row">
         <h1> Users </h1>
@@ -41,6 +24,7 @@
                 <th>Last Name</th>
                 <th>Email</th>
                 <th>Account Status</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -60,6 +44,13 @@
                         </select>
                            <button type="submit">Update Status</button>
                        </form>
+                    </td>
+
+                    <td>
+                        <form method="post" role="form" onClick="return confirm('Are you sure you want to delete the record ?')" th:action="@{/users/delete}">
+                            <input type="hidden" name="email" th:value="${user.email}" />
+                            <button type="submit">Delete</button>
+                        </form>
                     </td>
                 </form>
             </tr>
