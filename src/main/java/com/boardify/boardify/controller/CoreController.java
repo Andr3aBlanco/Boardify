@@ -3,6 +3,9 @@ package com.boardify.boardify.controller;
 
 
 
+import com.boardify.boardify.DTO.BoardGameResponse;
+import com.boardify.boardify.DTO.GameSearchResult;
+import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
@@ -10,6 +13,7 @@ import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.*;
 
 
+import com.boardify.boardify.entities.Tournament;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 
 import java.io.IOException;
@@ -47,7 +52,6 @@ public class CoreController implements ErrorController {
 
     //private final UserRepository userRepository;
     @Autowired
-
     private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
@@ -60,6 +64,8 @@ public class CoreController implements ErrorController {
     @Autowired
     private TransactionService transactionService;
 
+    @Autowired
+    private BoardGameAtlasService atlasService;
 
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
@@ -74,7 +80,14 @@ public class CoreController implements ErrorController {
                 model.addAttribute("username", username);
                 model.addAttribute("message", "Hello " + username + "!");
             }
+
+
+
         }
+
+        BoardGameResponse allGames = atlasService.retrieveFour();
+        List<GameSearchResult> games = allGames.getGames();
+        model.addAttribute("gamesList", games);
 
 
         // Manually add request as a context variable

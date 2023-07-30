@@ -66,11 +66,11 @@ public class GameController {
         for (GameSearchResult game : allGames) {
             GameInfoDTO gameInfo = new GameInfoDTO();
             gameInfo.setName(game.getName());
-            gameInfo.setMinPlayers(game.getMinPlayers());
-            gameInfo.setMaxPlayers(game.getMaxPlayers());
-            gameInfo.setMinPlaytime(game.getMinPlaytime());
-            gameInfo.setMaxPlaytime(game.getMaxPlaytime());
-            gameInfo.setMinAge(game.getMinAge());
+            gameInfo.setMinPlayers(game.getMin_players());
+            gameInfo.setMaxPlayers(game.getMax_players());
+            gameInfo.setMinPlaytime(game.getMin_playtime());
+            gameInfo.setMaxPlaytime(game.getMax_playtime());
+            gameInfo.setMinAge(game.getMin_age());
             gameInfoList.add(gameInfo);
         }
 
