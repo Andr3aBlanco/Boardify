@@ -173,8 +173,6 @@ public class TournamentController {
         tournamentGames.add(selectedGame);
         tournament.setGames(tournamentGames);
 
-
-
         try {
             Tournament createdTournament = tournamentService.createTournament(tournament);
             model.addAttribute("errorMessage", "Success!");
