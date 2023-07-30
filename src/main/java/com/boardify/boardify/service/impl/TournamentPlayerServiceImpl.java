@@ -38,8 +38,8 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         }
     }
 
-    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email) {
-        return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, email);
+    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, Long playerId) {
+        return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, playerId);
     }
 
     public void savePlayerRating(TournamentPlayer tournamentRatingByPlayer) {

@@ -119,7 +119,7 @@ public class CoreController implements ErrorController {
                     List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
 
                     model.addAttribute("myTournaments",myTournaments);
-                    List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                    List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getId());
                     model.addAttribute("pastTournaments", pastTournaments);
                 }
             }

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface TournamentPlayerService {
     void addPlayerToTournament(TournamentPlayerKey key);
 
-    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email);
+    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, Long playerId);
 
     void savePlayerRating(TournamentPlayer tournamentRatingByPlayer);
 

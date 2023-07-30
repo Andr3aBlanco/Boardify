@@ -14,9 +14,8 @@ import java.util.List;
 public interface TournamentPlayerRepository extends JpaRepository<TournamentPlayer, TournamentPlayerKey> {
     @Query(value = "SELECT tp.* FROM tournament t " +
             "INNER JOIN tournament_players tp ON t.tournament_id = tp.tournament_id " +
-            "INNER JOIN users as u ON tp.player_id = u.id " +
-            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') < :today AND u.email = :email",
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') < :today AND tp.player_id = :playerId",
             nativeQuery = true)
-    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date today, String email);
+    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date today, Long playerId);
 
 }
