@@ -1,5 +1,6 @@
 package com.boardify.boardify.controller;
 
+import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.*;
 import com.boardify.boardify.service.GameService;
 import com.boardify.boardify.service.TournamentPlayerService;
@@ -37,18 +38,18 @@ public class TournamentController {
         this.tournamentPlayerService = tournamentPlayerService;
 
     }
-    @PostMapping("/tournaments/updateRating")
-    public String updateRatings(Long tournamentId, Long userId,Double ratingTournament,Double ratingHost)
-    {
-        Double rateTournament = tournamentService.findRating(tournamentId);
-        //Double rateHost = userService.findRating(userId);
-        Double newTournamentRating = ratingTournament * rateTournament;
-        //Double newHostRating = ratingHost * rateHost;
-        //tournamentService.updateRatingTournament(tournamentId,newTournamentRating);
-        //tournamentService.updateRatingHost(userId,newHostRating);
-
-        return "join-tournament";
-    }
+//    @PostMapping("/tournaments/updateRating")
+//    public String updateRatings(Long tournamentId, Long userId,Double ratingTournament,Double ratingHost)
+//    {
+//        Double rateTournament = tournamentService.findRating(tournamentId);
+//        //Double rateHost = userService.findRating(userId);
+//        Double newTournamentRating = ratingTournament * rateTournament;
+//        //Double newHostRating = ratingHost * rateHost;
+//        //tournamentService.updateRatingTournament(tournamentId,newTournamentRating);
+//        //tournamentService.updateRatingHost(userId,newHostRating);
+//
+//        return "join-tournament";
+//    }
     @GetMapping("/tournaments/join/{tournamentId}/null")
     public String handleNull(@PathVariable Long tournamentId)
     {
@@ -79,7 +80,7 @@ public class TournamentController {
                 model.addAttribute("userId", userId);
                 TournamentPlayerKey tpkey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
 
-                tournamentPlayerService.AddPlayerToTournament(tpkey);
+                tournamentPlayerService.addPlayerToTournament(tpkey);
                 return new RedirectView("/dummy"); // change this for the URL you want to redirect
                 // It is not going to show the button if it is full or it has ended
                 // Every tournament you get will be ready to process
@@ -185,6 +186,26 @@ public class TournamentController {
         }
     }
 
+    @PostMapping("/tournaments/update-rating/{tournamentId}")
+    public String editRating(@PathVariable Long tournamentId, @ModelAttribute("ratingObj") TournamentPlayer ratingObj){
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                TournamentPlayerKey key = new TournamentPlayerKey(tournamentId, user.getId());
+                Optional<TournamentPlayer> opTournamentPlayer = tournamentPlayerService.findTournamentPlayerByKey(key);
+                if (!opTournamentPlayer.isEmpty()) {
+                    TournamentPlayer tournamentPlayer = opTournamentPlayer.get();
+                    tournamentPlayer.setTournamentRating(ratingObj.getTournamentRating());
+                    tournamentPlayer.setOrganizerRating(ratingObj.getOrganizerRating());
+                    tournamentPlayerService.savePlayerRating(tournamentPlayer);
+                }
+            }
+        }
+
+        return "redirect:/join-tournament";
+    }
 
 }
