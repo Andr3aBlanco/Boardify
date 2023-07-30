@@ -124,6 +124,20 @@ public class BoardGameAtlasService {
         return restTemplate.getForObject(url, BoardGameResponse.class);
     }
 
+
+    public BoardGameResponse retrieveFour() {
+        String url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
+                .queryParam("client_id", apiKey)
+                .queryParam("limit", 4)
+                .queryParam("order_by", "rank")
+                .build()
+                .toUriString();
+
+        System.out.println("Calling retrieve all games " + url);
+
+        return restTemplate.getForObject(url, BoardGameResponse.class);
+    }
+
     public void saveGame(Game game) {
         gameRepository.save(game);
     }
