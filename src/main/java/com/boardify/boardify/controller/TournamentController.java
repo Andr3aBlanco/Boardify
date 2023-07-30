@@ -211,4 +211,13 @@ public class TournamentController {
         return "redirect:/join-tournament";
     }
 
+
+    @GetMapping("/pay-entry-fees/{tournamentId}/{userId}")
+    public String payEntryFees(@PathVariable String tournamentId, @PathVariable String userId, @RequestParam("entryFees") String entryFees, Model model) {
+        model.addAttribute("tournamentId", tournamentId);
+        model.addAttribute("userId", userId);
+        model.addAttribute("entryFees", entryFees);
+        return "payentryfees"; // This should be the name of your pay-entry-fees.html Thymeleaf template.
+    }
+
 }
