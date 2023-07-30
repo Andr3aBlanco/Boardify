@@ -1,9 +1,7 @@
 package com.boardify.boardify.controller;
 
 
-import com.boardify.boardify.DTO.BoardGameResponse;
-import com.boardify.boardify.DTO.GameInfoDTO;
-import com.boardify.boardify.DTO.GameSearchResult;
+import com.boardify.boardify.DTO.*;
 import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.GameCategory;
 import com.boardify.boardify.entities.GameMechanics;
@@ -50,12 +48,12 @@ public class GameController {
     }
 
     @GetMapping("/categories")
-    public List<GameCategory> getCategories() {
+    public CategoryResponse getCategories() {
         return boardGameAtlasService.retrieveAllCategories();
     }
 
     @GetMapping("/mechanics")
-    public List<GameMechanics> getMechanics() {
+    public MechanicsResponse getMechanics() {
         return boardGameAtlasService.retrieveAllMechanics();
     }
 

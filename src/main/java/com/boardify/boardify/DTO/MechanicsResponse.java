@@ -5,14 +5,13 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class CategoryResponse {
+public class MechanicsResponse {
 
-    private List<CategorySearchResult> categories;
-
+    private List<MechanicsSearchResult> mechanics;
 
 }

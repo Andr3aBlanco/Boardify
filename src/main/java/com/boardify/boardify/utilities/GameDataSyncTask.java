@@ -1,8 +1,7 @@
 package com.boardify.boardify.utilities;
 
 
-import com.boardify.boardify.DTO.BoardGameResponse;
-import com.boardify.boardify.DTO.GameSearchResult;
+import com.boardify.boardify.DTO.*;
 import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.GameCategory;
 import com.boardify.boardify.entities.GameMechanics;
@@ -86,14 +85,14 @@ public class GameDataSyncTask implements ApplicationRunner {
     }
 
     private void performCategoriesInitialSync() {
-        List<GameCategory> categories = boardGameAtlasService.retrieveAllCategories();
-        gameCategoryRepository.saveAll(categories);
+        CategoryResponse categories = boardGameAtlasService.retrieveAllCategories();
+        saveCategories(categories);
         isCategoriesInitialSync = false;
     }
 
     private void performMechanicsInitialSync() {
-        List<GameMechanics> mechanics = boardGameAtlasService.retrieveAllMechanics();
-        gameMechanicsRepository.saveAll(mechanics);
+       MechanicsResponse mechanics = boardGameAtlasService.retrieveAllMechanics();
+       saveMechanics(mechanics);
         isMechanicsInitialSync = false;
     }
 
@@ -112,17 +111,20 @@ public class GameDataSyncTask implements ApplicationRunner {
 
     private void performCategoriesSync() {
         if (!isCategoriesInitialSync) {
-            List<GameCategory> remoteCategories = boardGameAtlasService.retrieveAllCategories();
-            gameCategoryRepository.saveAll(remoteCategories);
+            CategoryResponse categories = boardGameAtlasService.retrieveAllCategories();
+            saveCategories(categories);
+            isCategoriesInitialSync = false;
         }
     }
 
     private void performMechanicsSync() {
         if (!isMechanicsInitialSync) {
-            List<GameMechanics> remoteMechanics = boardGameAtlasService.retrieveAllMechanics();
-            gameMechanicsRepository.saveAll(remoteMechanics);
+            MechanicsResponse remoteMechanics = boardGameAtlasService.retrieveAllMechanics();
+            saveMechanics(remoteMechanics);
+            isMechanicsInitialSync = false;
         }
     }
+
 
     private List<String> getNewIds(List<String> remoteIds, List<String> localIds) {
         Set<String> remoteSet = new HashSet<>(remoteIds);
@@ -139,6 +141,23 @@ public class GameDataSyncTask implements ApplicationRunner {
                 .map(result -> Game.builder().apiId(result.getId()).name(result.getName()).build())
                 .collect(Collectors.toList());
         gameRepository.saveAll(gameEntities);
+    }
+
+
+    private void saveCategories(CategoryResponse categories) {
+        List<CategorySearchResult> Newcategories = categories.getCategories();
+        List<GameCategory> categoryEntities = Newcategories.stream()
+                .map(category -> GameCategory.builder().apiId(category.getId()).name(category.getName()).build())
+                .collect(Collectors.toList());
+        gameCategoryRepository.saveAll(categoryEntities);
+    }
+
+    private void saveMechanics(MechanicsResponse mechanics) {
+        List<MechanicsSearchResult> NewMechanics = mechanics.getMechanics();
+        List<GameMechanics> mechanicsEntities = NewMechanics.stream()
+                .map(mechanic -> GameMechanics.builder().apiId(mechanic.getId()).name(mechanic.getName()).build())
+                .collect(Collectors.toList());
+        gameMechanicsRepository.saveAll(mechanicsEntities);
     }
 
 

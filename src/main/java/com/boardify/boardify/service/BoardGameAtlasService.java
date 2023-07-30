@@ -4,6 +4,7 @@ package com.boardify.boardify.service;
 import com.boardify.boardify.DTO.BoardGameResponse;
 import com.boardify.boardify.DTO.CategoryResponse;
 import com.boardify.boardify.DTO.GameSearchResult;
+import com.boardify.boardify.DTO.MechanicsResponse;
 import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.GameCategory;
 import com.boardify.boardify.entities.GameMechanics;
@@ -128,33 +129,33 @@ public class BoardGameAtlasService {
     }
 
 
-    public List<GameCategory> retrieveAllCategories() {
+    public CategoryResponse retrieveAllCategories() {
         String url = UriComponentsBuilder.fromHttpUrl("https://api.boardgameatlas.com/api/game/categories")
                 .queryParam("client_id", apiKey)
                 .build()
                 .toUriString();
 
+        System.out.println("This is the url for categories" + url);
+
         ResponseEntity<CategoryResponse> response = restTemplate.exchange(url, HttpMethod.GET, null, CategoryResponse.class);
         if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-            List<CategoryResponse.CategoryInfo> categoryInfos = response.getBody().getCategories();
-            return categoryInfos.stream()
-                    .map(categoryInfo -> new GameCategory(categoryInfo.getId(), categoryInfo.getName()))
-                    .collect(Collectors.toList());
+
+            return restTemplate.getForObject(url, CategoryResponse.class);
         } else {
             throw new RuntimeException("Failed to retrieve categories data from BoardGameAtlas API.");
         }
     }
 
 
-    public List<GameMechanics> retrieveAllMechanics() {
+    public MechanicsResponse retrieveAllMechanics() {
         String url = UriComponentsBuilder.fromHttpUrl("https://api.boardgameatlas.com/api/game/mechanics")
                 .queryParam("client_id", apiKey)
                 .build()
                 .toUriString();
 
-        ResponseEntity<GameMechanics[]> response = restTemplate.getForEntity(url, GameMechanics[].class);
+        ResponseEntity<MechanicsResponse> response = restTemplate.exchange(url, HttpMethod.GET, null, MechanicsResponse.class);
         if (response.getStatusCode().is2xxSuccessful()) {
-            return Arrays.asList(response.getBody());
+            return restTemplate.getForObject(url, MechanicsResponse.class);
         } else {
             throw new RuntimeException("Failed to retrieve mechanics data from BoardGameAtlas API.");
         }

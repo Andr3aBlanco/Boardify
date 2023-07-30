@@ -14,8 +14,10 @@ import lombok.*;
 public class GameCategory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private String categoryid;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
+    private Long categoryId;
+    private String apiId;
     private String name;
 
 
