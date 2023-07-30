@@ -7,13 +7,9 @@ import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
 import com.boardify.boardify.repository.UserRepository;
-import com.boardify.boardify.service.GameService;
+import com.boardify.boardify.service.*;
 
 
-import com.boardify.boardify.service.SubscriptionService;
-import com.boardify.boardify.service.TournamentService;
-import com.boardify.boardify.service.TransactionService;
-import com.boardify.boardify.service.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,7 +53,9 @@ public class CoreController implements ErrorController {
     public CoreController(UserRepository userRepository) {
         // this.userRepository = userRepository;
     }
-    
+
+    @Autowired
+    private TournamentPlayerService tournamentPlayerService;
 
     @Autowired
     private TransactionService transactionService;
@@ -132,9 +130,15 @@ public class CoreController implements ErrorController {
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
 
+
         /*List<Tournament> myCreatedOpenTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
         model.addAttribute("myTournaments",myCreatedOpenTournaments);
 */
+
+        TournamentPlayer ratingObj = new TournamentPlayer();
+        model.addAttribute("ratingObj", ratingObj);
+
+
         return "join-tournament";
     }
     @GetMapping("/edit-tournament")

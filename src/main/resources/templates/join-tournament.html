@@ -21,10 +21,6 @@
       color: #fffdba;
       animation: jump 0.5s calc(0.3s + (var(--i) - 1) * 0.15s) alternate infinite;
     }
-    .star-rating label:is(:checked) i {
-      color: #faec1b ;
-      text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
-    }
     .star-rating label:has(~ :checked) i {
       color: #faec1b;
       text-shadow: 0 0 2px #ffffff, 0 0 10px #ffee58;
@@ -63,14 +59,16 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="tournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
-        <td th:text="${tournament.tournamentName}"></td>
-        <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
-        <td th:text="${tournament.eventStart}"></td>
-        <td th:text="${tournament.entryFees}"></td>
-        <td th:text="${tournament.prize}"></td>
+      <tr th:each="attendedTournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
+        <td th:text="${attendedTournament.tournament.tournamentName}"></td>
+        <td th:text="${attendedTournament.tournament.address + ', ' + attendedTournament.tournament.city + ', ' + attendedTournament.tournament.state + ', ' + attendedTournament.tournament.zipCode}"></td>
+        <td th:text="${attendedTournament.tournament.eventStart}"></td>
+        <td th:text="${attendedTournament.tournament.entryFees}"></td>
+        <td th:text="${attendedTournament.tournament.prize}"></td>
+        <form method="post" th:action="@{/tournaments/update-rating/{tournamentId}(tournamentId=${attendedTournament.tournament.tournamentId})}" th:object="${ratingObj}" >
         <td>
-      <span class="star-rating">
+      <span class="star-rating" th:value="${attendedTournament.tournamentRating}">
+        <input class="hidden-rating-input" type="hidden" th:field="*{tournamentRating}"/>
         <label th:for="'rate-tournament-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
         <input type="radio" th:name="'rate-tournament-'+${row.index}" th:id="'rate-tournament-1-'+${row.index}" value="1">
         <label th:for="'rate-tournament-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
@@ -85,7 +83,8 @@
       </span>
         </td>
         <td>
-      <span class="star-rating">
+      <span class="star-rating" th:value="${attendedTournament.organizerRating}">
+        <input class="hidden-rating-input" type="hidden" th:field="*{organizerRating}"  />
         <label th:for="'rate-host-1-' + ${row.index}" style="--i:1"><i class="fas fa-star"></i></label>
         <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-1-'+${row.index}" value="1">
         <label th:for="'rate-host-2-' + ${row.index}" style="--i:2"><i class="fas fa-star"></i></label>
@@ -98,11 +97,12 @@
         <input type="radio" th:name="'rate-host-'+${row.index}" th:id="'rate-host-5-'+${row.index}" value="5">
       </span>
         </td>
-        <td class="button-column" style="display: none;">
+        <td class="button-column">
           <div class="btn-group mt-2" role="group">
-            <button type="button" class="btn btn-primary">Rate</button>
+            <button type="submit" class="btn btn-primary">Rate</button>
           </div>
         </td>
+        </form>
       </tr>
       </tbody>
     </table>
@@ -181,53 +181,43 @@
 <script>
   $(document).ready(function() {
     // Function to handle star rating selection
-    function handleStarRating(radioBtn) {
-      // Get the index of the selected star rating (i.e., the value of the selected radio button)
-      const currentIndex = $(radioBtn).val();
+    // function handleStarRating(radioBtn) {
+    //   // Get the index of the selected star rating (i.e., the value of the selected radio button)
+    //   const currentIndex = $(radioBtn).val();
+    //
+    //   // Get the button group in the same row as the selected star rating
+    //   const buttonGroup = $(radioBtn).closest('td').find('.btn-group');
+    //
+    //   // Get the new column for the button
+    //   const buttonColumn = $(radioBtn).closest('tr').find('.button-column');
+    //
+    //   // Show or hide the button group and the new column based on the selected star rating
+    //   if (currentIndex > 0) {
+    //     buttonGroup.show();
+    //     buttonColumn.show();
+    //   } else {
+    //     buttonGroup.hide();
+    //     buttonColumn.hide();
+    //   }
 
-      // Get the button group in the same row as the selected star rating
-      const buttonGroup = $(radioBtn).closest('td').find('.btn-group');
-
-      // Get the new column for the button
-      const buttonColumn = $(radioBtn).closest('tr').find('.button-column');
-
-      // Show or hide the button group and the new column based on the selected star rating
-      if (currentIndex > 0) {
-        buttonGroup.show();
-        buttonColumn.show();
-      } else {
-        buttonGroup.hide();
-        buttonColumn.hide();
-      }
-      console.log(currentIndex);
-    }
+    // }
 
     // Event listener to handle star rating selection
     $('.star-rating input[type="radio"]').on('change', function() {
-      handleStarRating(this);
-      console.log("giving on function")
+      this.parentElement.firstElementChild.value = this.value;
     });
 
-    // $('.star-rating label').click( function () {
-    //   console.log("clicked");
-    //   console.log($(this).childNodes)
-    // })
-    // Initialize the button group visibility and new column on page load
+    // Sets the star rating on load
     $('.star-rating input[type="radio"]').each(function() {
-      handleStarRating(this);
-      console.log("giving handStarRating function")
+      let currentRating = this.parentElement.getAttribute("value");
+      this.parentElement.firstElementChild.value = currentRating;
+      if (this.value == currentRating) {
+        this.checked = true;
+      }
+    });
     });
 
 
-    });
-
-  // $('.star-rating input[type="radio"]').each(function() {
-  //   handleStarRating(this);
-  // });
-  //
-  // $('.star-rating input[type="radio"]').on('change', function() {
-  //   handleStarRating(this);
-  // });
 </script>
 
 </body>
