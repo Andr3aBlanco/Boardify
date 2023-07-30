@@ -25,7 +25,9 @@ public class TournamentPlayer {
     @JoinColumn(name = "player_id")
     User player;
 
-    double rating;
+    int organizerRating;
+
+    int tournamentRating;
 
     int placement;
 }

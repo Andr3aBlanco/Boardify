@@ -11,6 +11,8 @@ import com.boardify.boardify.service.TournamentPlayerService;
 import com.boardify.boardify.service.TournamentService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,7 +26,7 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
     }
-    public void AddPlayerToTournament(TournamentPlayerKey key) {
+    public void addPlayerToTournament(TournamentPlayerKey key) {
         Optional<Tournament> tournamentFind = tournamentRepository.findById(key.getTournamentId());
         Optional<User> userFind = userRepository.findById(key.getPlayerId());
         if (!tournamentFind.isEmpty() && !userFind.isEmpty()) {
@@ -34,5 +36,21 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
             tournamentPlayer.setId(key);
             tournamentPlayerRepository.save(tournamentPlayer);
         }
+    }
+
+    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email) {
+        return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, email);
+    }
+
+    public void savePlayerRating(TournamentPlayer tournamentRatingByPlayer) {
+        tournamentPlayerRepository.save(tournamentRatingByPlayer);
+    }
+
+//    public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
+//        return tournamentPlayerRepository.findById(key);
+//    }
+
+        public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
+            return tournamentPlayerRepository.findById(key);
     }
 }

@@ -7,13 +7,9 @@ import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
 import com.boardify.boardify.repository.UserRepository;
-import com.boardify.boardify.service.GameService;
+import com.boardify.boardify.service.*;
 
 
-import com.boardify.boardify.service.SubscriptionService;
-import com.boardify.boardify.service.TournamentService;
-import com.boardify.boardify.service.TransactionService;
-import com.boardify.boardify.service.UserService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -57,7 +53,9 @@ public class CoreController implements ErrorController {
     public CoreController(UserRepository userRepository) {
         // this.userRepository = userRepository;
     }
-    
+
+    @Autowired
+    private TournamentPlayerService tournamentPlayerService;
 
     @Autowired
     private TransactionService transactionService;
@@ -114,24 +112,32 @@ public class CoreController implements ErrorController {
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
 
-                List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
-
-                model.addAttribute("myTournaments",myTournaments);
                 if (user.getId() != null)
                 {
                     Long myId = user.getId();
                     model.addAttribute("userId",myId);
-                }
+                    List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
 
+                    model.addAttribute("myTournaments",myTournaments);
+                    List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                    model.addAttribute("pastTournaments", pastTournaments);
+                }
             }
         }
 
-        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
-        model.addAttribute("pastTournaments", pastTournaments);
         /*List<Tournament> tournaments = tournamentService.findAll();
         model.addAttribute("tournaments", tournaments);*/
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
+
+
+        /*List<Tournament> myCreatedOpenTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
+        model.addAttribute("myTournaments",myCreatedOpenTournaments);
+*/
+
+        TournamentPlayer ratingObj = new TournamentPlayer();
+        model.addAttribute("ratingObj", ratingObj);
+
 
         return "join-tournament";
     }
