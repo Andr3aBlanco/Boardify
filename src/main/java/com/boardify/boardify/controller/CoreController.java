@@ -9,6 +9,7 @@ import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
+import com.boardify.boardify.repository.RoleRepository;
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.*;
 
@@ -124,16 +125,29 @@ public class CoreController implements ErrorController {
 
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
+                String role = user.getRoles().get(0).getName();
 
                 if (user.getId() != null)
                 {
                     Long myId = user.getId();
                     model.addAttribute("userId",myId);
-                    List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
 
-                    model.addAttribute("myTournaments",myTournaments);
-                    List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
-                    model.addAttribute("pastTournaments", pastTournaments);
+                    if (role.equals("ROLE_ADMIN"))
+                    {
+                        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
+                        model.addAttribute("myTournaments",openTournaments);
+                        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                        model.addAttribute("pastTournaments", pastTournaments);
+                    }
+                    else
+                    {
+                        List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
+                        model.addAttribute("myTournaments",myTournaments);
+                        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                        model.addAttribute("pastTournaments", pastTournaments);
+                    }
+
+
                 }
             }
         }

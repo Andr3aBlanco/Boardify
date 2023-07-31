@@ -153,6 +153,8 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Curr Enrolled</th>
+        <th>Max Enrolled</th>
         <th>Location</th>
         <th>Date</th>
         <th>Entry Fee</th>
@@ -165,6 +167,8 @@
       <tbody>
       <tr th:each="tournament : ${myTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.currEnrolled}"></td>
+        <td th:text="${tournament.maxEnrolled}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
         <td th:text="${tournament.eventStart}"></td>
         <td th:text="${tournament.entryFees}"></td>
