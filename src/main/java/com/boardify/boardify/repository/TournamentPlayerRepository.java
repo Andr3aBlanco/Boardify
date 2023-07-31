@@ -1,6 +1,5 @@
 package com.boardify.boardify.repository;
 
-import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.entities.TournamentPlayer;
 import com.boardify.boardify.entities.TournamentPlayerKey;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.Dictionary;
 import java.util.List;
 
 @Repository

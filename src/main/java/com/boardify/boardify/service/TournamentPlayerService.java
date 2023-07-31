@@ -16,4 +16,9 @@ public interface TournamentPlayerService {
     void savePlayerRating(TournamentPlayer tournamentRatingByPlayer);
 
     Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key);
+
+    List<Object[]> findJoinedTournamentsCountPerPlayer();
+
+    List<Object[]> findOrganizerStats();
+
 }

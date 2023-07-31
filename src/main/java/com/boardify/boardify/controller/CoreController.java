@@ -27,12 +27,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -160,7 +155,6 @@ public class CoreController implements ErrorController {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
             if (user != null) {
-                System.out.println(user.getRoles() + " " + user.getRoles().size());
                 String role = user.getRoles().get(0).getName();
                 if (role.equals("ROLE_BASIC")) {
                     return "redirect:/go-premium";
@@ -193,11 +187,35 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/leaderboard")
     public String showLeaderboard(Model model) {
-        List<Tournament> allTournaments = tournamentService.findAllTournaments();
-        model.addAttribute("tournaments", allTournaments);
 
-        List<UserDto> allUsers = userService.findAllUsers();
-        model.addAttribute("users", allUsers);
+        ArrayList<String> playersUsernames = new ArrayList<>();
+        ArrayList<Long> attendanceCounts = new ArrayList<>();
+        List<Object[]> playersAttendanceCount = tournamentPlayerService.findJoinedTournamentsCountPerPlayer();
+        for (Object[] playerAttendance : playersAttendanceCount) {
+            playersUsernames.add((String) playerAttendance[0]);
+            attendanceCounts.add((Long) playerAttendance[1]);
+        }
+
+        model.addAttribute("players", playersUsernames);
+        model.addAttribute("attendanceCounts", attendanceCounts);
+
+        ArrayList<String> organizerUsernames = new ArrayList<>();
+        ArrayList<Long> tournamentCounts = new ArrayList<>();
+        ArrayList<Double> avgOrganizerRatings = new ArrayList<>();
+        ArrayList<Double> avgTournamentRatingsPerOrganizer = new ArrayList<>();
+        List<Object[]> organizersStatistics = tournamentPlayerService.findOrganizerStats();
+        for (Object[] organizerStats : organizersStatistics) {
+            organizerUsernames.add((String) organizerStats[0]);
+            avgOrganizerRatings.add((Double) organizerStats[1]);
+            avgTournamentRatingsPerOrganizer.add((Double) organizerStats[2]);
+            tournamentCounts.add((Long) organizerStats[3]);
+            System.out.println(organizerStats[0] + " " + organizerStats[1] + " " + organizerStats[2] + " " + organizerStats[3]);
+        }
+        model.addAttribute("organizers", organizerUsernames);
+        model.addAttribute("numHosted", tournamentCounts);
+        model.addAttribute("organizerRating", avgOrganizerRatings);
+        model.addAttribute("tournamentsRating", avgTournamentRatingsPerOrganizer);
+
 
         return "leaderboard";
     }

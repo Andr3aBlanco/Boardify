@@ -66,18 +66,10 @@ public class Tournament {
     private double prize;
     private double entryFees;
 
-    @Column(name = "organizer_id")
-    private Long organizerId;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private User organizer;
 
-//    @ManyToOne
-//    @JoinColumn(name = "organizer_id", nullable = false)
-//    private User user;
-
-    @Column(name = "tournament_rating")
-    private Double tournamentRating;
-
-    @Column(name = "host_rating")
-    private Double hostRating;
     //Tournament_players
     @OneToMany(mappedBy = "tournament")
     private Set<TournamentPlayer> tournamentPlayers;

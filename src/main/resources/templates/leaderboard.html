@@ -6,73 +6,68 @@
 </head>
 <body>
 <div th:replace="~{_navbar.html}"></div>
-<h1>Leaderboard</h1>
+<h1 style="text-align: center">Leaderboard</h1>
 
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-3">
       <h2>Players</h2>
       <table id="players-table" class="table table-striped">
         <thead>
         <tr>
           <th>Username</th>
-          <th>Won</th>
           <th>Joined</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, userStat : ${users}">
+        <tr th:each="player, row : ${players}">
           <td>
-            <span th:if="${userStat.count == 1}">
+            <span th:if="${row.count == 1}">
               <img src="/images/1st-medal.png" alt="1st Place" width="16" height="16">
             </span>
-            <span th:if="${userStat.count == 2}">
+            <span th:if="${row.count == 2}">
               <img src="/images/2nd-medal.png" alt="2nd Place" width="16" height="16">
             </span>
-            <span th:if="${userStat.count == 3}">
+            <span th:if="${row.count == 3}">
               <img src="/images/3rd-medal.png" alt="3rd Place" width="16" height="16">
             </span>
-            <span th:text="${user.username}"></span>
+            <span th:text="${player}"></span>
           </td>
-          <td th:text="${user.won}"></td> <!-- Replace 'won' with the actual property name -->
-          <td th:text="${user.joined}"></td> <!-- Replace 'joined' with the actual property name -->
+          <td th:text="${attendanceCounts[row.count - 1]}"></td> <!-- Replace 'joined' with the actual property name -->
         </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-8">
       <h2>Organizers</h2>
       <table id="tournaments-table" class="table table-striped">
         <thead>
         <tr>
-          <th></th>
-          <th>Organizer ID</th>
           <th>Username</th>
-          <th>Event Start</th>
-          <th>Event End</th>
+          <th>Rating</th>
+          <th>Tournaments' Rating</th>
+          <th># of Rated Tournaments</th>
           <!-- Add additional columns as needed -->
         </tr>
         </thead>
         <tbody>
-        <tr th:each="tournament, orgStat : ${tournaments}">
+        <tr th:each="organizer, row : ${organizers}">
           <td>
-            <span th:if="${orgStat.count == 1}">
+            <span th:if="${row.count == 1}">
               <img src="/images/1st-medal.png" alt="1st Place" width="16" height="16">
             </span>
-            <span th:if="${orgStat.count == 2}">
+            <span th:if="${row.count == 2}">
               <img src="/images/2nd-medal.png" alt="2nd Place" width="16" height="16">
             </span>
-            <span th:if="${orgStat.count == 3}">
+            <span th:if="${row.count == 3}">
               <img src="/images/3rd-medal.png" alt="3rd Place" width="16" height="16">
             </span>
+            <span th:text="${organizer}"></span>
           </td>
-          <td th:text="${tournament.tournamentId}"></td>
-          <td>
-            <span th:text="${tournament.organizerId}"></span>
-          </td>
-          <td th:text="${tournament.eventStart}"></td>
-          <td th:text="${tournament.eventEnd}"></td>
+          <td th:text="${organizerRating[row.count - 1]}"></td>
+          <td th:text="${tournamentsRating[row.count - 1]}"></td>
+          <td th:text="${numHosted[row.count - 1]}"></td>
           <!-- Add additional columns as needed -->
         </tr>
         </tbody>

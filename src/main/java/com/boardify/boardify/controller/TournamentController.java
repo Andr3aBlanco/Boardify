@@ -78,9 +78,9 @@ public class TournamentController {
                 // Add the necessary data to the model
                 model.addAttribute("tournament", tournament.get());
                 model.addAttribute("userId", userId);
-                TournamentPlayerKey tpkey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
+                TournamentPlayerKey tpKey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
 
-                tournamentPlayerService.addPlayerToTournament(tpkey);
+                tournamentPlayerService.addPlayerToTournament(tpKey);
                 return new RedirectView("/dummy"); // change this for the URL you want to redirect
                 // It is not going to show the button if it is full or it has ended
                 // Every tournament you get will be ready to process
@@ -141,7 +141,7 @@ public class TournamentController {
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
-            tournament.setOrganizerId(user.getId());
+            tournament.setOrganizer(user);
         }
 
         if (bindingResult.hasErrors()) {

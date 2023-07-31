@@ -27,4 +27,5 @@ public interface TournamentService {
 //    List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId);
 
     List<Tournament> findAllTournaments();
+
 }
