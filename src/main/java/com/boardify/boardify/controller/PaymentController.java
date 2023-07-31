@@ -16,10 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -66,6 +63,28 @@ public class PaymentController {
 		model.addAttribute("subscriptions", subscriptions);
 		return "plans";
 	}
+
+
+	@GetMapping("/pay-entry-fees/{tournamentId}/{userId}")
+	public String payEntryFees(
+			@PathVariable Long tournamentId,
+			@PathVariable Long userId,
+			@RequestParam(name = "entryFees") Double entryFees,
+			Model model
+	) {
+		// Your logic to handle the "Join Tournament" action goes here
+		// For example, you can process the tournament ID, user ID, and entry fees
+
+		// Add the tournament ID, user ID, and entry fees to the model (if needed)
+		model.addAttribute("tournamentId", tournamentId);
+		model.addAttribute("userId", userId);
+		model.addAttribute("entryFees", entryFees);
+		model.addAttribute("stripePublicKey", API_PUBLIC_KEY);
+
+		// Return the view name for the "payentryfees" template
+		return "payentryfees";
+	}
+
 
 	@PostMapping("/create-subscription")
 	public @ResponseBody Response createSubscription(String email, String token, String plan, String coupon) {
