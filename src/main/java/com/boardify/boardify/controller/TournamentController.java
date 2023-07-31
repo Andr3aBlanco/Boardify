@@ -92,6 +92,14 @@ public class TournamentController {
             e.printStackTrace();
             return new RedirectView("/");
         }
+        //For Andrea to add the user at the tournament_player, you just need tournament's id and the following code
+                /*
+
+                    String email = authentication.getName();
+                    User player = userService.findByEmail(email);
+                    TournamentPlayerKey tpKey = new TournamentPlayerKey(tournamentVariable.getTournamentId(), player.getId());
+                    tournamentPlayerService.addPlayerToTournament(tpKey);
+                 */
     }
 
     @GetMapping("/tournaments/edit/{id}")
@@ -142,9 +150,43 @@ public class TournamentController {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
             tournament.setOrganizerId(user.getId());
+
+            Game selectedGame = gameService.findGameById(gameId);
+            tournament.setGame(selectedGame);
+
+            // Add players to the tournament
+//        List<User> players = new ArrayList<>();
+//
+//        // Get the user with ID 1 manually
+//        // Replace the "findById" method with find by email
+//        User user = userService.findByEmail("admin@admin.com");
+//        players.add(user);
+//        tournament.setPlayers(players);
+
+            List<Game> tournamentGames = new ArrayList<>();
+            tournamentGames.add(selectedGame);
+            tournament.setGames(tournamentGames);
+
+            try {
+                Tournament createdTournament = tournamentService.createTournament(tournament);
+                model.addAttribute("errorMessage", "Success!");
+
+
+                //You don't need this code Andrea
+                  //  TournamentPlayer tournamentPlayer = new TournamentPlayer(tpKey, createdTournament, player, 0, 0,0);
+
+                return "redirect:/"; // Replace with the appropriate URL
+            } catch (Exception e) {
+                // Add an error message to the model
+                model.addAttribute("errorMessage", "Failed to create the tournament");
+
+                // Return to the create-tournament form
+                return "create-tournament";
+            }
+
         }
 
-        if (bindingResult.hasErrors()) {
+        else if (bindingResult.hasErrors()) {
             // If there are validation errors, return to the create-tournament form
             System.out.println("\n Checkpoint");
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -154,39 +196,11 @@ public class TournamentController {
             }
             return "create-tournament";
         }
-
-        // Set the organizer ID to 1 manually
-
-        Game selectedGame = gameService.findGameById(gameId);
-        tournament.setGame(selectedGame);
-
-        // Add players to the tournament
-//        List<User> players = new ArrayList<>();
-//
-//        // Get the user with ID 1 manually
-//        // Replace the "findById" method with find by email
-//        User user = userService.findByEmail("admin@admin.com");
-//        players.add(user);
-//        tournament.setPlayers(players);
-
-        List<Game> tournamentGames = new ArrayList<>();
-        tournamentGames.add(selectedGame);
-        tournament.setGames(tournamentGames);
-
-
-
-        try {
-            Tournament createdTournament = tournamentService.createTournament(tournament);
-            model.addAttribute("errorMessage", "Success!");
-
-            return "redirect:/"; // Replace with the appropriate URL
-        } catch (Exception e) {
-            // Add an error message to the model
-            model.addAttribute("errorMessage", "Failed to create the tournament");
-
-            // Return to the create-tournament form
+        else
+        {
             return "create-tournament";
         }
+
     }
 
     @PostMapping("/tournaments/update-rating/{tournamentId}")
