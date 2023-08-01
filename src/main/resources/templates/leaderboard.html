@@ -5,8 +5,13 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+
+<!-- <div th:replace="_navbar.html"></div> -->
+
 <div th:replace="~{_navbar.html}"></div>
+
 <h1 style="text-align: center">Leaderboard</h1>
+
 
 <div class="container">
   <div class="row">
@@ -65,9 +70,11 @@
             </span>
             <span th:text="${organizer}"></span>
           </td>
+
           <td th:text="${organizerRating[row.count - 1]}"></td>
           <td th:text="${tournamentsRating[row.count - 1]}"></td>
           <td th:text="${numHosted[row.count - 1]}"></td>
+
           <!-- Add additional columns as needed -->
         </tr>
         </tbody>

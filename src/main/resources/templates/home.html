@@ -38,10 +38,14 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
           href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
           rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+  <script src="https://kit.fontawesome.com/fbdedb29cc.js" crossorigin="anonymous"></script>
+
+
 </head>
 
 <body>
-<div th:replace="~{_navbar.html}"></div>
+<div th:insert="~{_navbar.html}"></div>
 
 <!-- //header -->
 <!-- banner -->
@@ -148,38 +152,51 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 <div class="services" id="services">
   <h3 class="w3l_head w3l_head1">Services</h3>
   <p class="w3ls_head_para w3ls_head_para1">View Our Services</p>
-  <div class="services-agile-w3l">
-    <div class="col-md-3 services-gd text-center">
-      <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a">
-        <a href="#" class="hi-icon"><img src="images/s1.png" alt=" " /></a>
-      </div>
-      <h4>Service 1</h4>
-      <p>Lorem Ipsum</p>
-    </div>
 
-    <div class="col-md-3 services-gd text-center">
-      <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a">
-        <a href="#" class="hi-icon"><img src="images/s2.png" alt=" " /></a>
+  <div class="services-agile-w3l">
+
+    <h1>Board Games</h1>
+  <div class="container" >
+    <section class="mx-auto my-5">
+      <div class="row">
+        <div class="col-md-4 mb-4" th:each="game : ${gamesList}">
+          <div class="card" style="background: #FFFFFF;">
+            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+              <img th:src="${game.getImage_url()}" th:alt="${game.name}" class="img-fluid" style="max-height: 200px;">
+              <a th:href="${game.getImage_url()}">
+                <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+              </a>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title font-weight-bold" th:text="${game.getName()}"></h5>
+              <p class="card-text" th:text="${game.getDescription()}"> </p>
+              <hr class="my-4" />
+              <p class="lead">
+                <strong>Game Info</strong>
+              </p>
+              <ul class="list-unstyled list-inline d-flex justify-content-between">
+                <li class="list-inline-item me-0">
+                  <div class="chip me-0"><i class="fa-solid fa-people-group"></i> <p th:text="${game.getMin_players()}"></p></div>
+                </li>
+                <li class="list-inline-item me-0">
+                  <div class="chip me-0"><i class="fa-solid fa-people-group"></i> <p th:text="${game.getMax_players()}"></p></div>
+                </li>
+                <li class="list-inline-item me-0">
+                  <div class="chip me-0"><i class="fa-regular fa-clock"></i> <p th:text="${game.getMin_playtime()}"></p></div>
+                </li>
+                <li class="list-inline-item me-0">
+                  <div class="chip me-0"><i class="fa-regular fa-clock"></i> <p th:text="${game.getMax_playtime()}"></p></div>
+                </li>
+              </ul>
+
+            </div>
+
+          </div>
+        </div>
       </div>
-      <h4>Service 2</h4>
-      <p>Lorem Ipsum</p>
-    </div>
-    <div class="col-md-3 services-gd text-center">
-      <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a">
-        <a href="#" class="hi-icon"><img src="images/s3.png" alt=" " /></a>
-      </div>
-      <h4>Service 3</h4>
-      <p>Lorem Ipsum</p>
-    </div>
-    <div class="col-md-3 services-gd text-center">
-      <div class="hi-icon-wrap hi-icon-effect-9 hi-icon-effect-9a">
-        <a href="#" class="hi-icon"><img src="images/s4.png" alt=" " /></a>
-      </div>
-      <h4>Service 4</h4>
-      <p>Lorem Ipsum</p>
-    </div>
-    <div class="clearfix"> </div>
+    </section>
   </div>
+</div>
 </div>
 <!-- //services -->
 
