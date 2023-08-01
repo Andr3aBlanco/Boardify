@@ -29,14 +29,23 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     public void addPlayerToTournament(TournamentPlayerKey key) {
         Optional<Tournament> tournamentFind = tournamentRepository.findById(key.getTournamentId());
         Optional<User> userFind = userRepository.findById(key.getPlayerId());
-        if (!tournamentFind.isEmpty() && !userFind.isEmpty()) {
+        if (tournamentFind.isPresent() && userFind.isPresent()) {
+            //Optional.isPresent() and Optional.get() is safer than using !Optional.isEmpty() and Optional.get(),
+            // as the latter can lead to NoSuchElementException if the Optional is empty.
+            Tournament tournament = tournamentFind.get();
+            int currentEnrolled = tournament.getCurrEnrolled();
+            tournament.setCurrEnrolled(currentEnrolled + 1);
+
             TournamentPlayer tournamentPlayer = new TournamentPlayer();
-            tournamentPlayer.setTournament(tournamentFind.get());
+            tournamentPlayer.setTournament(tournament);
             tournamentPlayer.setPlayer(userFind.get());
             tournamentPlayer.setId(key);
+
+            tournamentRepository.save(tournament);
             tournamentPlayerRepository.save(tournamentPlayer);
         }
     }
+
 
     public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email) {
         return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, email);
@@ -53,4 +62,17 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
             return tournamentPlayerRepository.findById(key);
     }
+    public List<TournamentPlayer> findJoinedTournamentsByPlayer(Date dateToday, Long userId) {
+        return this.tournamentPlayerRepository.findJoinedTournamentsByPlayer(dateToday, userId);
+    }
+    public void cancelEnrollment(TournamentPlayer tournamentPlayer) {
+        Tournament tournament = tournamentPlayer.getTournament();
+        if (tournament.getCurrEnrolled() > 0) {
+            tournament.setCurrEnrolled(tournament.getCurrEnrolled() - 1);
+        }
+        tournament.getTournamentPlayers().remove(tournamentPlayer);
+        tournamentPlayerRepository.delete(tournamentPlayer);
+        tournamentRepository.save(tournament);
+    }
+
 }

@@ -16,4 +16,7 @@ public interface TournamentPlayerService {
     void savePlayerRating(TournamentPlayer tournamentRatingByPlayer);
 
     Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key);
+    List<TournamentPlayer> findJoinedTournamentsByPlayer(Date dateToday, Long userId);
+    public void cancelEnrollment(TournamentPlayer tournamentPlayer);
+
 }

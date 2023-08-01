@@ -18,5 +18,13 @@ public interface TournamentPlayerRepository extends JpaRepository<TournamentPlay
             "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') < :today AND u.email = :email",
             nativeQuery = true)
     List<TournamentPlayer> findAllPastTournamentsByPlayer(Date today, String email);
+    //I need this one Chris
+    @Query(value = "SELECT tp.* FROM tournament_players tp " +
+            "INNER JOIN tournament t ON t.tournament_id = tp.tournament_id " +
+            "INNER JOIN users u ON tp.player_id = u.id " +
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.id = :userId",
+            nativeQuery = true)
+    List<TournamentPlayer> findJoinedTournamentsByPlayer(Date today, Long userId);
+
 
 }

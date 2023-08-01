@@ -134,17 +134,22 @@ public class CoreController implements ErrorController {
 
                     if (role.equals("ROLE_ADMIN"))
                     {
-                        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
+                        List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
+                        model.addAttribute("joinedTournaments", joinedTournaments);
+                        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);//Show all tournaments
                         model.addAttribute("myTournaments",openTournaments);
                         List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
                         model.addAttribute("pastTournaments", pastTournaments);
+
                     }
                     else
                     {
                         List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
-                        model.addAttribute("myTournaments",myTournaments);
+                        model.addAttribute("myTournaments",myTournaments);//Show tournaments created by logged in user ONLY
                         List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
                         model.addAttribute("pastTournaments", pastTournaments);
+                        List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
+                        model.addAttribute("joinedTournaments", joinedTournaments);
                     }
 
 
@@ -191,15 +196,13 @@ public class CoreController implements ErrorController {
                 String role = user.getRoles().get(0).getName();
                 if (role.equals("ROLE_BASIC")) {
                     return "redirect:/go-premium";
-                } else if (role.equals("ROLE_PREMIUM")) {
+                } else if (role.equals("ROLE_PREMIUM") || role.equals("ROLE_ADMIN")) {
                     model.addAttribute("request", request);
                     Tournament tournament = new Tournament();
                     model.addAttribute("tournament", tournament);
                     List<Game> games = gameService.findAll();
                     model.addAttribute("games", games);
                     return "create-tournament";
-                } else if (role.equals("ROLE_ADMIN")) {
-                    return "redirect:/";
                 }
             } else {
                 return "redirect:/login";

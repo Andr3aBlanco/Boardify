@@ -50,6 +50,22 @@ public class TournamentController {
 //
 //        return "join-tournament";
 //    }
+@PostMapping("/tournaments/cancel-enrollment/{tournamentId}")
+public String cancelEnrollment(@PathVariable Long tournamentId) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null && authentication.isAuthenticated()) {
+        String email = authentication.getName(); // Get the email of the current user
+        User user = userService.findByEmail(email);
+        if (user != null) {
+            TournamentPlayerKey key = new TournamentPlayerKey(tournamentId, user.getId());
+            Optional<TournamentPlayer> tournamentPlayer = tournamentPlayerService.findTournamentPlayerByKey(key);
+            tournamentPlayer.ifPresent(tournamentPlayerService::cancelEnrollment);
+        }
+    }
+
+    return "redirect:/join-tournament";
+}
+
     @GetMapping("/tournaments/join/{tournamentId}/null")
     public String handleNull(@PathVariable Long tournamentId)
     {
@@ -171,10 +187,6 @@ public class TournamentController {
                 Tournament createdTournament = tournamentService.createTournament(tournament);
                 model.addAttribute("errorMessage", "Success!");
 
-
-                //You don't need this code Andrea
-                  //  TournamentPlayer tournamentPlayer = new TournamentPlayer(tpKey, createdTournament, player, 0, 0,0);
-
                 return "redirect:/"; // Replace with the appropriate URL
             } catch (Exception e) {
                 // Add an error message to the model
@@ -228,6 +240,7 @@ public class TournamentController {
 
     @GetMapping("/pay-entry-fees/{tournamentId}/{userId}")
     public String payEntryFees(@PathVariable String tournamentId, @PathVariable String userId, @RequestParam("entryFees") String entryFees, Model model) {
+
         model.addAttribute("tournamentId", tournamentId);
         model.addAttribute("userId", userId);
         model.addAttribute("entryFees", entryFees);
