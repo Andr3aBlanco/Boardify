@@ -21,4 +21,6 @@ public interface TournamentPlayerService {
 
     List<Object[]> findOrganizerStats();
 
+    List<TournamentPlayer> findAllTournamentPlayers();
+
 }

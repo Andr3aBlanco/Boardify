@@ -70,12 +70,16 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     public List<Object[]> findOrganizerStats() { // to get for organizers' stats for leaderboard.html
         EntityManager entityManager = emf.createEntityManager();
         Query query = entityManager.createQuery(
-                    "SELECT t.organizer.username, AVG(tp.organizerRating), AVG(tp.tournamentRating), COUNT(DISTINCT t.tournamentId) " +
+                    "SELECT t.organizer.username, ROUND(AVG(tp.organizerRating), 2), ROUND(AVG(tp.tournamentRating),2), COUNT(DISTINCT t.tournamentId) " +
                             "FROM TournamentPlayer tp JOIN Tournament t ON t.tournamentId = tp.tournament.tournamentId " +
                             "WHERE tp.organizerRating > -1 AND tp.tournamentRating > -1 " +
                             "GROUP BY t.organizer " +
-                            "ORDER BY tp.organizerRating DESC " +
+                            "ORDER BY ROUND(AVG(tp.organizerRating),2) DESC " +
                             "FETCH FIRST 10 ROWS ONLY");
         return query.getResultList();
+    }
+
+    public List<TournamentPlayer> findAllTournamentPlayers() {
+        return tournamentPlayerRepository.findAll();
     }
 }

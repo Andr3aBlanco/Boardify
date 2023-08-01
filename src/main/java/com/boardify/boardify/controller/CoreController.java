@@ -209,7 +209,6 @@ public class CoreController implements ErrorController {
             avgOrganizerRatings.add((Double) organizerStats[1]);
             avgTournamentRatingsPerOrganizer.add((Double) organizerStats[2]);
             tournamentCounts.add((Long) organizerStats[3]);
-            System.out.println(organizerStats[0] + " " + organizerStats[1] + " " + organizerStats[2] + " " + organizerStats[3]);
         }
         model.addAttribute("organizers", organizerUsernames);
         model.addAttribute("numHosted", tournamentCounts);
