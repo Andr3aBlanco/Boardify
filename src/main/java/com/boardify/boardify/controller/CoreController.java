@@ -3,19 +3,21 @@ package com.boardify.boardify.controller;
 
 
 
+
 import com.boardify.boardify.DTO.BoardGameResponse;
 import com.boardify.boardify.DTO.GameSearchResult;
 import com.boardify.boardify.entities.Game;
+
+import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
-import com.boardify.boardify.entities.Subscription;
-import com.boardify.boardify.entities.Transaction;
-import com.boardify.boardify.entities.User;
 
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.*;
 
 
-import com.boardify.boardify.entities.Tournament;
+
+import jakarta.servlet.RequestDispatcher;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,7 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class CoreController implements ErrorController {
@@ -56,15 +54,18 @@ public class CoreController implements ErrorController {
     private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
-       // this.userRepository = userRepository;
+        // this.userRepository = userRepository;
     }
-
-    @Autowired
-    private TransactionService transactionService;
 
     @Autowired
     private BoardGameAtlasService atlasService;
 
+    @Autowired
+    private TournamentPlayerService tournamentPlayerService;
+
+
+    @Autowired
+    private TransactionService transactionService;
 
 
     @GetMapping("/")
@@ -113,24 +114,45 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/join-tournament")
     public String showJoinTournamentPage(Model model, HttpServletRequest request) {
+        Date today = new Date();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
+
             if (user != null) {
                 String username = user.getUsername();
+
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
 
+                if (user.getId() != null)
+                {
+                    Long myId = user.getId();
+                    model.addAttribute("userId",myId);
+                    List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
+
+                    model.addAttribute("myTournaments",myTournaments);
+                    List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getId());
+                    model.addAttribute("pastTournaments", pastTournaments);
+                }
             }
         }
-        Date today = new Date();
-        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeToday(today);
-        model.addAttribute("pastTournaments", pastTournaments);
+
         /*List<Tournament> tournaments = tournamentService.findAll();
         model.addAttribute("tournaments", tournaments);*/
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
+
+
+        /*List<Tournament> myCreatedOpenTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
+        model.addAttribute("myTournaments",myCreatedOpenTournaments);
+*/
+
+        TournamentPlayer ratingObj = new TournamentPlayer();
+        model.addAttribute("ratingObj", ratingObj);
+
+
         return "join-tournament";
     }
     @GetMapping("/edit-tournament")
@@ -146,41 +168,81 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/create-tournament")
     public String showCreateTournamentPage(Model model, HttpServletRequest request) {
-        // Add necessary logic or data retrieval here
-
-        // Manually add request as a context variable
-        model.addAttribute("request", request);
-        Tournament tournament = new Tournament();
-        model.addAttribute("tournament", tournament);
-        List<Game> games = gameService.findAll();
-        model.addAttribute("games", games);
-        return "create-tournament";
+//         Add necessary logic or data retrieval here
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                String role = user.getRoles().get(0).getName();
+                if (role.equals("ROLE_BASIC")) {
+                    return "redirect:/go-premium";
+                } else if (role.equals("ROLE_PREMIUM")) {
+                    model.addAttribute("request", request);
+                    Tournament tournament = new Tournament();
+                    model.addAttribute("tournament", tournament);
+                    List<Game> games = gameService.findAll();
+                    model.addAttribute("games", games);
+                    return "create-tournament";
+                } else if (role.equals("ROLE_ADMIN")) {
+                    return "redirect:/";
+                }
+            } else {
+                return "redirect:/login";
+            }
+        } else {
+            return "redirect:/login";
+        }
+        return "redirect:/login";
+//                    model.addAttribute("request", request);
+//                    Tournament tournament = new Tournament();
+//                    model.addAttribute("tournament", tournament);
+//                    List<Game> games = gameService.findAll();
+//                    model.addAttribute("games", games);
+//                    System.out.println("premium");
+//                    return "create-tournament";
     }
 
-//    @GetMapping("/leaderboard")
-//    public String showLeaderboardPage(Model model, HttpServletRequest request) {
-//        // Add necessary logic or data retrieval here
-//
-//        // Manually add request as a context variable
-//        model.addAttribute("request", request);
-//
-//        return "leaderboard";
-//    }
 
     @GetMapping("/leaderboard")
     public String showLeaderboard(Model model) {
-        List<Tournament> allTournaments = tournamentService.findAllTournaments();
-        model.addAttribute("tournaments", allTournaments);
 
-        List<UserDto> allUsers = userService.findAllUsers();
-        model.addAttribute("users", allUsers);
+        ArrayList<String> playersUsernames = new ArrayList<>();
+        ArrayList<Long> attendanceCounts = new ArrayList<>();
+        List<Object[]> playersAttendanceCount = tournamentPlayerService.findJoinedTournamentsCountPerPlayer();
+        for (Object[] playerAttendance : playersAttendanceCount) {
+            playersUsernames.add((String) playerAttendance[0]);
+            attendanceCounts.add((Long) playerAttendance[1]);
+        }
+
+        model.addAttribute("players", playersUsernames);
+        model.addAttribute("attendanceCounts", attendanceCounts);
+
+        ArrayList<String> organizerUsernames = new ArrayList<>();
+        ArrayList<Long> tournamentCounts = new ArrayList<>();
+        ArrayList<Double> avgOrganizerRatings = new ArrayList<>();
+        ArrayList<Double> avgTournamentRatingsPerOrganizer = new ArrayList<>();
+        List<Object[]> organizersStatistics = tournamentPlayerService.findOrganizerStats();
+        for (Object[] organizerStats : organizersStatistics) {
+            organizerUsernames.add((String) organizerStats[0]);
+            avgOrganizerRatings.add((Double) organizerStats[1]);
+            avgTournamentRatingsPerOrganizer.add((Double) organizerStats[2]);
+            tournamentCounts.add((Long) organizerStats[3]);
+        }
+        model.addAttribute("organizers", organizerUsernames);
+        model.addAttribute("numHosted", tournamentCounts);
+        model.addAttribute("organizerRating", avgOrganizerRatings);
+        model.addAttribute("tournamentsRating", avgTournamentRatingsPerOrganizer);
+
 
         return "leaderboard";
     }
-
+/* If you don't need custom error handling I'm going to comment this
     @GetMapping("/error")
     public String handleError() {
-        // Handle the error and provide a custom error page or redirect
+        // Get the error status code
+
+        // Your custom error handling code here
         return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
     }
 
@@ -217,6 +279,8 @@ public class CoreController implements ErrorController {
 //        return "transactions";
 //    }
 
+
+ */
     @GetMapping("/transactions")
     public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
         List<Transaction> transactions;

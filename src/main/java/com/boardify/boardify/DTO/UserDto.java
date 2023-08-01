@@ -42,4 +42,5 @@ public class UserDto
     private String stripeToken;
     private int won;
     private int joined;
+
 }

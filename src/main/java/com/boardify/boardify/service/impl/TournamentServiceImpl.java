@@ -46,8 +46,8 @@ public class TournamentServiceImpl implements TournamentService {
     }
 
     @Override
-    public List<Tournament> findAllTournamentsBeforeToday(Date today) {
-        return tournamentRepository.findAllByEventEndBefore(today);
+    public List<Tournament> findAllTournamentsBeforeTodayAndUser(Date today, Long userId) {
+        return tournamentRepository.findAllByEventEndBeforeAndUser(today,userId);
     }
 
     @Override
@@ -56,11 +56,19 @@ public class TournamentServiceImpl implements TournamentService {
     }
 
     @Override
-    public List<Tournament> findAllOpenTournamentsByUser(Date today, Long userId) {
-        return tournamentRepository.findAllOpenTournamentsByUser(today,userId);
+    public List<Tournament> findAllOpenTournamentsByUser(Date today, Long id) {
+        return tournamentRepository.findAllOpenTournamentsByUser(today,id);
+    }
+
+    @Override
+    public Double findRating(Long tournamentId) {
+        return tournamentRepository.findRating(tournamentId);
     }
     @Override
     public List<Tournament> findAllTournaments() {
         return tournamentRepository.findAll();
     }
+
+
 }
+
