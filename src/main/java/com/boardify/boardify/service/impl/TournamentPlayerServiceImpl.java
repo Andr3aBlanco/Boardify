@@ -25,14 +25,14 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     UserRepository userRepository;
 
     @Autowired
-    private final EntityManagerFactory emf = null;
+    private final EntityManagerFactory emf = null; // to facilitate queries to database that output group by values
 
     public TournamentPlayerServiceImpl(TournamentPlayerRepository TPRepository, TournamentRepository tournamentRepository, UserRepository userRepository) {
         this.tournamentPlayerRepository = TPRepository;
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
     }
-    public void addPlayerToTournament(TournamentPlayerKey key) {
+    public void addPlayerToTournament(TournamentPlayerKey key) { // to add a player to a tournament
         Optional<Tournament> tournamentFind = tournamentRepository.findById(key.getTournamentId());
         Optional<User> userFind = userRepository.findById(key.getPlayerId());
         if (!tournamentFind.isEmpty() && !userFind.isEmpty()) {
@@ -44,7 +44,7 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         }
     }
 
-    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, Long playerId) {
+    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, Long playerId) { // to find tournaments logged-in player has participated in
         return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, playerId);
     }
 
@@ -56,7 +56,7 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         return tournamentPlayerRepository.findById(key);
     }
 
-    public List<Object[]> findJoinedTournamentsCountPerPlayer() {
+    public List<Object[]> findJoinedTournamentsCountPerPlayer() { // to get players' stats for leaderboard.html
         EntityManager entityManager = emf.createEntityManager();
         Query query = entityManager.createQuery(
                     "SELECT tp.player.username, COUNT(tp.tournament.tournamentId) AS numAttended " +
@@ -67,7 +67,7 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         return query.getResultList();
     }
 
-    public List<Object[]> findOrganizerStats() {
+    public List<Object[]> findOrganizerStats() { // to get for organizers' stats for leaderboard.html
         EntityManager entityManager = emf.createEntityManager();
         Query query = entityManager.createQuery(
                     "SELECT t.organizer.username, AVG(tp.organizerRating), AVG(tp.tournamentRating), COUNT(DISTINCT t.tournamentId) " +

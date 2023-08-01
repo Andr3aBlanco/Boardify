@@ -16,6 +16,6 @@ public interface TournamentPlayerRepository extends JpaRepository<TournamentPlay
             "INNER JOIN tournament_players tp ON t.tournament_id = tp.tournament_id " +
             "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') < :today AND tp.player_id = :playerId",
             nativeQuery = true)
-    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date today, Long playerId);
+    List<TournamentPlayer> findAllPastTournamentsByPlayer(Date today, Long playerId); // to find tournaments logged-in player has participated in
 
 }

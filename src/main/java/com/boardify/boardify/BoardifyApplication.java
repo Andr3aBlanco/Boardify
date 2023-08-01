@@ -5,11 +5,9 @@ import com.boardify.boardify.entities.Role;
 import com.boardify.boardify.entities.Subscription;
 import com.boardify.boardify.entities.Transaction;
 import com.boardify.boardify.entities.User;
+import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.repository.RoleRepository;
-import com.boardify.boardify.repository.UserRepository;
-import com.boardify.boardify.service.SubscriptionService;
-import com.boardify.boardify.service.TransactionService;
-import com.boardify.boardify.service.UserService;
+import com.boardify.boardify.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -26,8 +24,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -47,20 +48,28 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 	private RoleRepository roleRepository;
 
 	@Autowired
-	TransactionService transactionService;
+	private TransactionService transactionService;
+
+	@Autowired
+	private TournamentService tournamentService;
+
+	@Autowired
+	private GameService gameService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(BoardifyApplication.class, args);
 	}
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		CreateDefaultSubscriptions();
-		CreateDefaultRoles();
-		SaveUsersToDB();
+		createDefaultSubscriptions();
+		createDefaultRoles();
+		saveUsersToDB();
+//		saveDummyTournamentsToDB();
 
 	}
 
-	public void CreateInitialUsers() {
+	public void createInitialUsers() {
 		List<UserDto> usersDto = userService.findAllUsers();
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if(usersDto != null && usersDto.isEmpty()) {
@@ -89,7 +98,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-	public void CreateDefaultSubscriptions() {
+	public void createDefaultSubscriptions() {
 		List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
 
 		if(subscriptions != null && subscriptions.isEmpty()) {
@@ -103,7 +112,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-	public void CreateDefaultRoles() {
+	public void createDefaultRoles() {
 		List<Role> roles = roleRepository.findAll();
 
 		if(roles != null && roles.isEmpty()) {
@@ -125,10 +134,9 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-	public ArrayList<String[]> ReadCSV(String csvName) {
+	public ArrayList<String[]> readCSV(String csvName) {
 		ArrayList<String[]> rows = new ArrayList<String[]>();
 		try {
-			System.out.println("Reading Users CSV");
 			String line = "";
 			BufferedReader br = new BufferedReader(new FileReader(csvName));
 			while ((line=br.readLine()) != null) {
@@ -143,7 +151,7 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		return rows;
 	}
 
-	public void SaveUsersToDB() {
+	public void saveUsersToDB() {
 		List<UserDto> usersDto = userService.findAllUsers();
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		if(usersDto != null && usersDto.isEmpty()) {
@@ -156,9 +164,9 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			basicRoles.add(roles.get(1));
 			premiumRoles.add(roles.get(2));
 			int count = 0;
-			ArrayList<String[]> users = ReadCSV("users.csv");
+			ArrayList<String[]> users = readCSV("users.csv");
 			if (users.size() < 1) {
-				CreateInitialUsers();
+				createInitialUsers();
 			}
 			for (String[] user : users) {
 				count++;
@@ -181,10 +189,13 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 					case "premium":
 						userRole = premiumRoles;
 						break;
+					default:
+						userRole = basicRoles;
 				}
 				User userObj = new User(Long.valueOf(user[0]), user[14], user[5], passwordEncoder.encode(user[8]), user[1], userRole,
 						user[6], user[7], user[2], user[3], user[4], user[10], user[15], user[9], user[11], Integer.valueOf(user[13]), user[12], 0, 0, null);
 				userService.saveUserObj(userObj);
+				System.out.println("User " + user[0] + " saved");
 			}
 			if(!usersDto.isEmpty()) {
 				System.out.println("Initial users added to database");
@@ -192,10 +203,60 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-	public void SaveTransactionsToDB() {
+	public void saveDummyTournamentsToDB() {
+		List<Tournament> allTournaments = tournamentService.findAllTournaments();
+		if (allTournaments != null && allTournaments.isEmpty()) {
+			ArrayList<String[]> tournamentsCsv = readCSV("tournaments.csv");
+			for (String tournamentDetail: tournamentsCsv.get(0)) {
+				System.out.print(tournamentDetail + " ");
+			}
+
+			int numColumns = tournamentsCsv.get(0).length;
+			for (int i = 1; i < tournamentsCsv.size(); i++) {
+				String[] currentRow = tournamentsCsv.get(i);
+				for (int j = 0; j < numColumns; j++) {
+					if (currentRow[j] == "") {
+						currentRow[j] = null;
+					}
+				}
+				Tournament dummyTournament = new Tournament();
+				dummyTournament.setTournamentId(Long.valueOf(currentRow[0]));
+				dummyTournament.setAddress(currentRow[1]);
+				dummyTournament.setCity(currentRow[2]);
+				dummyTournament.setCompLevel(currentRow[3]);
+				dummyTournament.setCurrEnrolled(Integer.valueOf(currentRow[4]));
+				dummyTournament.setEntryFees(Double.valueOf(currentRow[5]));
+				dummyTournament.setEventEnd(currentRow[6]);
+				dummyTournament.setEventStart(parseDate(currentRow[7]));
+				dummyTournament.setLastEdited(currentRow[8]);
+				dummyTournament.setMaxEnrolled(Integer.valueOf(currentRow[9]));
+				dummyTournament.setOrganizer(userService.findByUserId(Long.valueOf(currentRow[10])));
+				dummyTournament.setPrize(Double.valueOf(currentRow[11]));
+				dummyTournament.setState(currentRow[12]);
+				dummyTournament.setStatus(0);
+				dummyTournament.setTournamentName(currentRow[14]);
+				dummyTournament.setZipCode(currentRow[15]);
+				dummyTournament.setGame(gameService.findGameById(Long.valueOf(currentRow[16])));
+				dummyTournament.setGameId(Long.valueOf(currentRow[16]));
+				System.out.println("Saved tournament named " + currentRow[14] + " with game " + gameService.findGameById(Long.valueOf(currentRow[16])));
+				tournamentService.createTournament(dummyTournament);
+			}
+		}
+	}
+
+	public Date parseDate(String date) {
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd").parse(date);
+		} catch (ParseException e) {
+			return null;
+		}
+	}
+
+	public void saveTransactionsToDB() {
 		List<Transaction> transactionsList = transactionService.findAllTransactions();
 		if (transactionsList != null && transactionsList.isEmpty()) {
-
+			ArrayList<String[]> users = readCSV("tournaments.csv");
 		}
+
 	}
 }
