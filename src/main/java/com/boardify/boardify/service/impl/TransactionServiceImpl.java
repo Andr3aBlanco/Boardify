@@ -41,14 +41,13 @@ public class TransactionServiceImpl implements TransactionService {
         String type = customQuery.get("type");
         String startDate = customQuery.get("startDate");
         String endDate = customQuery.get("endDate");
-
+        System.out.println(item);
         if (item.equals("All")) {
             item = "%";
         }
         if (type.equals("All")) {
             type = "%";
         }
-
         if (startDate == null || startDate.equals("")) {
             startDate = "01/01/2022";
         }
@@ -64,10 +63,6 @@ public class TransactionServiceImpl implements TransactionService {
     private String convertDate (String dateFromQuery) {
         String[] date = dateFromQuery.split("/");
         String sqlDate = date[2] + "-" + date[0] + "-" + date[1];
-//        int year = Integer.parseInt(date[2]) - 1900;
-//        int month = Integer.parseInt(date[0]) - 1;
-//        int day = Integer.parseInt(date[1]);
-//        Date sqlDate = new Date(year, month, day);
 
         return sqlDate;
     }

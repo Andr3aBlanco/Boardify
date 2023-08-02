@@ -119,4 +119,35 @@ public class UserServiceImpl implements UserService {
         System.out.println("Step 1.5");
         userRepository.save(user);
     }
+
+    public void saveUserObj(User user) {
+        userRepository.save(user);
+    }
+
+
+    @Override
+    public List<UserDto> findAllPlayers() {
+        Role playerRole = roleRepository.findByName("ROLE_PLAYER");
+        return playerRole.getUsers().stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<UserDto> findAllOrganizers() {
+        Role organizerRole = roleRepository.findByName("ROLE_ORGANIZER");
+        return organizerRole.getUsers().stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public User findByUserId(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (!userOpt.isEmpty()) {
+            return userOpt.get();
+        } else {
+            return null;
+        }
+    }
 }

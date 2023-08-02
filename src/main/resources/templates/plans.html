@@ -23,7 +23,7 @@
 
 </head>
 <body>
-<div th:replace="_navbar.html"></div>
+<div th:replace="~{_navbar.html}"></div>
 
 
 <div th:switch="${subscriptions}" class="planscontainer">
@@ -32,8 +32,8 @@
 
     <div class="row justify-content-center pb-5 projects-grids">
       <div class="col-lg-12 pb-lg-2 text-center">
-        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2">Premium Subscription Plans</h3>
-        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium">What we can offer for our customers</p>
+        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2" style="color: black">Premium Subscription Plans</h3>
+        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium" style="color: black">Get Premium To Host Tournaments</p>
         <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
       </div>
     </div>
