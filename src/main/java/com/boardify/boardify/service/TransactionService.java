@@ -1,12 +1,18 @@
 package com.boardify.boardify.service;
 
 import com.boardify.boardify.entities.Transaction;
+import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+
+
 public interface TransactionService {
+
+
+    void SaveTransaction(Transaction transaction);
 
     List<Transaction> findAllByTransactionDate(Date transactionDate);
 
