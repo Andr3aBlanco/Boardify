@@ -26,6 +26,6 @@ public interface UserService {
     List<UserDto> findAllOrganizers();
 
     void saveUserObj(User user);
-
+    void deleteUserById(Long id);
     User findByUserId(Long userid);
 }

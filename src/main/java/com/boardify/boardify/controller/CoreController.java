@@ -61,8 +61,6 @@ public class CoreController implements ErrorController {
 
     private TournamentService tournamentService;
 
-
-    //private final UserRepository userRepository;
     @Autowired
     private GameService gameService;
 
@@ -74,8 +72,6 @@ public class CoreController implements ErrorController {
     private BoardGameAtlasService atlasService;
 
 
-    @Autowired
-    private TransactionService transactionService;
 
 
     @Autowired
@@ -112,18 +108,6 @@ public class CoreController implements ErrorController {
         return "home";
     }
 
-
-
-/*
-    @GetMapping("/edit-tournament")
-    public String showEditTournamentPage(Model model, HttpServletRequest request)
-    {
-        List<Tournament> tournaments = tournamentService.findAll();
-        model.addAttribute("tournaments", tournaments);
-
-        return "tournament-to-edit";
-    }
-*/
 
 
     @GetMapping("/join-tournament")
@@ -172,15 +156,9 @@ public class CoreController implements ErrorController {
             }
         }
 
-        /*List<Tournament> tournaments = tournamentService.findAll();
-        model.addAttribute("tournaments", tournaments);*/
         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);
         model.addAttribute("openTournaments",openTournaments);
 
-
-        /*List<Tournament> myCreatedOpenTournaments = tournamentService.findAllOpenTournamentsByUser(today,email);
-        model.addAttribute("myTournaments",myCreatedOpenTournaments);
-*/
 
         TournamentPlayer ratingObj = new TournamentPlayer();
         model.addAttribute("ratingObj", ratingObj);
@@ -228,13 +206,6 @@ public class CoreController implements ErrorController {
             return "redirect:/login";
         }
         return "redirect:/login";
-//                    model.addAttribute("request", request);
-//                    Tournament tournament = new Tournament();
-//                    model.addAttribute("tournament", tournament);
-//                    List<Game> games = gameService.findAll();
-//                    model.addAttribute("games", games);
-//                    System.out.println("premium");
-//                    return "create-tournament";
     }
 
 
@@ -271,72 +242,8 @@ public class CoreController implements ErrorController {
 
         return "leaderboard";
     }
-/* If you don't need custom error handling I'm going to comment this
-    @GetMapping("/error")
-    public String handleError() {
-        // Get the error status code
-
-        // Your custom error handling code here
-        return "redirect:/"; // Replace "error" with the appropriate template name or redirect path
-    }
 
 
-//    @GetMapping("/go-premium")
-//    public String showPlansPage(Model model, HttpServletRequest request){
-//
-////        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-////        Object obj = auth.getPrincipal();
-////        model.addAttribute("testUser", obj);
-////        UserDetails userDetails = (UserDetails) auth.getPrincipal();
-////        String userEmail = userDetails.getUsername();
-////        UserDto userDto = userService.convertEntityToDto(userService.findByEmail(userEmail));
-////        model.addAttribute("currentUser", userDto);
-//        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
-//        model.addAttribute("subscriptions", subscriptions);
-//
-//        return "plans";
-//    }
-
-    @GetMapping("/edit-plan")
-    public String showEditPlanPage(Model model, HttpServletRequest request){
-
-        List<Subscription> subscriptions = subscriptionService.findAllSubscriptions();
-        model.addAttribute("subscriptions", subscriptions);
-
-        return "edit-plan";
-    }
-
-//    @GetMapping("/transactions")
-//    public String showTransactionsPage(Model model) {
-//        List<Transaction> transactions = transactionService.findAllTransactions();
-//        model.addAttribute("transactions", transactions);
-//        return "transactions";
-//    }
-
-
- */
-    @GetMapping("/transactions")
-    public String showTransactionsPage(@RequestParam Map<String, String> customQuery, Model model) {
-        List<Transaction> transactions;
-        System.out.println(customQuery.get("item"));
-        if (customQuery.size() < 1) {
-            transactions = transactionService.findAllTransactions();
-        } else {
-            transactions = transactionService.findByFilter(customQuery);
-        }
-        model.addAttribute("transactions", transactions);
-        return "transactions";
-    }
-
-
-
-
-//     //saving changes to development
-//     @RequestMapping("/error")
-//     @ResponseBody
-//     String error(HttpServletRequest request) {
-//         return "<h1>Error occurred</h1>";
-//     }
 
     private UserService userService;
 

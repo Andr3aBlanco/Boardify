@@ -53,8 +53,8 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
             tournamentPlayer.setTournament(tournament);
             tournamentPlayer.setPlayer(userFind.get());
             tournamentPlayer.setId(key);
-
-            tournamentRepository.save(tournament);
+            tournamentPlayer.setTournamentRating(-1);
+            tournamentPlayer.setOrganizerRating(-1);
             tournamentPlayerRepository.save(tournamentPlayer);
         }
     }
