@@ -50,6 +50,55 @@ public class TournamentController {
 //
 //        return "join-tournament";
 //    }
+
+//     @GetMapping("/tournaments/join/{tournamentId}/null")
+//     public String handleNull(@PathVariable Long tournamentId)
+//     {
+//         return "redirect:../../../login";
+//     }
+//     @GetMapping("tournaments/join/{tournamentId}/{userId}")
+//     public RedirectView getTournament(@PathVariable Long tournamentId, @PathVariable Long userId, Model model) {
+//         System.out.println(tournamentId + " " + userId);
+//         try {
+//             // Check if userId is null
+//             if (userId == null) {
+//                 // Redirect to the login page
+//                 return new RedirectView("login");
+//             }
+
+//             // Check if the user is authenticated
+//             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//             if (authentication == null || !authentication.isAuthenticated()) {
+//                 // Redirect to the login page
+//                 return new RedirectView("/login");
+//             }
+
+//             Optional<Tournament> tournament = tournamentService.findTournamentByID(tournamentId);
+
+//             if (tournament.isPresent()) {
+//                 // Add the necessary data to the model
+//                 model.addAttribute("tournament", tournament.get());
+//                 model.addAttribute("userId", userId);
+//                 TournamentPlayerKey tpKey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
+
+//                 tournamentPlayerService.addPlayerToTournament(tpKey);
+
+@PostMapping("/tournaments/cancel-enrollment/{tournamentId}")
+public String cancelEnrollment(@PathVariable Long tournamentId) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication != null && authentication.isAuthenticated()) {
+        String email = authentication.getName(); // Get the email of the current user
+        User user = userService.findByEmail(email);
+        if (user != null) {
+            TournamentPlayerKey key = new TournamentPlayerKey(tournamentId, user.getId());
+            Optional<TournamentPlayer> tournamentPlayer = tournamentPlayerService.findTournamentPlayerByKey(key);
+            tournamentPlayer.ifPresent(tournamentPlayerService::cancelEnrollment);
+        }
+    }
+
+    return "redirect:/join-tournament";
+}
+
     @GetMapping("/tournaments/join/{tournamentId}/null")
     public String handleNull(@PathVariable Long tournamentId)
     {
@@ -78,9 +127,10 @@ public class TournamentController {
                 // Add the necessary data to the model
                 model.addAttribute("tournament", tournament.get());
                 model.addAttribute("userId", userId);
-                TournamentPlayerKey tpKey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
+                TournamentPlayerKey tpkey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
 
-                tournamentPlayerService.addPlayerToTournament(tpKey);
+                tournamentPlayerService.addPlayerToTournament(tpkey);
+
                 return new RedirectView("/dummy"); // change this for the URL you want to redirect
                 // It is not going to show the button if it is full or it has ended
                 // Every tournament you get will be ready to process
@@ -92,6 +142,17 @@ public class TournamentController {
             e.printStackTrace();
             return new RedirectView("/");
         }
+
+
+        //For Andrea to add the user at the tournament_player, you just need tournament's id and the following code
+                /*
+
+                    String email = authentication.getName();
+                    User player = userService.findByEmail(email);
+                    TournamentPlayerKey tpKey = new TournamentPlayerKey(tournamentVariable.getTournamentId(), player.getId());
+                    tournamentPlayerService.addPlayerToTournament(tpKey);
+                 */
+
     }
 
     @GetMapping("/tournaments/edit/{id}")
@@ -134,7 +195,7 @@ public class TournamentController {
         return "redirect:/join-tournament";
     }
 
-    @PostMapping("/tournaments/add")
+       @PostMapping("/tournaments/add")
     public String createTournament(@ModelAttribute @Valid Tournament tournament, BindingResult bindingResult,
                                    @RequestParam("gameId") Long gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -142,9 +203,35 @@ public class TournamentController {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
             tournament.setOrganizer(user);
+
+            Game selectedGame = gameService.findGameById(gameId);
+            tournament.setGame(selectedGame);
+
+
+            List<Game> tournamentGames = new ArrayList<>();
+            tournamentGames.add(selectedGame);
+            tournament.setGames(tournamentGames);
+
+            try {
+                Tournament createdTournament = tournamentService.createTournament(tournament);
+                model.addAttribute("errorMessage", "Success!");
+
+
+                //You don't need this code Andrea
+                  //  TournamentPlayer tournamentPlayer = new TournamentPlayer(tpKey, createdTournament, player, 0, 0,0);
+
+                return "redirect:/"; // Replace with the appropriate URL
+            } catch (Exception e) {
+                // Add an error message to the model
+                model.addAttribute("errorMessage", "Failed to create the tournament");
+
+                // Return to the create-tournament form
+                return "create-tournament";
+            }
+
         }
 
-        if (bindingResult.hasErrors()) {
+        else if (bindingResult.hasErrors()) {
             // If there are validation errors, return to the create-tournament form
             System.out.println("\n Checkpoint");
             List<FieldError> errors = bindingResult.getFieldErrors();
@@ -154,37 +241,11 @@ public class TournamentController {
             }
             return "create-tournament";
         }
-
-        // Set the organizer ID to 1 manually
-
-        Game selectedGame = gameService.findGameById(gameId);
-        tournament.setGame(selectedGame);
-
-        // Add players to the tournament
-//        List<User> players = new ArrayList<>();
-//
-//        // Get the user with ID 1 manually
-//        // Replace the "findById" method with find by email
-//        User user = userService.findByEmail("admin@admin.com");
-//        players.add(user);
-//        tournament.setPlayers(players);
-
-        List<Game> tournamentGames = new ArrayList<>();
-        tournamentGames.add(selectedGame);
-        tournament.setGames(tournamentGames);
-
-        try {
-            Tournament createdTournament = tournamentService.createTournament(tournament);
-            model.addAttribute("errorMessage", "Success!");
-
-            return "redirect:/"; // Replace with the appropriate URL
-        } catch (Exception e) {
-            // Add an error message to the model
-            model.addAttribute("errorMessage", "Failed to create the tournament");
-
-            // Return to the create-tournament form
+        else
+        {
             return "create-tournament";
         }
+
     }
 
     @PostMapping("/tournaments/update-rating/{tournamentId}")
@@ -208,5 +269,8 @@ public class TournamentController {
 
         return "redirect:/join-tournament";
     }
+
+
+
 
 }

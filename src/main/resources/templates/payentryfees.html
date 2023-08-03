@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Go Premium!</title>
+    <meta charset="UTF-8">
+    <title>Pay entry Fees</title>
 
   <!-- //for-mobile-apps -->
   <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
@@ -21,56 +21,10 @@
   <!--Stripe JavaScript Library-->
   <script src="https://js.stripe.com/v3/"></script>
 
+
 </head>
 <body>
-<div th:replace="~{_navbar.html}"></div>
 
-
-<div th:switch="${subscriptions}" class="planscontainer">
-  <div th:case="null">Sorry, we do not have any subscriptions available right now.</div>
-  <div th:case="*">
-
-    <div class="row justify-content-center pb-5 projects-grids">
-      <div class="col-lg-12 pb-lg-2 text-center">
-        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2" style="color: black">Premium Subscription Plans</h3>
-        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium" style="color: black">Get Premium To Host Tournaments</p>
-        <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
-      </div>
-    </div>
-
-
-
-    <div class="row m-lg-0">
-      <div th:each="subscription: ${subscriptions}" class="col-md-6 col-lg-6 px-lg-0">
-        <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">
-          <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">
-            <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large"><span th:text="${subscription.duration}"></span> Plan</span>
-            <span class="price d-block mt-4 text-white" style="color: white">
-                        <span class="title-medium">
-                          <span id="planPrice" class="text-white title-medium" th:text="${'$' + #numbers.formatDecimal(subscription.cost, 1, 'COMMA', 2, 'POINT')}" th:attr="datapriceattribute=${subscription.cost}"></span></span>
-
-                        <span>/<span class="text-medium" th:text="${subscription.duration}"></span></span>
-          </span>
-            <p class="opacity-100 m-0 mt-3 text-small text-white" ><p th:text="${#numbers.formatDecimal(subscription.commissionRate*100, 1, 'COMMA', 2, 'POINT') + '% Boardify commission rate'}"></p> </p>
-          </div>
-
-          <div class="pricing-body">
-            <span class="bg-gray d-block p-4 text-large" th:text="${'You keep ' + (1 - subscription.commissionRate)*100 + '% of your revenues from entry fees'}"></span>
-          </div>
-
-          <div th:unless="${currentUser}" class="pricing-footer bg-base-color">
-            <a href="/login" class="getplantbutton">Get Monthly Premium</a>
-          </div>
-          <div th:if="${currentUser}" class="pricing-footer bg-base-color">
-            <a href="#" class="getplantbutton activegetplantbutton">Get Monthly Premium</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--hero section-->
 <section class="py-5">
   <div class="container">
     <div class="row">
@@ -83,8 +37,8 @@
         </p>
         <div class="card mb-4">
           <div class="card-body">
-            <h5 id="subscriptionName">Leather Bag</h5>
-            <p class="lead" id="subscriptionPrice">USD 9.99</p>
+            <h5 id="subscriptionName" th:text="${tournamentName}">Tournament Name</h5>
+            <p class="lead" id="subscriptionPrice"> Tournament Price</p>
           </div>
 
         </div>
@@ -128,9 +82,21 @@
   </div>
 </section>
 
-<!--custom javascript for handling subscription-->
 <script>
   $(function () {
+
+    // Function to get the value of a URL query parameter by name
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // Get the entry fees value from the URL query parameter
+    var entryFees = parseFloat(getQueryParam('entryFees')) || 0; // Use 0 as the default value if the query parameter is missing or invalid
+    var cost = entryFees * 100; // Convert to cents (Stripe requires the amount in cents)
+    document.getElementById('subscriptionPrice').textContent = 'USD ' + (cost / 100).toFixed(2); // Display the entry fees on the page
+
+
     var API_KEY = $('#api-key').val();
     // Create a Stripe client.
     var stripe = Stripe(API_KEY);
@@ -185,33 +151,6 @@
         }
       });
     }
-  });
-
-
-<!-- Add this script at the bottom, after the previous script -->
-
-  // JavaScript function to update the subscription information
-  function updateSubscriptionInfo(subscriptionName, subscriptionPrice) {
-    var subscriptionNameElement = document.getElementById('subscriptionName');
-    var subscriptionPriceElement = document.getElementById('subscriptionPrice');
-
-    subscriptionNameElement.textContent = subscriptionName;
-    subscriptionPriceElement.textContent = subscriptionPrice;
-  }
-
-
-  $(function() {
-    // Other JavaScript code
-
-    // Handle the click event on the "Get Monthly Premium!" button
-    $('.activegetplantbutton').click(function(event) {
-
-      event.preventDefault();
-      var subscription = $(this).closest('.pricing').find('.title-large').text();
-      cost = 100*parseInt($(this).closest('.pricing').find('#planPrice').attr('datapriceattribute'));
-      console.log("This is my cost " + cost );
-      updateSubscriptionInfo(subscription, cost/100);
-    });
   });
 </script>
 

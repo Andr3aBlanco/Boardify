@@ -90,6 +90,12 @@ public class Tournament {
 //    )
 //    private List<Tournament> tournamentRatings; // not sure if this should be like that
 
+    @Column(name = "tournament_rating")
+    private Double tournamentRating;
+
+    @Column(name = "host_rating")
+    private Double hostRating;
+
     // Add the gameId getter and setter methods
     public Long getGameId() {
         return game != null ? game.getGameId() : null;
@@ -98,7 +104,6 @@ public class Tournament {
     public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
-
 
 
 }

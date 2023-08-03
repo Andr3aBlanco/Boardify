@@ -11,11 +11,16 @@ import com.boardify.boardify.entities.Game;
 import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
+import com.boardify.boardify.repository.RoleRepository;
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.*;
 
 
 
+import jakarta.servlet.RequestDispatcher;
+
+
+import com.boardify.boardify.entities.Tournament;
 import jakarta.servlet.RequestDispatcher;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +40,16 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+
 import java.util.*;
+
+import java.util.Date;
+
+
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
 
 @Controller
 public class CoreController implements ErrorController {
@@ -48,7 +62,6 @@ public class CoreController implements ErrorController {
     private TournamentService tournamentService;
 
     @Autowired
-
     private GameService gameService;
 
     public CoreController(UserRepository userRepository) {
@@ -58,10 +71,11 @@ public class CoreController implements ErrorController {
     @Autowired
     private BoardGameAtlasService atlasService;
 
+
+
+
     @Autowired
     private TournamentPlayerService tournamentPlayerService;
-
-
 
 
     @GetMapping("/")
@@ -110,15 +124,34 @@ public class CoreController implements ErrorController {
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
 
+                String role = user.getRoles().get(0).getName();
+
+
                 if (user.getId() != null)
                 {
                     Long myId = user.getId();
                     model.addAttribute("userId",myId);
-                    List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
 
-                    model.addAttribute("myTournaments",myTournaments);
-                    List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getId());
-                    model.addAttribute("pastTournaments", pastTournaments);
+                    if (role.equals("ROLE_ADMIN"))
+                    {
+                        List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
+                        model.addAttribute("joinedTournaments", joinedTournaments);
+                        List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);//Show all tournaments
+                        model.addAttribute("myTournaments",openTournaments);
+                        List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getEmail());
+                        model.addAttribute("pastTournaments", pastTournaments);
+
+                    }
+                    else
+                    {
+                        List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
+                        model.addAttribute("myTournaments",myTournaments);//Show tournaments created by logged in user ONLY
+                        List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getEmail());
+                        model.addAttribute("pastTournaments", pastTournaments);
+                        List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
+                        model.addAttribute("joinedTournaments", joinedTournaments);
+                    }
+
                 }
             }
         }
@@ -152,19 +185,20 @@ public class CoreController implements ErrorController {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
             if (user != null) {
+
+                System.out.println(user.getRoles() + " " + user.getRoles().size());
                 String role = user.getRoles().get(0).getName();
                 if (role.equals("ROLE_BASIC")) {
                     return "redirect:/go-premium";
-                } else if (role.equals("ROLE_PREMIUM")) {
+                } else if (role.equals("ROLE_PREMIUM") || role.equals("ROLE_ADMIN")) {
+
                     model.addAttribute("request", request);
                     Tournament tournament = new Tournament();
                     model.addAttribute("tournament", tournament);
                     List<Game> games = gameService.findAll();
                     model.addAttribute("games", games);
                     return "create-tournament";
-                } else if (role.equals("ROLE_ADMIN")) {
-                    return "redirect:/";
-                }
+               }
             } else {
                 return "redirect:/login";
             }

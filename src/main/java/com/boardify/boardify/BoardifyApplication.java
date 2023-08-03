@@ -16,14 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 
 @PropertySource("classpath:application.properties")
 @EnableScheduling
@@ -160,7 +158,9 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			basicRoles.add(roles.get(1));
 			premiumRoles.add(roles.get(2));
 			int count = 0;
+
 			ArrayList<String[]> users = readCSV("users.csv");
+
 			if (users.size() < 1) {
 				createInitialUsers();
 			}
@@ -280,10 +280,5 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 			}
 		}
 	}
-	public void saveTransactionsToDB() {
-		List<Transaction> transactionsList = transactionService.findAllTransactions();
-		if (transactionsList != null && transactionsList.isEmpty()) {
-			ArrayList<String[]> users = readCSV("tournaments.csv");
-		}
-	}
+
 }

@@ -2,9 +2,11 @@ package com.boardify.boardify.controller;
 
 import com.boardify.boardify.DTO.UserDto;
 import com.boardify.boardify.entities.Subscription;
+import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.entities.User;
 import com.boardify.boardify.service.StripeService;
 import com.boardify.boardify.service.SubscriptionService;
+import com.boardify.boardify.service.TournamentService;
 import com.boardify.boardify.service.UserService;
 import com.boardify.boardify.utilities.Response;
 import com.stripe.model.Coupon;
@@ -16,12 +18,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -29,6 +29,9 @@ public class PaymentController {
 
 	@Autowired
 	private SubscriptionService subscriptionService;
+
+	@Autowired
+	private TournamentService tournamentService;
 
 	@Value("${stripe.key.public}")
 	private String API_PUBLIC_KEY;
@@ -66,6 +69,37 @@ public class PaymentController {
 		model.addAttribute("subscriptions", subscriptions);
 		return "plans";
 	}
+
+
+	@GetMapping("/pay-entry-fees/{tournamentId}/{userId}")
+	public String payEntryFees(
+			@PathVariable Long tournamentId,
+			@PathVariable Long userId,
+			@RequestParam(name = "entryFees") Double entryFees,
+			Model model
+	) {
+		Optional<Tournament> tournamentOptional = tournamentService.findTournamentByID(tournamentId);
+		if (tournamentOptional.isPresent()) {
+			Tournament tournament = tournamentOptional.get();
+
+			// Add the tournament ID, user ID, entry fees, and tournament name to the model
+			model.addAttribute("tournamentId", tournamentId);
+			model.addAttribute("userId", userId);
+			model.addAttribute("entryFees", entryFees);
+			model.addAttribute("tournamentName", tournament.getTournamentName());
+			model.addAttribute("stripePublicKey", API_PUBLIC_KEY);
+		} else {
+			// Handle the case when the tournament with the given ID is not found in the database
+			// You can redirect the user to an error page or display an error message
+			// For example:
+			model.addAttribute("errorMessage", "Tournament not found");
+			return "error";
+		}
+
+		// Return the view name for the "payentryfees" template
+		return "payentryfees";
+	}
+
 
 	@PostMapping("/create-subscription")
 	public @ResponseBody Response createSubscription(String email, String token, String plan, String coupon) {
