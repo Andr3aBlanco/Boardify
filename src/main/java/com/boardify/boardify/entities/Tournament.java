@@ -67,7 +67,7 @@ public class Tournament {
     private double entryFees;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "organizer_id", nullable = false)
+    @JoinColumn(name = "organizer_id", nullable = true)
     private User organizer;
 
     //Tournament_players

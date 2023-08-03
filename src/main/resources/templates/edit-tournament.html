@@ -64,11 +64,11 @@
             </div>
             <div class="form-group">
               <label for="eventStart">Event starts</label>
-              <input type="date" class="form-control" id="eventStart" name="eventStart" th:value="${tournament.eventStart}" required>
+              <input type="datetime-local" class="form-control" id="eventStart" name="eventStart" th:value="${tournament.eventStart}" required>
             </div>
             <div class="form-group">
               <label for="eventStart">Event finishes</label>
-              <input type="date" class="form-control" id="eventEnd" name="eventEnd" th:value="${tournament.eventEnd}" required>
+              <input type="datetime-local" class="form-control" id="eventEnd" name="eventEnd" th:value="${tournament.eventEnd}" required>
             </div>
             <div class="form-group">
               <label for="zipCode">Zip Code</label>

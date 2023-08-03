@@ -169,23 +169,55 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
     }
 
     // Save the edited tournament details
+//    @PostMapping("/tournaments/edit")
+//    public String editTournament(@ModelAttribute @Valid Tournament tournament, BindingResult bindingResult,
+//                                 @RequestParam("gameId") Long gameId, Model model) {
+//        if (bindingResult.hasErrors()) {
+//            // Handle validation errors and return to the edit-tournament form
+//            return "edit-tournament";
+//        }
+//
+//        // Get the selected game and set it in the tournament
+//        Game selectedGame = gameService.findGameById(gameId);
+//        tournament.setGame(selectedGame);
+//
+//        // Save the edited tournament
+//        tournament.setOrganizer(user);
+//        tournamentService.updateTournament(tournament);
+//
+//        return "redirect:/tournament-to-edit";
+//    }
+
+
+
+
+
+
     @PostMapping("/tournaments/edit")
     public String editTournament(@ModelAttribute @Valid Tournament tournament, BindingResult bindingResult,
                                  @RequestParam("gameId") Long gameId, Model model) {
-        if (bindingResult.hasErrors()) {
-            // Handle validation errors and return to the edit-tournament form
-            return "edit-tournament";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (bindingResult.hasErrors()) {
+                // Handle validation errors and return to the edit-tournament form
+                return "edit-tournament";
+            }
+
+            // Get the selected game and set it in the tournament
+            Game selectedGame = gameService.findGameById(gameId);
+            tournament.setGame(selectedGame);
+            tournament.setOrganizer(user);
+            // Save the edited tournament
+            tournamentService.updateTournament(tournament);
+
+            return "redirect:/join-tournament";
         }
-
-        // Get the selected game and set it in the tournament
-        Game selectedGame = gameService.findGameById(gameId);
-        tournament.setGame(selectedGame);
-
-        // Save the edited tournament
-        tournamentService.updateTournament(tournament);
-
-        return "redirect:/tournament-to-edit";
+        return "redirect:/join-tournament";
     }
+
+
 
     // Delete the selected tournament
     @PostMapping("/tournaments/delete/{id}")
@@ -195,7 +227,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         return "redirect:/join-tournament";
     }
 
-       @PostMapping("/tournaments/add")
+    @PostMapping("/tournaments/add")
     public String createTournament(@ModelAttribute @Valid Tournament tournament, BindingResult bindingResult,
                                    @RequestParam("gameId") Long gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
