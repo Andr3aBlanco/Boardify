@@ -78,6 +78,9 @@ public class PaymentController {
 			@RequestParam(name = "entryFees") Double entryFees,
 			Model model
 	) {
+
+		int entryFeesInt = (int) Math.round(entryFees);
+
 		Optional<Tournament> tournamentOptional = tournamentService.findTournamentByID(tournamentId);
 		if (tournamentOptional.isPresent()) {
 			Tournament tournament = tournamentOptional.get();
@@ -85,13 +88,11 @@ public class PaymentController {
 			// Add the tournament ID, user ID, entry fees, and tournament name to the model
 			model.addAttribute("tournamentId", tournamentId);
 			model.addAttribute("userId", userId);
-			model.addAttribute("entryFees", entryFees);
+			model.addAttribute("entryFees", entryFeesInt);
 			model.addAttribute("tournamentName", tournament.getTournamentName());
 			model.addAttribute("stripePublicKey", API_PUBLIC_KEY);
 		} else {
-			// Handle the case when the tournament with the given ID is not found in the database
-			// You can redirect the user to an error page or display an error message
-			// For example:
+
 			model.addAttribute("errorMessage", "Tournament not found");
 			return "error";
 		}
@@ -150,24 +151,44 @@ public class PaymentController {
 	}
 
 	@PostMapping("/create-charge")
-	public @ResponseBody Response createCharge(String email, String token, int amount) {
+	public @ResponseBody Response createCharge(String email,
+											   String token,
+											   int amount,
+											   Long tourid,
+											   Long userid) {
 
+		System.out.println("This is the tournament ID " + tourid + "    AHA");
 		if (token == null) {
-			return new Response(false, "Stripe payment token is missing. please try again later.");
+			return new Response(true, "Stripe payment token is missing. please try again later.");
 		}
 
-		String chargeId = stripeService.createCharge(email, token, amount);// 9.99 usd
+		String chargeId = stripeService.createCharge(email, token, amount);//
 
 		if (chargeId == null) {
-			return new Response(false, "An error accurred while trying to charge.");
+			return new Response(false, "An error occurred while trying to charge.");
 		}
 
-		// You may want to store charge id along with order information
+		// Find the tournament
+		Optional<Tournament> tournament = tournamentService.findTournamentByID(tourid);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetails userDetails = (UserDetails) auth.getPrincipal();
+		String userEmail = userDetails.getUsername();
+		User user = userService.findByEmail(userEmail);
+		// Record the transaction in the database
+		Transaction transaction = new Transaction();
+		transaction.setAmount(amount);
+		transaction.setCommission(0); //
+		transaction.setItem("Entry Fees"); //
+		transaction.setTransactionDate(LocalDate.now());
+		transaction.setTransactionTime(LocalTime.now());
+		transaction.setTransactionType(String.valueOf(3)); // 3 for entry fees
+		transaction.setTournament(tournament.get()); //
+		transaction.setUser(user);
+
+		transactionService.SaveTransaction(transaction);
 
 		return new Response(true, "Success your charge id is " + chargeId);
 	}
-
-
 
 	@PostMapping("/create-charge2")
 	public @ResponseBody Response createCharge2(String email, String token, int amount, int subscriptionType) {
@@ -176,7 +197,7 @@ public class PaymentController {
 			return new Response(false, "Stripe payment token is missing. Please try again later.");
 		}
 
-		String chargeId = stripeService.createCharge(email, token, amount); // 9.99 usd
+		String chargeId = stripeService.createCharge(email, token, amount); //
 
 		if (chargeId == null) {
 			return new Response(false, "An error occurred while trying to charge.");
@@ -190,7 +211,7 @@ public class PaymentController {
 		User user = userService.findByEmail(userEmail);
 		// Record the transaction in the database
 		Transaction transaction = new Transaction();
-		transaction.setAmount(amount);
+		transaction.setAmount(amount/100);
 		transaction.setCommission(0); // You might need to calculate commission here
 		transaction.setItem("Premium Subscription"); // Change as needed
 		transaction.setTransactionDate(LocalDate.now());

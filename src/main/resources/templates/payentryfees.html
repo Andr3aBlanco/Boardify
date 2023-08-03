@@ -45,8 +45,7 @@
 
         </div>
         <form action="#" id="payment-form" method="post">
-          <input id="api-key" type="hidden" th:value="${stripePublicKey}">
-          <div class="form-group">
+            <div class="form-group">
             <label class="font-weight-medium" for="card-element">
               Enter credit or debit card below
             </label>
@@ -73,6 +72,10 @@
             </div>
           </div>
 
+          <input id="api-key" type="hidden" th:value="${stripePublicKey}">
+          <input id="tour-id"  type="hidden" name="tournamentId" th:value="${tournamentId}">
+          <input  id="user-id" type="hidden" name="userId" th:value="${userId}">
+          <input type="hidden" name="entryFees" th:value="${entryFees}">
 
         </form>
         <p class="mt-5 text-muted">
@@ -94,7 +97,7 @@
     }
 
     // Get the entry fees value from the URL query parameter
-    var entryFees = parseFloat(getQueryParam('entryFees')) || 0; // Use 0 as the default value if the query parameter is missing or invalid
+    var entryFees =  Math.trunc(parseFloat(getQueryParam('entryFees'))) || 0; // Use 0 as the default value if the query parameter is missing or invalid
     var cost = entryFees * 100; // Convert to cents (Stripe requires the amount in cents)
     document.getElementById('subscriptionPrice').textContent = 'USD ' + (cost / 100).toFixed(2); // Display the entry fees on the page
 
@@ -143,10 +146,12 @@
           var token = result.token.id;
           var email = $('#email').val();
 
+          var tourid = $('#tour-id').val();
+          var userid = $('#tour-id').val();
 
           $.post(
                   "/create-charge",
-                  {email: email, token: token, amount: cost},
+                  {email: email, token: token, amount: cost, tourid : tourid, userid : userid },
                   function (data) {
                     alert(data.details);
                   }, 'json');
