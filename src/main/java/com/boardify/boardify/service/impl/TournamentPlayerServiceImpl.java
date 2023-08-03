@@ -14,6 +14,10 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.stereotype.Service;
+
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -24,33 +28,48 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     TournamentRepository tournamentRepository;
     UserRepository userRepository;
 
+
     @Autowired
     private final EntityManagerFactory emf = null; // to facilitate queries to database that output group by values
+
 
     public TournamentPlayerServiceImpl(TournamentPlayerRepository TPRepository, TournamentRepository tournamentRepository, UserRepository userRepository) {
         this.tournamentPlayerRepository = TPRepository;
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
     }
-    public void addPlayerToTournament(TournamentPlayerKey key) { // to add a player to a tournament
+
+    public void addPlayerToTournament(TournamentPlayerKey key) {
         Optional<Tournament> tournamentFind = tournamentRepository.findById(key.getTournamentId());
         Optional<User> userFind = userRepository.findById(key.getPlayerId());
-        if (!tournamentFind.isEmpty() && !userFind.isEmpty()) {
+        if (tournamentFind.isPresent() && userFind.isPresent()) {
+            //Optional.isPresent() and Optional.get() is safer than using !Optional.isEmpty() and Optional.get(),
+            // as the latter can lead to NoSuchElementException if the Optional is empty.
+            Tournament tournament = tournamentFind.get();
+            int currentEnrolled = tournament.getCurrEnrolled();
+            tournament.setCurrEnrolled(currentEnrolled + 1);
+
             TournamentPlayer tournamentPlayer = new TournamentPlayer();
-            tournamentPlayer.setTournament(tournamentFind.get());
+            tournamentPlayer.setTournament(tournament);
             tournamentPlayer.setPlayer(userFind.get());
             tournamentPlayer.setId(key);
+            tournamentPlayer.setTournamentRating(-1);
+            tournamentPlayer.setOrganizerRating(-1);
             tournamentPlayerRepository.save(tournamentPlayer);
         }
     }
 
-    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, Long playerId) { // to find tournaments logged-in player has participated in
-        return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, playerId);
+
+
+    public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email) {
+        return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, email);
+
     }
 
     public void savePlayerRating(TournamentPlayer tournamentRatingByPlayer) {
         tournamentPlayerRepository.save(tournamentRatingByPlayer);
     }
+
 
     public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
         return tournamentPlayerRepository.findById(key);
@@ -82,4 +101,21 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     public List<TournamentPlayer> findAllTournamentPlayers() {
         return tournamentPlayerRepository.findAll();
     }
+
+
+    public List<TournamentPlayer> findJoinedTournamentsByPlayer(Date dateToday, Long userId) {
+        return this.tournamentPlayerRepository.findJoinedTournamentsByPlayer(dateToday, userId);
+    }
+  
+    public void cancelEnrollment(TournamentPlayer tournamentPlayer) {
+        Tournament tournament = tournamentPlayer.getTournament();
+        if (tournament.getCurrEnrolled() > 0) {
+            tournament.setCurrEnrolled(tournament.getCurrEnrolled() - 1);
+        }
+        tournament.getTournamentPlayers().remove(tournamentPlayer);
+        tournamentPlayerRepository.delete(tournamentPlayer);
+        tournamentRepository.save(tournament);
+    }
+
+
 }

@@ -4,6 +4,8 @@
   <title>Tournaments</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
   <style>
     .star-rating {
       white-space: nowrap;
@@ -49,6 +51,7 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Location</th>
         <th>Date</th>
         <th>Entry Fee</th>
@@ -61,8 +64,10 @@
       <tbody>
       <tr th:each="attendedTournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
         <td th:text="${attendedTournament.tournament.tournamentName}"></td>
+        <td th:text="${attendedTournament.tournament.game.name}"></td>
         <td th:text="${attendedTournament.tournament.address + ', ' + attendedTournament.tournament.city + ', ' + attendedTournament.tournament.state + ', ' + attendedTournament.tournament.zipCode}"></td>
-        <td th:text="${attendedTournament.tournament.eventStart}"></td>
+        <td th:text="${attendedTournament.tournament.eventEnd}"></td>
+
         <td th:text="${attendedTournament.tournament.entryFees}"></td>
         <td th:text="${attendedTournament.tournament.prize}"></td>
         <form method="post" th:action="@{/tournaments/update-rating/{tournamentId}(tournamentId=${attendedTournament.tournament.tournamentId})}" th:object="${ratingObj}" >
@@ -115,8 +120,9 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Location</th>
-        <th>Date</th>
+        <th>Date Start</th>
         <th>Entry Fee</th>
         <th>Prize</th>
         <th>Actions</th>
@@ -125,12 +131,23 @@
       <tbody>
       <tr th:each="tournament : ${openTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
         <td th:text="${tournament.eventStart}"></td>
         <td th:text="${tournament.entryFees}"></td>
         <td th:text="${tournament.prize}"></td>
         <td>
-          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId} + '/'+${userId}}" class="btn btn-primary">Join Tournament</a>
+
+
+<!--          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId} + '/'+${userId}}" class="btn btn-primary">Join Tournament</a>-->
+<!--          <form id="payment-form" th:action="@{/pay-entry-fees}" method="post">-->
+<!--            <input type="hidden" name="tournamentId" th:value="${tournament.tournamentId}">-->
+<!--            <input type="hidden" name="userId" th:value="${userId}">-->
+<!--            <button type="submit" class="btn btn-primary">Join Tournament</button>-->
+<!--          </form>-->
+          <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
+
+
         </td>
       </tr>
       </tbody>
@@ -144,6 +161,9 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
+        <th>Curr Enrolled</th>
+        <th>Max Enrolled</th>
         <th>Location</th>
         <th>Date</th>
         <th>Entry Fee</th>
@@ -156,6 +176,9 @@
       <tbody>
       <tr th:each="tournament : ${myTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
+        <td th:text="${tournament.currEnrolled}"></td>
+        <td th:text="${tournament.maxEnrolled}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
         <td th:text="${tournament.eventStart}"></td>
         <td th:text="${tournament.entryFees}"></td>
@@ -163,12 +186,47 @@
 
         <td>
           <a th:href="@{'/tournaments/edit/' + ${tournament.tournamentId}}" class="btn btn-primary">Edit</a>
-          <form th:action="@{'/tournaments/delete/' + ${tournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
-            <button type="submit" class="btn btn-danger">Delete</button>
-          </form>
+        <form th:action="@{'/tournaments/delete/' + ${tournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
+         <button type="submit" class="btn btn-danger">Delete</button>
+        </form>
+
+     <!--     <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
+      -->
         </td>
         <td th:text="${tournament.organizer.id}"></td>
         <td th:text="${username}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <h2>Joined Tournaments</h2>
+
+  <div class="container">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Game</th>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Entry Fee</th>
+        <th>Prize</th>
+        <th>Cancel Enrollment</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="joinedTournament : ${joinedTournaments}">
+        <td th:text="${joinedTournament.tournament.tournamentName}"></td>
+        <td th:text="${joinedTournament.tournament.game.name}"></td>
+        <td th:text="${joinedTournament.tournament.address + ', ' + joinedTournament.tournament.city + ', ' + joinedTournament.tournament.state + ', ' + joinedTournament.tournament.zipCode}"></td>
+        <td th:text="${joinedTournament.tournament.eventStart}"></td>
+        <td th:text="${joinedTournament.tournament.entryFees}"></td>
+        <td th:text="${joinedTournament.tournament.prize}"></td>
+        <td>
+          <form method="post" th:action="@{/tournaments/cancel-enrollment/{tournamentId}(tournamentId=${joinedTournament.tournament.tournamentId})}" th:object="${emptyObject}">
+            <button type="submit" class="btn btn-danger">Cancel</button>
+          </form>
+        </td>
       </tr>
       </tbody>
     </table>

@@ -14,9 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class AuthController {
@@ -65,23 +62,7 @@ public class AuthController {
         return "redirect:/register?success";
     }
 
-    @GetMapping("/users")
-    public String listRegisteredUsers(Model model){
-        List<UserDto> users = userService.findAllNonAdmins();
-        model.addAttribute("users", users);
-        String[] accountStatuses = {"Okay", "Banned", "Locked"};
-        model.addAttribute("accStatuses", accountStatuses);
-        UserDto tempUser = new UserDto();
-        model.addAttribute("tempUser", tempUser);
-        return "users";
-    }
 
-    @PostMapping("/users/edit/{email}")
-    public String changeUserAccountStatus(@PathVariable("email") String email, @ModelAttribute("tempUser") UserDto tempUser){
-        userService.changeAccountStatus(email, tempUser.getAccountStatus());
-
-        return "redirect:/users";
-    }
 
     @GetMapping("/your-profile")
     public String viewYourProfile(Model model, HttpServletRequest request) {
@@ -104,16 +85,7 @@ public class AuthController {
         return "redirect:/your-profile";
     }
 
-    @PostMapping("/users/delete")
-    public String deleteUser(@RequestParam("email") String email) {
-        // Fetch the user from the database based on the email
-        User user = userRepository.findByEmail(email);
 
-        // Delete the user from the database
-        userRepository.delete(user);
-
-        return "redirect:/users"; // Redirect to the user list page
-    }
 
 
 }
