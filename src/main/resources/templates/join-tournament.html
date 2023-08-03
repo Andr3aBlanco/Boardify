@@ -51,6 +51,7 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Location</th>
         <th>Date</th>
         <th>Entry Fee</th>
@@ -63,8 +64,9 @@
       <tbody>
       <tr th:each="attendedTournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
         <td th:text="${attendedTournament.tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
         <td th:text="${attendedTournament.tournament.address + ', ' + attendedTournament.tournament.city + ', ' + attendedTournament.tournament.state + ', ' + attendedTournament.tournament.zipCode}"></td>
-        <td th:text="${attendedTournament.tournament.eventStart}"></td>
+        <td th:text="${attendedTournament.tournament.eventEnd}"></td>
         <td th:text="${attendedTournament.tournament.entryFees}"></td>
         <td th:text="${attendedTournament.tournament.prize}"></td>
         <form method="post" th:action="@{/tournaments/update-rating/{tournamentId}(tournamentId=${attendedTournament.tournament.tournamentId})}" th:object="${ratingObj}" >
@@ -117,8 +119,9 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Location</th>
-        <th>Date</th>
+        <th>Date Start</th>
         <th>Entry Fee</th>
         <th>Prize</th>
         <th>Actions</th>
@@ -127,6 +130,7 @@
       <tbody>
       <tr th:each="tournament : ${openTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
         <td th:text="${tournament.eventStart}"></td>
         <td th:text="${tournament.entryFees}"></td>
@@ -153,6 +157,7 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Curr Enrolled</th>
         <th>Max Enrolled</th>
         <th>Location</th>
@@ -167,6 +172,7 @@
       <tbody>
       <tr th:each="tournament : ${myTournaments}">
         <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
         <td th:text="${tournament.currEnrolled}"></td>
         <td th:text="${tournament.maxEnrolled}"></td>
         <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
@@ -196,6 +202,7 @@
       <thead>
       <tr>
         <th>Name</th>
+        <th>Game</th>
         <th>Location</th>
         <th>Date</th>
         <th>Entry Fee</th>
@@ -206,6 +213,7 @@
       <tbody>
       <tr th:each="joinedTournament : ${joinedTournaments}">
         <td th:text="${joinedTournament.tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
         <td th:text="${joinedTournament.tournament.address + ', ' + joinedTournament.tournament.city + ', ' + joinedTournament.tournament.state + ', ' + joinedTournament.tournament.zipCode}"></td>
         <td th:text="${joinedTournament.tournament.eventStart}"></td>
         <td th:text="${joinedTournament.tournament.entryFees}"></td>
