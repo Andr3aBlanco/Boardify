@@ -95,25 +95,6 @@ public class Tournament {
 
     @Column(name = "host_rating")
     private Double hostRating;
-    //Tournament_players
-    @OneToMany(mappedBy = "tournament")
-    private Set<TournamentPlayer> tournamentPlayers;
-    //Tournament_games
-    @ManyToMany
-    @JoinTable(
-            name = "tournament_games",
-            joinColumns = @JoinColumn(name = "tournament_id"),
-            inverseJoinColumns = @JoinColumn(name = "game_id")
-    )
-    private List<Game> games;
-//    @ManyToMany
-//    @JoinTable(
-//            name= "ratings",
-//            joinColumns = @JoinColumn(name = "tournament_rating"),
-//            inverseJoinColumns = @JoinColumn(name = "host_Rating")
-//
-//    )
-//    private List<Tournament> tournamentRatings; // not sure if this should be like that
 
     // Add the gameId getter and setter methods
     public Long getGameId() {
@@ -123,7 +104,6 @@ public class Tournament {
     public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
-
 
 
 }

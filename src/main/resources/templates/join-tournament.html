@@ -64,9 +64,7 @@
       <tbody>
       <tr th:each="attendedTournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
         <td th:text="${attendedTournament.tournament.tournamentName}"></td>
-
-
-        <td th:text="${tournament.game.name}"></td>
+        <td th:text="${attendedTournament.tournament.game.name}"></td>
         <td th:text="${attendedTournament.tournament.address + ', ' + attendedTournament.tournament.city + ', ' + attendedTournament.tournament.state + ', ' + attendedTournament.tournament.zipCode}"></td>
         <td th:text="${attendedTournament.tournament.eventEnd}"></td>
 
@@ -219,7 +217,7 @@
       <tbody>
       <tr th:each="joinedTournament : ${joinedTournaments}">
         <td th:text="${joinedTournament.tournament.tournamentName}"></td>
-        <td th:text="${tournament.game.name}"></td>
+        <td th:text="${joinedTournament.tournament.game.name}"></td>
         <td th:text="${joinedTournament.tournament.address + ', ' + joinedTournament.tournament.city + ', ' + joinedTournament.tournament.state + ', ' + joinedTournament.tournament.zipCode}"></td>
         <td th:text="${joinedTournament.tournament.eventStart}"></td>
         <td th:text="${joinedTournament.tournament.entryFees}"></td>

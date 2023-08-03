@@ -202,7 +202,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
-            tournament.setOrganizerId(user.getId());
+            tournament.setOrganizer(user);
 
             Game selectedGame = gameService.findGameById(gameId);
             tournament.setGame(selectedGame);
@@ -247,8 +247,6 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         }
 
     }
-  
-  
 
     @PostMapping("/tournaments/update-rating/{tournamentId}")
     public String editRating(@PathVariable Long tournamentId, @ModelAttribute("ratingObj") TournamentPlayer ratingObj){
@@ -272,26 +270,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         return "redirect:/join-tournament";
     }
 
-    @PostMapping("/tournaments/update-rating/{tournamentId}")
-    public String editRating(@PathVariable Long tournamentId, @ModelAttribute("ratingObj") TournamentPlayer ratingObj){
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
-            User user = userService.findByEmail(email);
-            if (user != null) {
-                TournamentPlayerKey key = new TournamentPlayerKey(tournamentId, user.getId());
-                Optional<TournamentPlayer> opTournamentPlayer = tournamentPlayerService.findTournamentPlayerByKey(key);
-                if (!opTournamentPlayer.isEmpty()) {
-                    TournamentPlayer tournamentPlayer = opTournamentPlayer.get();
-                    tournamentPlayer.setTournamentRating(ratingObj.getTournamentRating());
-                    tournamentPlayer.setOrganizerRating(ratingObj.getOrganizerRating());
-                    tournamentPlayerService.savePlayerRating(tournamentPlayer);
-                }
-            }
-        }
-        return "redirect:/join-tournament";
-    }
 
 
 }

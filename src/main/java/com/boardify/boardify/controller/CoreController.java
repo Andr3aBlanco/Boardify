@@ -154,7 +154,7 @@ public class CoreController implements ErrorController {
                         model.addAttribute("joinedTournaments", joinedTournaments);
                         List<Tournament> openTournaments = tournamentService.findAllOpenTournaments(today);//Show all tournaments
                         model.addAttribute("myTournaments",openTournaments);
-                        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                        List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getEmail());
                         model.addAttribute("pastTournaments", pastTournaments);
 
                     }
@@ -162,7 +162,7 @@ public class CoreController implements ErrorController {
                     {
                         List<Tournament> myTournaments = tournamentService.findAllOpenTournamentsByUser(today,user.getId());
                         model.addAttribute("myTournaments",myTournaments);//Show tournaments created by logged in user ONLY
-                        List<Tournament> pastTournaments = tournamentService.findAllTournamentsBeforeTodayAndUser(today, user.getId());
+                        List<TournamentPlayer> pastTournaments = tournamentPlayerService.findAllPastTournamentsByPlayer(today, user.getEmail());
                         model.addAttribute("pastTournaments", pastTournaments);
                         List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
                         model.addAttribute("joinedTournaments", joinedTournaments);

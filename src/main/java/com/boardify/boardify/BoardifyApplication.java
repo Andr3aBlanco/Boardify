@@ -16,14 +16,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 
 @PropertySource("classpath:application.properties")
 @EnableScheduling
@@ -283,5 +281,4 @@ public class BoardifyApplication extends SpringBootServletInitializer implements
 		}
 	}
 
-	}
 }
