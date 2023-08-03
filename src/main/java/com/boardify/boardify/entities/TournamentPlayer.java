@@ -23,7 +23,10 @@ public class TournamentPlayer {
     @ManyToOne
     @MapsId("id")
     @JoinColumn(name = "player_id")
+
     User player; // refers to user table
+
+
 
     int organizerRating;
 
