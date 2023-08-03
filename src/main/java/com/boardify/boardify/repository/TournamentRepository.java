@@ -34,7 +34,6 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 
 
 
-
     @Query(value = "SELECT rating FROM tournament WHERE tournament_id = :tournamentId",nativeQuery = true)
     Double findRating(Long tournamentId);
 

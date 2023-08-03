@@ -50,6 +50,39 @@ public class TournamentController {
 //
 //        return "join-tournament";
 //    }
+
+//     @GetMapping("/tournaments/join/{tournamentId}/null")
+//     public String handleNull(@PathVariable Long tournamentId)
+//     {
+//         return "redirect:../../../login";
+//     }
+//     @GetMapping("tournaments/join/{tournamentId}/{userId}")
+//     public RedirectView getTournament(@PathVariable Long tournamentId, @PathVariable Long userId, Model model) {
+//         System.out.println(tournamentId + " " + userId);
+//         try {
+//             // Check if userId is null
+//             if (userId == null) {
+//                 // Redirect to the login page
+//                 return new RedirectView("login");
+//             }
+
+//             // Check if the user is authenticated
+//             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//             if (authentication == null || !authentication.isAuthenticated()) {
+//                 // Redirect to the login page
+//                 return new RedirectView("/login");
+//             }
+
+//             Optional<Tournament> tournament = tournamentService.findTournamentByID(tournamentId);
+
+//             if (tournament.isPresent()) {
+//                 // Add the necessary data to the model
+//                 model.addAttribute("tournament", tournament.get());
+//                 model.addAttribute("userId", userId);
+//                 TournamentPlayerKey tpKey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
+
+//                 tournamentPlayerService.addPlayerToTournament(tpKey);
+
 @PostMapping("/tournaments/cancel-enrollment/{tournamentId}")
 public String cancelEnrollment(@PathVariable Long tournamentId) {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -97,6 +130,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
                 TournamentPlayerKey tpkey = new TournamentPlayerKey(Long.valueOf(tournamentId), Long.valueOf(userId));
 
                 tournamentPlayerService.addPlayerToTournament(tpkey);
+
                 return new RedirectView("/dummy"); // change this for the URL you want to redirect
                 // It is not going to show the button if it is full or it has ended
                 // Every tournament you get will be ready to process
@@ -108,6 +142,8 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
             e.printStackTrace();
             return new RedirectView("/");
         }
+
+
         //For Andrea to add the user at the tournament_player, you just need tournament's id and the following code
                 /*
 
@@ -116,6 +152,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
                     TournamentPlayerKey tpKey = new TournamentPlayerKey(tournamentVariable.getTournamentId(), player.getId());
                     tournamentPlayerService.addPlayerToTournament(tpKey);
                  */
+
     }
 
     @GetMapping("/tournaments/edit/{id}")
@@ -158,7 +195,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         return "redirect:/join-tournament";
     }
 
-    @PostMapping("/tournaments/add")
+       @PostMapping("/tournaments/add")
     public String createTournament(@ModelAttribute @Valid Tournament tournament, BindingResult bindingResult,
                                    @RequestParam("gameId") Long gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -170,14 +207,6 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
             Game selectedGame = gameService.findGameById(gameId);
             tournament.setGame(selectedGame);
 
-            // Add players to the tournament
-//        List<User> players = new ArrayList<>();
-//
-//        // Get the user with ID 1 manually
-//        // Replace the "findById" method with find by email
-//        User user = userService.findByEmail("admin@admin.com");
-//        players.add(user);
-//        tournament.setPlayers(players);
 
             List<Game> tournamentGames = new ArrayList<>();
             tournamentGames.add(selectedGame);
@@ -186,6 +215,10 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
             try {
                 Tournament createdTournament = tournamentService.createTournament(tournament);
                 model.addAttribute("errorMessage", "Success!");
+
+
+                //You don't need this code Andrea
+                  //  TournamentPlayer tournamentPlayer = new TournamentPlayer(tpKey, createdTournament, player, 0, 0,0);
 
                 return "redirect:/"; // Replace with the appropriate URL
             } catch (Exception e) {
@@ -214,6 +247,8 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         }
 
     }
+  
+  
 
     @PostMapping("/tournaments/update-rating/{tournamentId}")
     public String editRating(@PathVariable Long tournamentId, @ModelAttribute("ratingObj") TournamentPlayer ratingObj){
@@ -237,13 +272,26 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
         return "redirect:/join-tournament";
     }
 
+    @PostMapping("/tournaments/update-rating/{tournamentId}")
+    public String editRating(@PathVariable Long tournamentId, @ModelAttribute("ratingObj") TournamentPlayer ratingObj){
 
-//    @GetMapping("/pay-entry-fees/{tournamentId}/{userId}")
-//    public String payEntryFees(@PathVariable String tournamentId, @PathVariable String userId, @RequestParam("entryFees") String entryFees, Model model) {
-//        model.addAttribute("tournamentId", tournamentId);
-//        model.addAttribute("userId", userId);
-//        model.addAttribute("entryFees", entryFees);
-//        return "payentryfees"; // This should be the name of your pay-entry-fees.html Thymeleaf template.
-//    }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            User user = userService.findByEmail(email);
+            if (user != null) {
+                TournamentPlayerKey key = new TournamentPlayerKey(tournamentId, user.getId());
+                Optional<TournamentPlayer> opTournamentPlayer = tournamentPlayerService.findTournamentPlayerByKey(key);
+                if (!opTournamentPlayer.isEmpty()) {
+                    TournamentPlayer tournamentPlayer = opTournamentPlayer.get();
+                    tournamentPlayer.setTournamentRating(ratingObj.getTournamentRating());
+                    tournamentPlayer.setOrganizerRating(ratingObj.getOrganizerRating());
+                    tournamentPlayerService.savePlayerRating(tournamentPlayer);
+                }
+            }
+        }
+        return "redirect:/join-tournament";
+    }
+
 
 }

@@ -64,9 +64,12 @@
       <tbody>
       <tr th:each="attendedTournament, row : ${pastTournaments}" th:class="'row-' + ${row.index}">
         <td th:text="${attendedTournament.tournament.tournamentName}"></td>
+
+
         <td th:text="${tournament.game.name}"></td>
         <td th:text="${attendedTournament.tournament.address + ', ' + attendedTournament.tournament.city + ', ' + attendedTournament.tournament.state + ', ' + attendedTournament.tournament.zipCode}"></td>
         <td th:text="${attendedTournament.tournament.eventEnd}"></td>
+
         <td th:text="${attendedTournament.tournament.entryFees}"></td>
         <td th:text="${attendedTournament.tournament.prize}"></td>
         <form method="post" th:action="@{/tournaments/update-rating/{tournamentId}(tournamentId=${attendedTournament.tournament.tournamentId})}" th:object="${ratingObj}" >
@@ -136,6 +139,8 @@
         <td th:text="${tournament.entryFees}"></td>
         <td th:text="${tournament.prize}"></td>
         <td>
+
+
 <!--          <a th:href="@{'/tournaments/join/' + ${tournament.tournamentId} + '/'+${userId}}" class="btn btn-primary">Join Tournament</a>-->
 <!--          <form id="payment-form" th:action="@{/pay-entry-fees}" method="post">-->
 <!--            <input type="hidden" name="tournamentId" th:value="${tournament.tournamentId}">-->
@@ -143,6 +148,7 @@
 <!--            <button type="submit" class="btn btn-primary">Join Tournament</button>-->
 <!--          </form>-->
           <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
+
 
         </td>
       </tr>
@@ -189,7 +195,7 @@
      <!--     <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
       -->
         </td>
-        <td th:text="${tournament.organizerId}"></td>
+        <td th:text="${tournament.organizer.id}"></td>
         <td th:text="${username}"></td>
       </tr>
       </tbody>

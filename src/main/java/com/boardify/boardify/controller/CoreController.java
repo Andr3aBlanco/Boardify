@@ -3,9 +3,11 @@ package com.boardify.boardify.controller;
 
 
 
+
 import com.boardify.boardify.DTO.BoardGameResponse;
 import com.boardify.boardify.DTO.GameSearchResult;
 import com.boardify.boardify.entities.Game;
+
 import com.boardify.boardify.entities.*;
 import com.boardify.boardify.DTO.UserDto;
 
@@ -14,8 +16,13 @@ import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.*;
 
 
+
+import jakarta.servlet.RequestDispatcher;
+
+
 import com.boardify.boardify.entities.Tournament;
 import jakarta.servlet.RequestDispatcher;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +40,16 @@ import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+
+import java.util.*;
+
 import java.util.Date;
 
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 @Controller
 public class CoreController implements ErrorController {
@@ -60,13 +71,16 @@ public class CoreController implements ErrorController {
     }
 
     @Autowired
-    private TournamentPlayerService tournamentPlayerService;
+    private BoardGameAtlasService atlasService;
+
 
     @Autowired
     private TransactionService transactionService;
 
+
     @Autowired
-    private BoardGameAtlasService atlasService;
+    private TournamentPlayerService tournamentPlayerService;
+
 
     @GetMapping("/")
     public String showHomePage(Model model, HttpServletRequest request) {
@@ -125,7 +139,9 @@ public class CoreController implements ErrorController {
 
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
+
                 String role = user.getRoles().get(0).getName();
+
 
                 if (user.getId() != null)
                 {
@@ -151,7 +167,6 @@ public class CoreController implements ErrorController {
                         List<TournamentPlayer> joinedTournaments = tournamentPlayerService.findJoinedTournamentsByPlayer(today, user.getId());
                         model.addAttribute("joinedTournaments", joinedTournaments);
                     }
-
 
                 }
             }
@@ -192,18 +207,20 @@ public class CoreController implements ErrorController {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
             if (user != null) {
+
                 System.out.println(user.getRoles() + " " + user.getRoles().size());
                 String role = user.getRoles().get(0).getName();
                 if (role.equals("ROLE_BASIC")) {
                     return "redirect:/go-premium";
                 } else if (role.equals("ROLE_PREMIUM") || role.equals("ROLE_ADMIN")) {
+
                     model.addAttribute("request", request);
                     Tournament tournament = new Tournament();
                     model.addAttribute("tournament", tournament);
                     List<Game> games = gameService.findAll();
                     model.addAttribute("games", games);
                     return "create-tournament";
-                }
+               }
             } else {
                 return "redirect:/login";
             }
@@ -223,11 +240,34 @@ public class CoreController implements ErrorController {
 
     @GetMapping("/leaderboard")
     public String showLeaderboard(Model model) {
-        List<Tournament> allTournaments = tournamentService.findAllTournaments();
-        model.addAttribute("tournaments", allTournaments);
 
-        List<UserDto> allUsers = userService.findAllUsers();
-        model.addAttribute("users", allUsers);
+        ArrayList<String> playersUsernames = new ArrayList<>();
+        ArrayList<Long> attendanceCounts = new ArrayList<>();
+        List<Object[]> playersAttendanceCount = tournamentPlayerService.findJoinedTournamentsCountPerPlayer();
+        for (Object[] playerAttendance : playersAttendanceCount) {
+            playersUsernames.add((String) playerAttendance[0]);
+            attendanceCounts.add((Long) playerAttendance[1]);
+        }
+
+        model.addAttribute("players", playersUsernames);
+        model.addAttribute("attendanceCounts", attendanceCounts);
+
+        ArrayList<String> organizerUsernames = new ArrayList<>();
+        ArrayList<Long> tournamentCounts = new ArrayList<>();
+        ArrayList<Double> avgOrganizerRatings = new ArrayList<>();
+        ArrayList<Double> avgTournamentRatingsPerOrganizer = new ArrayList<>();
+        List<Object[]> organizersStatistics = tournamentPlayerService.findOrganizerStats();
+        for (Object[] organizerStats : organizersStatistics) {
+            organizerUsernames.add((String) organizerStats[0]);
+            avgOrganizerRatings.add((Double) organizerStats[1]);
+            avgTournamentRatingsPerOrganizer.add((Double) organizerStats[2]);
+            tournamentCounts.add((Long) organizerStats[3]);
+        }
+        model.addAttribute("organizers", organizerUsernames);
+        model.addAttribute("numHosted", tournamentCounts);
+        model.addAttribute("organizerRating", avgOrganizerRatings);
+        model.addAttribute("tournamentsRating", avgTournamentRatingsPerOrganizer);
+
 
         return "leaderboard";
     }

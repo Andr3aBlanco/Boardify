@@ -1,5 +1,6 @@
 package com.boardify.boardify.repository;
 
+
 import com.boardify.boardify.entities.Tournament;
 import com.boardify.boardify.entities.TournamentPlayer;
 import com.boardify.boardify.entities.TournamentPlayerKey;
@@ -8,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+
+import java.util.Dictionary;
 import java.util.List;
 
 @Repository
@@ -25,6 +28,5 @@ public interface TournamentPlayerRepository extends JpaRepository<TournamentPlay
             "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.id = :userId",
             nativeQuery = true)
     List<TournamentPlayer> findJoinedTournamentsByPlayer(Date today, Long userId);
-
 
 }

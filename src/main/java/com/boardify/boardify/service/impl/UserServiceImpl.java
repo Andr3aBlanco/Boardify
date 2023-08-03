@@ -140,4 +140,14 @@ public class UserServiceImpl implements UserService {
                 .map(this::convertEntityToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public User findByUserId(Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (!userOpt.isEmpty()) {
+            return userOpt.get();
+        } else {
+            return null;
+        }
+    }
 }

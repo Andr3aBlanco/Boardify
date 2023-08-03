@@ -15,7 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-public class TournamentPlayerKey implements Serializable {
+public class TournamentPlayerKey implements Serializable { //key to facilitate a composite primary key for TournamentPlayer entity
+
 
     @Column(name="tournament_id")
     Long tournamentId;

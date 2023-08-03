@@ -9,7 +9,14 @@ import com.boardify.boardify.repository.TournamentRepository;
 import com.boardify.boardify.repository.UserRepository;
 import com.boardify.boardify.service.TournamentPlayerService;
 import com.boardify.boardify.service.TournamentService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import org.springframework.stereotype.Service;
+
 
 import java.util.Date;
 import java.util.List;
@@ -21,11 +28,17 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     TournamentRepository tournamentRepository;
     UserRepository userRepository;
 
+
+    @Autowired
+    private final EntityManagerFactory emf = null; // to facilitate queries to database that output group by values
+
+
     public TournamentPlayerServiceImpl(TournamentPlayerRepository TPRepository, TournamentRepository tournamentRepository, UserRepository userRepository) {
         this.tournamentPlayerRepository = TPRepository;
         this.tournamentRepository = tournamentRepository;
         this.userRepository = userRepository;
     }
+
     public void addPlayerToTournament(TournamentPlayerKey key) {
         Optional<Tournament> tournamentFind = tournamentRepository.findById(key.getTournamentId());
         Optional<User> userFind = userRepository.findById(key.getPlayerId());
@@ -47,24 +60,53 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
     }
 
 
+
     public List<TournamentPlayer> findAllPastTournamentsByPlayer(Date dateToday, String email) {
         return this.tournamentPlayerRepository.findAllPastTournamentsByPlayer(dateToday, email);
+
     }
 
     public void savePlayerRating(TournamentPlayer tournamentRatingByPlayer) {
         tournamentPlayerRepository.save(tournamentRatingByPlayer);
     }
 
-//    public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
-//        return tournamentPlayerRepository.findById(key);
-//    }
 
-        public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
-            return tournamentPlayerRepository.findById(key);
+    public Optional<TournamentPlayer> findTournamentPlayerByKey(TournamentPlayerKey key) {
+        return tournamentPlayerRepository.findById(key);
     }
+
+    public List<Object[]> findJoinedTournamentsCountPerPlayer() { // to get players' stats for leaderboard.html
+        EntityManager entityManager = emf.createEntityManager();
+        Query query = entityManager.createQuery(
+                    "SELECT tp.player.username, COUNT(tp.tournament.tournamentId) AS numAttended " +
+                            "FROM TournamentPlayer tp " +
+                            "GROUP BY tp.player.id " +
+                            "ORDER BY numAttended DESC " +
+                            "FETCH FIRST 10 ROWS ONLY");
+        return query.getResultList();
+    }
+
+    public List<Object[]> findOrganizerStats() { // to get for organizers' stats for leaderboard.html
+        EntityManager entityManager = emf.createEntityManager();
+        Query query = entityManager.createQuery(
+                    "SELECT t.organizer.username, ROUND(AVG(tp.organizerRating), 2), ROUND(AVG(tp.tournamentRating),2), COUNT(DISTINCT t.tournamentId) " +
+                            "FROM TournamentPlayer tp JOIN Tournament t ON t.tournamentId = tp.tournament.tournamentId " +
+                            "WHERE tp.organizerRating > -1 AND tp.tournamentRating > -1 " +
+                            "GROUP BY t.organizer " +
+                            "ORDER BY ROUND(AVG(tp.organizerRating),2) DESC " +
+                            "FETCH FIRST 10 ROWS ONLY");
+        return query.getResultList();
+    }
+
+    public List<TournamentPlayer> findAllTournamentPlayers() {
+        return tournamentPlayerRepository.findAll();
+    }
+
+
     public List<TournamentPlayer> findJoinedTournamentsByPlayer(Date dateToday, Long userId) {
         return this.tournamentPlayerRepository.findJoinedTournamentsByPlayer(dateToday, userId);
     }
+  
     public void cancelEnrollment(TournamentPlayer tournamentPlayer) {
         Tournament tournament = tournamentPlayer.getTournament();
         if (tournament.getCurrEnrolled() > 0) {
@@ -74,5 +116,6 @@ public class TournamentPlayerServiceImpl implements TournamentPlayerService {
         tournamentPlayerRepository.delete(tournamentPlayer);
         tournamentRepository.save(tournament);
     }
+
 
 }
