@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>Go Premium!</title>
@@ -11,15 +11,19 @@
 
   <link href="/css/font-awesome.css" rel="stylesheet">
 
+  <!--Bootstrap 4 CSS-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!--Bootstrap 4 JavaScript-->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-  <!-- font-awesome icons -->
+  <!--Stripe JavaScript Library-->
   <script src="https://js.stripe.com/v3/"></script>
-
-
 
 </head>
 <body>
-<div th:replace="_navbar.html"></div>
+<div th:replace="~{_navbar.html}"></div>
 
 
 <div th:switch="${subscriptions}" class="planscontainer">
@@ -28,8 +32,8 @@
 
     <div class="row justify-content-center pb-5 projects-grids">
       <div class="col-lg-12 pb-lg-2 text-center">
-        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2">Premium Subscription Plans</h3>
-        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium">What we can offer for our customers</p>
+        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2" style="color: black">Premium Subscription Plans</h3>
+        <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium" style="color: black">Get Premium To Host Tournaments</p>
         <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
       </div>
     </div>
@@ -43,7 +47,7 @@
             <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large"><span th:text="${subscription.duration}"></span> Plan</span>
             <span class="price d-block mt-4 text-white" style="color: white">
                         <span class="title-medium">
-                          <span class="text-white title-medium" th:text="${'$' + #numbers.formatDecimal(subscription.cost, 1, 'COMMA', 2, 'POINT')}"></span></span>
+                          <span id="planPrice" class="text-white title-medium" th:text="${'$' + #numbers.formatDecimal(subscription.cost, 1, 'COMMA', 2, 'POINT')}" th:attr="datapriceattribute=${subscription.cost}"></span></span>
 
                         <span>/<span class="text-medium" th:text="${subscription.duration}"></span></span>
           </span>
@@ -54,8 +58,11 @@
             <span class="bg-gray d-block p-4 text-large" th:text="${'You keep ' + (1 - subscription.commissionRate)*100 + '% of your revenues from entry fees'}"></span>
           </div>
 
-          <div class="pricing-footer bg-base-color">
-            <a href="#" class="getplantbutton">Get Monthly Premium!</a>
+          <div th:unless="${currentUser}" class="pricing-footer bg-base-color">
+            <a href="/login" class="getplantbutton">Get Monthly Premium</a>
+          </div>
+          <div th:if="${currentUser}" class="pricing-footer bg-base-color">
+            <a href="#" class="getplantbutton activegetplantbutton">Get Monthly Premium</a>
           </div>
         </div>
       </div>
@@ -63,24 +70,150 @@
   </div>
 </div>
 
-<form action='/charge' method='POST' id='checkout-form'>
-  <input type='hidden' th:value='${amount}' name='amount' />
-  <label>Price:<span th:text='${amount/100}' /></label>
-  <!-- NOTE: data-key/data-amount/data-currency will be rendered by Thymeleaf -->
-  <script
-          src='https://checkout.stripe.com/checkout.js'
-          class='stripe-button'
-          th:attr='data-key=${stripePublicKey},
-         data-amount=${amount},
-         data-currency=${currency}'
-          data-name='Baeldung'
-          data-description='Spring course checkout'
-          data-image
-                  ='https://www.baeldung.com/wp-content/themes/baeldung/favicon/android-chrome-192x192.png'
-          data-locale='auto'
-          data-zip-code='false'>
-  </script>
-</form>
+<!--hero section-->
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-12 my-auto mx-auto">
+        <h1>
+          Stripe One-Time Charge
+        </h1>
+        <p class="lead mb-4">
+          Please fill the form below to complete the order payment
+        </p>
+        <div class="card mb-4">
+          <div class="card-body">
+            <h5 id="subscriptionName">Leather Bag</h5>
+            <p class="lead" id="subscriptionPrice">USD 9.99</p>
+          </div>
+
+        </div>
+        <form action="#" id="payment-form" method="post">
+          <input id="api-key" type="hidden" th:value="${stripePublicKey}">
+          <div class="form-group">
+            <label class="font-weight-medium" for="card-element">
+              Enter credit or debit card below
+            </label>
+            <div class="w-100" id="card-element">
+              <!-- A Stripe Element will be inserted here. -->
+            </div>
+          </div>
+          <div class="form-group">
+            <input class="form-control" id="email" name="email"
+                   placeholder="Email Address" type="email" required>
+          </div>
+          <!-- Used to display Element errors. -->
+          <div class="text-danger w-100" id="card-errors" role="alert"></div>
+          <div class="form-group pt-2">
+            <button class="btn btn-primary btn-block" id="submitButton" type="submit">
+              Pay With Your Card
+            </button>
+            <div class="small text-muted mt-2">
+              Pay securely with Stripe. By clicking the button above, you agree
+              to our <a target="_blank" href="#">Terms of Service</a>,
+              <a target="_blank" href="#">Privacy</a> and
+              <a target="_blank" href="#">Refund</a> policies.
+
+            </div>
+          </div>
+
+
+        </form>
+        <p class="mt-5 text-muted">
+          <!--<small>An example project by <a th:href="@{https://github.com/GretiCani}" target="_blank">Greti</a>.</small>-->
+          </small>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--custom javascript for handling subscription-->
+<script>
+  $(function () {
+    var API_KEY = $('#api-key').val();
+    // Create a Stripe client.
+    var stripe = Stripe(API_KEY);
+
+    // Create an instance of Elements.
+    var elements = stripe.elements();
+
+    // Create an instance of the card Element.
+    var card = elements.create('card');
+
+
+    // Add an instance of the card Element into the `card-element` <div>.
+    card.mount('#card-element');
+
+    // Handle real-time validation errors from the card Element.
+    card.addEventListener('change', function (event) {
+      var displayError = document.getElementById('card-errors');
+      if (event.error) {
+        displayError.textContent = event.error.message;
+      } else {
+        displayError.textContent = '';
+      }
+    });
+
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+      // handle payment
+      handlePayments(cost);
+    });
+
+    //handle card submission
+    function handlePayments(cost) {
+      stripe.createToken(card).then(function (result) {
+        if (result.error) {
+          // Inform the user if there was an error.
+          var errorElement = document.getElementById('card-errors');
+          errorElement.textContent = result.error.message;
+        } else {
+          // Send the token to your server.
+          var token = result.token.id;
+          var email = $('#email').val();
+
+
+          $.post(
+                  "/create-charge",
+                  {email: email, token: token, amount: cost},
+                  function (data) {
+                    alert(data.details);
+                  }, 'json');
+        }
+      });
+    }
+  });
+
+
+<!-- Add this script at the bottom, after the previous script -->
+
+  // JavaScript function to update the subscription information
+  function updateSubscriptionInfo(subscriptionName, subscriptionPrice) {
+    var subscriptionNameElement = document.getElementById('subscriptionName');
+    var subscriptionPriceElement = document.getElementById('subscriptionPrice');
+
+    subscriptionNameElement.textContent = subscriptionName;
+    subscriptionPriceElement.textContent = subscriptionPrice;
+  }
+
+
+  $(function() {
+    // Other JavaScript code
+
+    // Handle the click event on the "Get Monthly Premium!" button
+    $('.activegetplantbutton').click(function(event) {
+
+      event.preventDefault();
+      var subscription = $(this).closest('.pricing').find('.title-large').text();
+      cost = 100*parseInt($(this).closest('.pricing').find('#planPrice').attr('datapriceattribute'));
+      console.log("This is my cost " + cost );
+      updateSubscriptionInfo(subscription, cost/100);
+    });
+  });
+</script>
 
 </body>
 </html>

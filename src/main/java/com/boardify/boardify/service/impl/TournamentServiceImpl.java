@@ -6,15 +6,19 @@ import com.boardify.boardify.service.TournamentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class TournamentServiceImpl implements TournamentService {
 
+    private final TournamentRepository tournamentRepository;
 
     @Autowired
-    private TournamentRepository tournamentRepository;
+    public TournamentServiceImpl(TournamentRepository tournamentRepository) {
+        this.tournamentRepository = tournamentRepository;
+    }
 
     @Override
     public List<Tournament> findAll() {
@@ -34,11 +38,37 @@ public class TournamentServiceImpl implements TournamentService {
     @Override
     public void deleteTournament(Long id) {
         tournamentRepository.deleteById(id);
-
     }
 
     @Override
     public Optional<Tournament> findTournamentByID(Long id) {
         return tournamentRepository.findById(id);
     }
+
+    @Override
+    public List<Tournament> findAllTournamentsBeforeTodayAndUser(Date today, Long userId) {
+        return tournamentRepository.findAllByEventEndBeforeAndUser(today,userId);
+    }
+
+    @Override
+    public List<Tournament> findAllOpenTournaments(Date today) {
+        return tournamentRepository.findAllOpenTournaments(today);
+    }
+
+    @Override
+    public List<Tournament> findAllOpenTournamentsByUser(Date today, Long id) {
+        return tournamentRepository.findAllOpenTournamentsByUser(today,id);
+    }
+
+    @Override
+    public Double findRating(Long tournamentId) {
+        return tournamentRepository.findRating(tournamentId);
+    }
+    @Override
+    public List<Tournament> findAllTournaments() {
+        return tournamentRepository.findAll();
+    }
+
+
 }
+

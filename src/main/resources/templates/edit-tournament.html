@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Tournament</title>
+
+  <!-- Include the required CSS and JS files (similar to create-tournament.html) -->
+
+  <!-- Google Maps API library -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
+
+  <!-- Calendar and Time Picker library -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- CSS for Select2 -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+
+  <!-- jQuery (required for Select2) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <!-- Select2 JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+
+</head>
+<body>
+<div th:replace="~{_navbar.html}"></div>
+
+<h1>Edit Tournament</h1>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-5">
+      <div class="card mt-5">
+        <div class="card-body">
+          <h2 class="text-center mb-4">Edit Tournament</h2>
+          <form th:action="@{'/tournaments/edit'}" method="post" th:object="${tournament}">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+              <p th:text="${errorMessage}"></p>
+            </div>
+            <div class="form-group" >
+              <label for="organizer">Organizer</label>
+              <input type="text" class="form-control" id="organizer" name="organizer" th:value="${tournament.organizer.getId()}" readonly>
+            </div>
+            <div class="form-group">
+              <label for="tournamentName">Tournament Name</label>
+              <input type="text" class="form-control" id="tournamentName" name="tournamentName" th:value="${tournament.tournamentName}" required>
+            </div>
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" class="form-control" id="address" name="address" th:value="${tournament.address}" required>
+              <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" class="form-control" id="city" name="city" th:value="${tournament.city}" required>
+              <span th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+            </div>
+            <div class="form-group">
+              <label for="state">Province</label>
+              <input type="text" class="form-control" id="state" name="state" th:value="${tournament.state}" required>
+            </div>
+            <div class="form-group">
+              <label for="comp_level">Competitive level</label>
+              <input type="text" class="form-control" id="comp_level" name="comp_level" th:value="${tournament.compLevel}" required>
+            </div>
+            <div class="form-group">
+              <label for="eventStart">Event starts</label>
+              <input type="datetime-local" class="form-control" id="eventStart" name="eventStart" th:value="${tournament.eventStart}" required>
+            </div>
+            <div class="form-group">
+              <label for="eventStart">Event finishes</label>
+              <input type="datetime-local" class="form-control" id="eventEnd" name="eventEnd" th:value="${tournament.eventEnd}" required>
+            </div>
+            <div class="form-group">
+              <label for="zipCode">Zip Code</label>
+              <input type="text" class="form-control" id="zipCode" name="zipCode" th:value="${tournament.zipCode}" required>
+            </div>
+            <!--
+            <div class="form-group">
+              <label for="time">Time</label>
+              <input type="time" class="form-control" id="time" name="time" th:value="${tournament.time}" required>
+            </div>
+              -->
+            <div class="form-group">
+              <label for="max_enrolled">Maximum Attendees</label>
+              <input type="number" class="form-control" id="max_enrolled" name="attendees" th:value="${tournament.maxEnrolled}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="gameId">Select Game</label>
+              <select class="form-control" id="gameId" name="gameId" required th:field="*{gameId}">
+                <!-- Loop through the games and generate an option for each game -->
+                <option th:each="game : ${games}" th:value="${game.gameId}" th:text="${game.name}" th:selected="${game.gameId == tournament.gameId}"></option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="entryFees">Entry Fees</label>
+              <input type="text" class="form-control" id="entryFees" name="entryFees" th:value="${tournament.entryFees}" required>
+            </div>
+
+            <div class="form-group">
+              <label for="prize">Prize</label>
+              <input type="text" class="form-control" id="prize" name="prize" th:value="${tournament.prize}" required>
+            </div>
+
+            <!-- Add a hidden input field to pass the tournamentId to the controller -->
+            <input type="hidden" name="tournamentId" th:value="${tournament.tournamentId}">
+
+            <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Initialize the location selector and date/time picker -->
+<script>
+  // Include the JavaScript code similar to the one in create-tournament.html
+</script>
+
+</body>
+</html>

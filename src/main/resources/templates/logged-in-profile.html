@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile</title>
+
+  <!-- //for-mobile-apps -->
+  <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+  <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
+  <link href="/css/gopremium.css" rel="stylesheet" type="text/css" media="all" />
+
+  <link href="/css/font-awesome.css" rel="stylesheet">
+
+
+  <!-- font-awesome icons -->
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<div th:replace="~{_navbar.html}"></div>
+<div class="container">
+  <div class="row col-md-8 offset-md-2">
+    <div class="card">
+<div class="card-body">
+<form method="post" role="form" th:action="@{/edit-profile/{userEmail}(userEmail=*{email})}" th:object="${loggedInUser}">
+  <div class="form-group mb-3">
+    <label class="form-label">Email</label>
+    <p
+            id="email"
+            name="email"
+            th:text="*{email}"
+            th:field="*{email}"
+    >
+    </p>
+    <!--    <p th:errors="*{email}" class="text-danger"-->
+    <!--       th:if="${#fields.hasErrors('email')}">-->
+    <!--    </p>-->
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Username</label>
+    <input class="form-control"
+           id="username"
+           name="username"
+           placeholder="Enter username"
+           th:field="*{username}"
+           type="text"
+    />
+    <p th:errors="*{username}" class="text-danger"
+       th:if="${#fields.hasErrors('username')}">
+    </p>
+  </div>
+
+
+  <div class="form-group mb-3">
+    <label class="form-label">First Name</label>
+    <input class="form-control"
+           id="firstName"
+           name="firstName"
+           placeholder="Enter first name"
+           th:field="*{firstName}"
+           type="text"
+    />
+    <p th:errors="*{firstName}" class="text-danger"
+       th:if="${#fields.hasErrors('firstName')}">
+    </p>
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Last Name</label>
+    <input class="form-control"
+           id="lastName"
+           name="lastName"
+           placeholder="Enter last name"
+           th:field="*{lastName}"
+           type="text"
+    />
+    <p th:errors="*{lastName}" class="text-danger"
+       th:if="${#fields.hasErrors('lastName')}">
+    </p>
+  </div>
+
+  <div class="form-group mb-3">
+    <label class="form-label">Street Address</label>
+    <input class="form-control"
+           id="address"
+           name="address"
+           placeholder="Enter Street Address"
+           th:field="*{address}"
+           type="text"
+    />
+    <p th:errors="*{address}" class="text-danger"
+       th:if="${#fields.hasErrors('address')}">
+    </p>
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">City</label>
+    <input class="form-control"
+           id="city"
+           name="city"
+           placeholder="Enter City"
+           th:field="*{city}"
+           type="text"
+    />
+    <p th:errors="*{city}" class="text-danger"
+       th:if="${#fields.hasErrors('city')}">
+    </p>
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Country</label>
+    <input class="form-control"
+           id="country"
+           name="country"
+           placeholder="Enter country"
+           th:field="*{country}"
+           type="text"
+    />
+    <p th:errors="*{country}" class="text-danger"
+       th:if="${#fields.hasErrors('country')}">
+    </p>
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">State/Province</label>
+    <input class="form-control"
+           id="state"
+           name="state"
+           placeholder="Enter state or province"
+           th:field="*{state}"
+           type="text"
+    />
+    <p th:errors="*{state}" class="text-danger"
+       th:if="${#fields.hasErrors('state')}">
+    </p>
+  </div>
+  <div class="form-group mb-3">
+    <label class="form-label">Zip/Postal Code</label>
+    <input class="form-control"
+           id="zipCode"
+           name="zipCode"
+           placeholder="Enter Zip/Postal Code"
+           th:field="*{zipCode}"
+           type="text"
+    />
+    <p th:errors="*{zipCode}" class="text-danger"
+       th:if="${#fields.hasErrors('zipCode')}">
+    </p>
+  </div>
+
+  <div class="form-group mb-3">
+    <label class="form-label">Phone Number</label>
+    <input class="form-control"
+           id="phone"
+           name="phone"
+           placeholder="Enter Phone Number"
+           th:field="*{phone}"
+           type="text"
+    />
+    <p th:errors="*{phone}" class="text-danger"
+       th:if="${#fields.hasErrors('phone')}">
+    </p>
+  </div>
+
+  <div class="form-group mb-3">
+    <button class="btn btn-primary" type="submit">Edit</button>
+  </div>
+</form>
+</div>
+    </div>
+  </div>
+</div>
+<h1></h1>
+</body>
+</html>
