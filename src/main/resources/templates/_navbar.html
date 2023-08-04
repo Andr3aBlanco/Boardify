@@ -48,20 +48,23 @@
         </div>
     </div>
     <div class="w3layouts_header_right">
-        <form action="#" method="post">
-            <input name="Search here" type="search" placeholder="Search" required="">
-            <input type="submit" value="">
+        <div class="header_right search_bar">
+        <form action="#" method="post" >
+            <input name="Search here" style="width:80%" type="search" placeholder="Search" required="">
+            <input type="submit" style="width:20%" value="">
         </form>
-
-        <div class="header-buttons">
+        </div>
+        <div class="header_right">
+            <div class="nav_links">
             <a href="/contact-us" class="contact-us-button">Contact Us</a>
             <span th:unless="${currentUser}">
             <a href="/login" class="login-button">Login</a>
-            <a href="/register" class="register-button">Register</a>
+            <a href="/register" class="register-button" >Register</a>
             </span>
             <span th:if="${currentUser}">
             <a href="/logout" class="logout-button">Logout</a>
             </span>
+            </div>
         </div>
 
 
