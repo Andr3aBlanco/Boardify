@@ -74,6 +74,8 @@ public class CoreController implements ErrorController {
 
 
 
+
+
     @Autowired
     private TournamentPlayerService tournamentPlayerService;
 
@@ -82,14 +84,17 @@ public class CoreController implements ErrorController {
     public String showHomePage(Model model, HttpServletRequest request) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Tournament> tournaments = tournamentService.findAllTournaments();
         if (authentication != null && authentication.isAuthenticated()) {
             String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
             User user = userService.findByEmail(email);
+
             if (user != null) {
                 String username = user.getUsername();
                 // Add the necessary data to the model
                 model.addAttribute("username", username);
                 model.addAttribute("message", "Hello " + username + "!");
+                model.addAttribute("tournaments", tournaments);
             }
 
 
@@ -103,7 +108,7 @@ public class CoreController implements ErrorController {
 
         // Manually add request as a context variable
         model.addAttribute("request", request);
-
+        model.addAttribute("tournaments", tournaments);
         // Return the name of the Thymeleaf template for the home page
         return "home";
     }

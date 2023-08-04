@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Each Tournament</title>
+
+
+    <link href="/css/tourhome.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div th:fragment="tournament-details(tournament)" class="tournament">
+    <tr>
+        <td th:text="${tournament.tournamentName}"></td>
+        <td th:text="${tournament.game.name}"></td>
+        <td th:text="${tournament.currEnrolled}"></td>
+        <td th:text="${tournament.maxEnrolled}"></td>
+        <td th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></td>
+        <td th:text="${tournament.eventStart}"></td>
+        <td th:text="${tournament.entryFees}"></td>
+        <td th:text="${tournament.prize}"></td>
+
+        <td>
+            <a th:href="@{'/tournaments/edit/' + ${tournament.tournamentId}}" class="btn btn-primary">Edit</a>
+            <form th:action="@{'/tournaments/delete/' + ${tournament.tournamentId}}" method="post" onsubmit="return confirm('Are you sure you want to delete this tournament?');">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+
+            <!--     <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
+             -->
+        </td>
+        <td th:text="${tournament.organizer.id}"></td>
+        <td th:text="${username}"></td>
+    </tr>
+</div>
+
+</body>
+</html>
