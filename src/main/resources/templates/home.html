@@ -197,124 +197,43 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 <!-- gallery -->
 <div class="team-bottom" id="work">
   <div class="container">
-    <h3 class="w3l_head w3l_head1">Latest Gallery</h3>
-    <p class="w3ls_head_para w3ls_head_para1">Lorem Ipsum Dolor</p>
+    <h3 class="w3l_head w3l_head1">Open Tournaments</h3>
+    <p class="w3ls_head_para w3ls_head_para1">Join Now</p>
     <div class="w3layouts_gallery_grids">
       <ul class="w3l_gallery_grid" id="lightGallery">
+<!--        <li th:each="tournament : ${tournaments}" data-title="Tournaments" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/ab.jpg"-->
+<!--                      data-responsive-src="images/ab.jpg">-->
+<!--        <div th:replace="eachtournament :: tournament-details(${tournament})" class="container"></div>-->
+          <div class="row">
+            <div class="col-md-4 mb-4" th:each="tournament : ${tournaments}">
+              <div class="card" style="background: #FFFFFF;">
+                <div class="card-body">
 
+                  <hr class="my-4" />
+                  <p class="lead">
+                    <strong><h5 class="card-title font-weight-bold" th:text="${tournament.tournamentName}"></h5></strong>
+                  </p>
+                  <ul class="list-unstyled list-inline d-flex justify-content-between">
+                    <li class="list-inline-item me-0">
+                      <div class="chip me-0"><i class="fa-solid fa-location-dot"></i> <p th:text="${tournament.address + ', ' + tournament.city + ', ' + tournament.state + ', ' + tournament.zipCode}"></p></div>
+                    </li>
+                    <li class="list-inline-item me-0">
+                      <div class="chip me-0"><i class="fa-regular fa-clock"></i> <p th:text="${tournament.eventStart}"></p></div>
+                    </li>
+                    <li class="list-inline-item me-0">
+                      <div class="chip me-0"><i class="fa-regular fa-dollar-sign"></i> <p th:text="${tournament.prize}"></p></div>
+                    </li>
+                    <li class="list-inline-item me-0">
+                      <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
 
-        <li th:each="tournament : ${tournaments}" data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/ab.jpg"
-                      data-responsive-src="images/ab.jpg">
-        <div th:replace="eachtournament :: tournament-details(${tournament})"></div>
+                    </li>
+                  </ul>
 
-        </li>
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/ab.jpg"-->
-<!--            data-responsive-src="images/ab.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/ab.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
+                </div>
 
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g1.jpg"-->
-<!--            data-responsive-src="images/g1.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g1.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g2.jpg"-->
-<!--            data-responsive-src="images/g2.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g2.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g3.jpg"-->
-<!--            data-responsive-src="images/g3.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g3.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g4.jpg"-->
-<!--            data-responsive-src="images/g4.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g4.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g5.jpg"-->
-<!--            data-responsive-src="images/g5.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g5.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g8.jpg"-->
-<!--            data-responsive-src="images/g8.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g8.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g6.jpg"-->
-<!--            data-responsive-src="images/g6.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g6.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li data-title="Games" data-desc="Lorem Ipsum is simply dummy text of the printing." data-src="images/g7.jpg"-->
-<!--            data-responsive-src="images/g7.jpg">-->
-<!--          <div class="w3layouts_gallery_grid1 box">-->
-<!--            <a href="#">-->
-<!--              <img src="images/g7.jpg" alt=" " class="img-responsive" />-->
-<!--              <div class="overbox">-->
-<!--                <h4 class="title overtext"> Gaming Wonderland</h4>-->
-
-<!--              </div>-->
-<!--            </a>-->
-<!--          </div>-->
+              </div>
+            </div>
+          </div>
 <!--        </li>-->
       </ul>
     </div>
