@@ -35,8 +35,9 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeRequests((authorizeRequests) ->
-                        authorizeRequests.requestMatchers("/register", "/login", "/register/**").anonymous()
+                        authorizeRequests.requestMatchers("/register", "/login", "/register/**", "tournaments/view/**").anonymous()
                                 .requestMatchers("/users", "/transactions").hasRole("ADMIN")
+                                .requestMatchers("/tournaments/**", "/pay-entry-fees/**").hasAnyRole("ADMIN", "BASIC", "PREMIUM")
 //                                .requestMatchers("/create-tournament").hasAnyRole("ADMIN", "PREMIUM")
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated()

@@ -171,7 +171,7 @@ class TournamentControllerTest {
 
         // Mocking the relevant methods
         //when(gameService.findGameById(gameId)).thenReturn(new Game());
-       // when(userService.findByEmail(email)).thenReturn(user);
+        // when(userService.findByEmail(email)).thenReturn(user);
         when(tournamentService.createTournament(tournament)).thenThrow(new RuntimeException("Failed to create the tournament"));
 
         // Act
@@ -179,8 +179,8 @@ class TournamentControllerTest {
 
         // Assert
         assertEquals("create-tournament", result);
-       // verify(gameService).findGameById(gameId);
-       // verify(userService).findByEmail(email);
+        // verify(gameService).findGameById(gameId);
+        // verify(userService).findByEmail(email);
         verify(tournamentService).createTournament(tournament);
         verify(model).addAttribute("errorMessage", "Failed to create the tournament");
 
@@ -238,7 +238,7 @@ class TournamentControllerTest {
         user.setId(userId);
 
         // Set up the Authentication mock
-       // when(authentication.isAuthenticated()).thenReturn(true);
+        // when(authentication.isAuthenticated()).thenReturn(true);
         when(authentication.getName()).thenReturn("kjenneryz@aboutads.info");
 
         // Mock the UserService
