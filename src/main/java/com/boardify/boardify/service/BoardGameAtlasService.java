@@ -128,7 +128,7 @@ public class BoardGameAtlasService {
     public BoardGameResponse retrieveFour() {
         String url = UriComponentsBuilder.fromHttpUrl(BASE_URL)
                 .queryParam("client_id", apiKey)
-                .queryParam("limit", 4)
+                .queryParam("limit", 6)
                 .queryParam("order_by", "rank")
                 .build()
                 .toUriString();

@@ -20,6 +20,11 @@ public class TransactionServiceImpl implements TransactionService {
         this.transactionRepository = transactionRepository;
     }
 
+    @Override
+    public void SaveTransaction(Transaction transaction) {
+        transactionRepository.save(transaction);
+    }
+
     public List<Transaction> findAllByTransactionDate(Date transactionDate) {
         return transactionRepository.findAllByTransactionDate(transactionDate);
     };

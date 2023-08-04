@@ -62,7 +62,9 @@
             <a href="/login" class="getplantbutton">Get Monthly Premium</a>
           </div>
           <div th:if="${currentUser}" class="pricing-footer bg-base-color">
-            <a href="#" class="getplantbutton activegetplantbutton">Get Monthly Premium</a>
+            <a href="#" class="getplantbutton activegetplantbutton" th:data-subscriptionid="${subscription.subscriptionID}"><a href="#" class="getplantbutton activegetplantbutton" th:data-subscriptionid="${subscription.subscriptionID}">
+              <span th:text="'Get ' + ${subscription.duration} + ' Premium'">Get Premium</span>
+            </a>
           </div>
         </div>
       </div>
@@ -83,8 +85,8 @@
         </p>
         <div class="card mb-4">
           <div class="card-body">
-            <h5 id="subscriptionName">Leather Bag</h5>
-            <p class="lead" id="subscriptionPrice">USD 9.99</p>
+            <h5 id="subscriptionName">Choose a Plan</h5>
+            <p class="lead" id="subscriptionPrice"></p>
           </div>
 
         </div>
@@ -175,10 +177,11 @@
           var token = result.token.id;
           var email = $('#email').val();
 
+          var subscriptionId = $('.activegetplantbutton').data('subscriptionid'); // Get subscription ID
 
           $.post(
-                  "/create-charge",
-                  {email: email, token: token, amount: cost},
+                  "/create-charge2",
+                  {email: email, token: token, amount: cost, subscriptionType : subscriptionId},
                   function (data) {
                     alert(data.details);
                   }, 'json');
@@ -210,6 +213,7 @@
       var subscription = $(this).closest('.pricing').find('.title-large').text();
       cost = 100*parseInt($(this).closest('.pricing').find('#planPrice').attr('datapriceattribute'));
       console.log("This is my cost " + cost );
+      var subscriptionId = $(this).data('subscriptionid'); // Get subscription ID
       updateSubscriptionInfo(subscription, cost/100);
     });
   });
