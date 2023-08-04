@@ -209,7 +209,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
             Game selectedGame = gameService.findGameById(gameId);
             tournament.setGame(selectedGame);
             tournament.setOrganizer(user);
-            // Save the edited tournament
+            // Save the edited tournaments
             tournamentService.updateTournament(tournament);
 
             return "redirect:/join-tournament";
