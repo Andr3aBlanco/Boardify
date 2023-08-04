@@ -21,15 +21,22 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
             nativeQuery = true)
     List<Tournament> findAllByEventEndBeforeAndUser(@Param("today") Date today, @Param("userId") Long userId);
 
-    @Query(value = "SELECT * FROM tournament WHERE STR_TO_DATE(event_end, '%Y-%m-%d') >= :today AND curr_enrolled < max_enrolled", nativeQuery = true)
+    @Query(value = "SELECT t.* FROM tournament t "+
+            "INNER JOIN game g ON t.game_id = g.game_id " +
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND curr_enrolled < max_enrolled " +
+            "ORDER BY g.name ASC",
+             nativeQuery = true)
     List<Tournament> findAllOpenTournaments(@Param("today") Date today);
 
 
     @Query(value = "SELECT t.* FROM tournament t " +
             "INNER JOIN users u ON t.organizer_id = u.id " +
-            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.id = :id",
+            "INNER JOIN game g ON t.game_id = g.game_id " +
+            "WHERE STR_TO_DATE(t.event_end, '%Y-%m-%d') >= :today AND u.id = :id AND curr_enrolled < max_enrolled " +
+            "ORDER BY g.name ASC",
             nativeQuery = true)
     List<Tournament> findAllOpenTournamentsByUser(Date today, Long id);
+
 
 
 

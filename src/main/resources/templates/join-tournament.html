@@ -125,6 +125,7 @@
         <th>Date Start</th>
         <th>Entry Fee</th>
         <th>Prize</th>
+        <th>Organizer</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -136,6 +137,7 @@
         <td th:text="${tournament.eventStart}"></td>
         <td th:text="${tournament.entryFees}"></td>
         <td th:text="${tournament.prize}"></td>
+        <td th:text="${tournament.organizer.getFirstName()}"></td>
         <td>
 
 
@@ -169,8 +171,8 @@
         <th>Entry Fee</th>
         <th>Prize</th>
         <th>Actions</th>
-        <th>Organizer</th>
-        <th>Current user</th>
+
+
       </tr>
       </thead>
       <tbody>
@@ -193,8 +195,7 @@
      <!--     <a th:href="@{'/pay-entry-fees/' + ${tournament.tournamentId} + '/' + ${userId} + '?entryFees=' + ${tournament.entryFees}}" class="btn btn-primary">Join Tournament</a>
       -->
         </td>
-        <td th:text="${tournament.organizer.id}"></td>
-        <td th:text="${username}"></td>
+
       </tr>
       </tbody>
     </table>
@@ -211,6 +212,7 @@
         <th>Date</th>
         <th>Entry Fee</th>
         <th>Prize</th>
+        <th>Organizer</th>
         <th>Cancel Enrollment</th>
       </tr>
       </thead>
@@ -222,6 +224,7 @@
         <td th:text="${joinedTournament.tournament.eventStart}"></td>
         <td th:text="${joinedTournament.tournament.entryFees}"></td>
         <td th:text="${joinedTournament.tournament.prize}"></td>
+        <td th:text="${joinedTournament.tournament.organizer.getFirstName()}"></td>
         <td>
           <form method="post" th:action="@{/tournaments/cancel-enrollment/{tournamentId}(tournamentId=${joinedTournament.tournament.tournamentId})}" th:object="${emptyObject}">
             <button type="submit" class="btn btn-danger">Cancel</button>

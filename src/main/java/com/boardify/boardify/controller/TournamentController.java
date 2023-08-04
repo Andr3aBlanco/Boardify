@@ -188,6 +188,11 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
 //        return "redirect:/tournament-to-edit";
 //    }
 
+ //       tournamentService.updateTournament(tournament);
+
+   //     return "redirect:join-tournament";
+ //   }
+
 
 
 
@@ -198,7 +203,7 @@ public String cancelEnrollment(@PathVariable Long tournamentId) {
                                  @RequestParam("gameId") Long gameId, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            String email = authentication.getName();// RETURNS THE EMAIL(PRIMARY KEY)
+            String email = authentication.getName(); // Get the email of the current user
             User user = userService.findByEmail(email);
             if (bindingResult.hasErrors()) {
                 // Handle validation errors and return to the edit-tournament form
