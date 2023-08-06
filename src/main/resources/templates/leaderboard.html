@@ -2,10 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Leaderboard</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div th:replace="_navbar.html"></div>
-<h1>This is a blank page - Leaderboard</h1>
-<!-- Add your content here -->
+
+<!-- <div th:replace="_navbar.html"></div> -->
+
+<div th:replace="~{_navbar.html}"></div>
+</br>
+<h1 style="text-align: center">Leaderboard</h1>
+</br>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h2>Players</h2>
+      <table id="players-table" class="table table-striped">
+        <thead>
+        <tr>
+          <th>Username</th>
+          <th>Joined</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="player, row : ${players}">
+          <td>
+            <span th:if="${row.count == 1}">
+              <img src="/images/1st-medal.png" alt="1st Place" width="16" height="16">
+            </span>
+            <span th:if="${row.count == 2}">
+              <img src="/images/2nd-medal.png" alt="2nd Place" width="16" height="16">
+            </span>
+            <span th:if="${row.count == 3}">
+              <img src="/images/3rd-medal.png" alt="3rd Place" width="16" height="16">
+            </span>
+            <span th:text="${player}"></span>
+          </td>
+          <td th:text="${attendanceCounts[row.count - 1]}"></td> <!-- Replace 'joined' with the actual property name -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-md-8">
+      <h2>Organizers</h2>
+      <table id="tournaments-table" class="table table-striped">
+        <thead>
+        <tr>
+          <th>Username</th>
+          <th>Rating</th>
+          <th>Tournaments' Rating</th>
+          <th># of Rated Tournaments</th>
+          <!-- Add additional columns as needed -->
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="organizer, row : ${organizers}">
+          <td>
+            <span th:if="${row.count == 1}">
+              <img src="/images/1st-medal.png" alt="1st Place" width="16" height="16">
+            </span>
+            <span th:if="${row.count == 2}">
+              <img src="/images/2nd-medal.png" alt="2nd Place" width="16" height="16">
+            </span>
+            <span th:if="${row.count == 3}">
+              <img src="/images/3rd-medal.png" alt="3rd Place" width="16" height="16">
+            </span>
+            <span th:text="${organizer}"></span>
+          </td>
+
+          <td th:text="${organizerRating[row.count - 1]}"></td>
+          <td th:text="${tournamentsRating[row.count - 1]}"></td>
+          <td th:text="${numHosted[row.count - 1]}"></td>
+
+          <!-- Add additional columns as needed -->
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 </body>
 </html>

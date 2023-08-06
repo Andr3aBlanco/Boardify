@@ -7,10 +7,10 @@
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
     <link href="/css/style.css" rel="stylesheet" type="text/css" media="all" />
     <!-- gallery -->
-    <link rel="stylesheet" href="../static/css/lightGallery.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="/css/lightGallery.css" type="text/css" media="all" />
     <!-- //gallery -->
     <!-- font-awesome icons -->
-    <link href="../static/css/font-awesome.css" rel="stylesheet">
+    <link href="/css/font-awesome.css" rel="stylesheet">
 
     <!-- //font-awesome icons -->
     <link href="//fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
@@ -24,21 +24,55 @@
 </head>
 <body>
 
+<style>
+    .greeting {
+        font-family: Arial, sans-serif;
+        color: #8e8e8e;
+        margin-right: 10px;
+        font-size: 16px;
+    }
+</style>
+
 <div class="header">
     <div class="w3layouts_header_left">
         <div class="top-nav-text">
-            <a href="/go-premium" class="premium-link">GO PREMIUM</a>
+            <!--            insert greetings message below-->
+
+            <span th:if="${currentUser}" class="greeting" th:text="'Hello, ' + ${currentUser.firstName}"></span>
+
+            <!--            insert greetings message above-->
+
+
+            <a class="nav-link" href="/go-premium">Go Premium</a>
+
         </div>
     </div>
     <div class="w3layouts_header_right">
-        <form action="#" method="post">
-            <input name="Search here" type="search" placeholder="Search" required="">
-            <input type="submit" value="">
+        <div class="header_right search_bar">
+        <form action="#" method="post" >
+            <input name="Search here" style="width:80%" type="search" placeholder="Search" required="">
+            <input type="submit" style="width:20%" value="">
         </form>
-        <div class="header-buttons">
-            <a href="/contact-us" class="contact-us-button">Contact Us</a>
-            <a href="/login" class="login-button">Login</a>
         </div>
+        <div class="header_right">
+            <div class="nav_links">
+            <a href="/contact-us" class="contact-us-button">Contact Us</a>
+            <span th:unless="${currentUser}">
+            <a href="/login" class="login-button">Login</a>
+            <a href="/register" class="register-button" >Register</a>
+            </span>
+            <span th:if="${currentUser}">
+                <a href="/logout" class="logout-button">Logout</a>
+                <a href="/your-profile">Your Account</a>
+            </span>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
     <div class="clearfix"></div>
 </div>
@@ -69,7 +103,7 @@
             <div class="collapse navbar-collapse navbar-left" id="bs-example-navbar-collapse-1">
 
                 <nav class="cl-effect-5" id="cl-effect-5">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav" style="display: inline-block;">
                         <li class="active"><a href="/"><span data-hover="Home">Home</span></a></li>
                         <li><a href="/join-tournament" class="scroll"><span data-hover="Join Tournament">Join Tournament</span></a></li>
                         <li><a href="/create-tournament" class="scroll"><span data-hover="Create Tournament">Create Tournament</span></a></li>

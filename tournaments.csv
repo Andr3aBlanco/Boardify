@@ -1,0 +1,101 @@
+tournament_id,address,city,comp_level,curr_enrolled,entry_fees,event_end,event_start,last_edited,max_enrolled,organizer_id,prize,state,status,tournament_name,zip_code,game_id
+1,22600 Carioca Parkway,Rēzekne,Competitive,2,16.67,2023-09-12T23:59,2023-09-12,,25,22,167,Rhône-Alpes,Okay,Devify,V4N,75
+2,702 Gerald Hill,Lyon,Casual,9,11.41,2023-07-08T23:59,2023-07-08,,27,25,101,Rhône-Alpes,Okay,Zoovu,69303 CEDEX 07,67
+3,9291 Spaight Trail,Wajir,Competitive,8,16.98,2023-10-04T23:59,2023-10-04,,14,12,201,Rhône-Alpes,Okay,Rhynoodle,V4N,26
+4,184 Summerview Place,Bethal,Competitive,1,31.04,2023-04-17T23:59,2023-04-17,,12,21,94,Rhône-Alpes,Okay,Yodel,2320,79
+5,38750 Ohio Crossing,Balibago,Competitive,5,34.72,2023-03-10T23:59,2023-03-10,,11,23,186,Rhône-Alpes,Okay,Vipe,6006,14
+6,233 Rigney Crossing,Lendan,Competitive,2,34.39,2023-09-24T23:59,2023-09-24,,27,11,230,Rhône-Alpes,Okay,Topicware,V4N,72
+7,008 Shasta Place,Tieremu,Casual,4,33.96,2023-08-01T23:59,2023-08-01,,13,26,396,Rhône-Alpes,Okay,Viva,V4N,29
+8,88091 Nova Trail,Kaka,Casual,10,11.04,2023-12-31T23:59,2023-12-31,,26,28,250,Rhône-Alpes,Okay,Talane,V4N,87
+9,46 Bartillon Drive,Talisay,Competitive,4,38.97,2023-01-20T23:59,2023-01-20,,27,23,135,Rhône-Alpes,Okay,Eimbee,V4N,12
+10,79 Sunfield Avenue,Huanghua,Casual,8,32.88,2023-03-03T23:59,2023-03-03,,17,20,185,Rhône-Alpes,Okay,Linkbridge,V4N,18
+11,11 International Junction,Xibali,Competitive,7,34.4,2023-11-14T23:59,2023-11-14,,11,11,347,Rhône-Alpes,Okay,Oyoyo,V4N,28
+12,723 Autumn Leaf Center,Traganón,Competitive,9,33.13,2023-02-05T23:59,2023-02-05,,15,21,198,Rhône-Alpes,Okay,Kanoodle,V4N,14
+13,06 Dapin Parkway,Golden,Casual,9,15.17,2023-12-03T23:59,2023-12-03,,21,14,266,British Columbia,Okay,Lajo,V4N,21
+14,8685 Anderson Center,Blessington,Casual,7,22.42,2023-01-21T23:59,2023-01-21,,17,27,323,British Columbia,Okay,Browseblab,D12,41
+15,2 Artisan Pass,Ush-Tyube,Competitive,4,17.2,2023-06-03T23:59,2023-06-03,,11,16,67,British Columbia,Okay,Tagcat,V4N,38
+16,39964 Northwestern Junction,Aliuroba,Casual,6,34,2023-10-24T23:59,2023-10-24,,23,19,209,British Columbia,Okay,Fanoodle,V4N,62
+17,7 Loomis Pass,Cherga,Casual,8,35.73,2023-06-13T23:59,2023-06-13,,30,25,377,British Columbia,Okay,Vinder,649219,83
+18,0 Fuller Park,Czarków,Casual,5,33.13,2023-01-13T23:59,2023-01-13,,11,27,224,British Columbia,Okay,Camimbo,43-243,19
+19,01 Debs Park,Velký Újezd,Competitive,5,43.77,2023-03-25T23:59,2023-03-25,,20,11,222,British Columbia,Okay,Kwilith,783 55,87
+20,4894 Tomscot Park,Sá,Casual,1,20.47,2023-02-02T23:59,2023-02-02,,22,19,276,Braga,Okay,Riffpath,4840-080,23
+21,0493 Fulton Point,Dogondoutchi,Competitive,9,45.81,2023-05-06T23:59,2023-05-06,,27,16,320,Braga,Okay,Jabbercube,V4N,34
+22,81667 Tony Avenue,Umeå,Casual,4,13.73,2023-07-27T23:59,2023-07-27,,32,20,111,Västerbotten,Okay,Oozz,901 86,100
+23,846 Oneill Alley,Bakan,Casual,5,19.33,2023-05-21T23:59,2023-05-21,,31,14,235,Västerbotten,Okay,Wikivu,V4N,48
+24,595 Hazelcrest Hill,Zaqatala,Competitive,2,12.75,2023-04-03T23:59,2023-04-03,,31,27,201,Västerbotten,Okay,Eare,V4N,45
+25,22732 Reinke Plaza,Tirana,Competitive,6,15.58,2023-01-10T23:59,2023-01-10,,27,29,216,Västerbotten,Okay,Eayo,V4N,24
+26,1 Raven Pass,Kavajë,Competitive,9,28.81,2023-07-25T23:59,2023-07-25,,12,21,360,Västerbotten,Okay,Snaptags,V4N,35
+27,7285 7th Way,Souto do Meio,Competitive,1,28.99,2023-10-26T23:59,2023-10-26,,12,29,381,Leiria,Okay,Blogtags,2420-144,65
+28,9 Arrowood Way,Nemyriv,Competitive,9,47.41,2023-10-30T23:59,2023-10-30,,14,16,204,Leiria,Okay,Buzzdog,V4N,17
+29,1166 Rigney Point,Buzdyak,Competitive,3,31.86,2023-08-04T23:59,2023-08-04,,18,21,66,Leiria,Okay,Trunyx,452719,96
+30,9 Darwin Circle,Giesteira,Competitive,7,40.59,2023-10-11T23:59,2023-10-11,,13,23,358,Santarém,Okay,Innotype,2495-593,40
+31,706 Walton Avenue,Ljungby,Casual,2,39.11,2023-02-04T23:59,2023-02-04,,20,15,369,Kronoberg,Okay,Mybuzz,341 23,76
+32,373 Lunder Terrace,Bojongsari,Casual,8,43.36,2023-06-01T23:59,2023-06-01,,28,23,150,Kronoberg,Okay,Vinte,V4N,19
+33,23840 Thackeray Park,Hoeryŏng,Casual,4,12.83,2023-09-28T23:59,2023-09-28,,21,11,60,Kronoberg,Okay,Voomm,V4N,56
+34,72413 Mifflin Circle,Huddinge,Casual,9,33.15,2023-01-04T23:59,2023-01-04,,29,13,141,Stockholm,Okay,Rhycero,141 05,19
+35,56867 Warner Circle,Banja Luka,Competitive,9,25.07,2023-07-15T23:59,2023-07-15,,19,19,144,Stockholm,Okay,Mymm,V4N,26
+36,9 Pawling Plaza,Punkalaidun,Casual,8,23.84,2023-12-30T23:59,2023-12-30,,13,12,197,Stockholm,Okay,Dynabox,31901,92
+37,25 Moose Drive,Kotlyarevskaya,Competitive,1,33.89,2023-07-01T23:59,2023-07-01,,14,21,271,Stockholm,Okay,Oodoo,361218,8
+38,109 Old Gate Center,Kosong,Casual,9,21.86,2023-12-29T23:59,2023-12-29,,13,12,333,Stockholm,Okay,Mybuzz,V4N,10
+39,779 Scoville Road,Semarapura,Casual,9,27.83,2023-09-20T23:59,2023-09-20,,25,15,296,Stockholm,Okay,Eabox,V4N,27
+40,1094 Lakewood Street,Niebocko,Competitive,3,12.38,2023-03-27T23:59,2023-03-27,,29,14,197,Stockholm,Okay,Twitterwire,36-207,13
+41,0592 Calypso Hill,Andongrejo,Casual,2,37.51,2023-02-19T23:59,2023-02-19,,22,26,141,Stockholm,Okay,Twimbo,7X7,72
+42,357 Mesta Crossing,Saumur,Casual,6,40.86,2023-04-20T23:59,2023-04-20,,28,23,274,Pays de la Loire,Okay,Browsetype,49417 CEDEX,80
+43,31 Lunder Avenue,Comapa,Competitive,5,41.93,2023-01-19T23:59,2023-01-19,,28,19,326,Pays de la Loire,Okay,Skyvu,7X7,42
+44,628 Logan Terrace,Meïganga,Competitive,3,26.57,2023-08-13T23:59,2023-08-13,,29,12,220,Pays de la Loire,Okay,Wordware,7X7,28
+45,32153 Fairview Crossing,Hengxizhen,Competitive,8,39.74,2023-08-07T23:59,2023-08-07,,25,18,212,Pays de la Loire,Okay,Dazzlesphere,7X7,73
+46,4 Jenifer Road,Rattanaburi,Casual,7,36.06,2023-10-06T23:59,2023-10-06,,12,23,64,Pays de la Loire,Okay,Dablist,85120,75
+47,0 North Avenue,Baoping,Competitive,5,39.92,2023-05-02T23:59,2023-05-02,,22,26,252,Pays de la Loire,Okay,Twitterwire,0W0,68
+48,77 Gulseth Lane,Javalera,Competitive,1,29.15,2023-11-10T23:59,2023-11-10,,14,30,375,Pays de la Loire,Okay,Riffpedia,4114,96
+49,12502 Northland Road,Cerme Kidul,Casual,1,16.18,2023-12-23T23:59,2023-12-23,,32,18,94,Pays de la Loire,Okay,Janyx,0W0,88
+50,376 Brickson Park Drive,Yujiao,Competitive,8,18.86,2023-01-03T23:59,2023-01-03,,23,15,294,Pays de la Loire,Okay,Skinix,0W0,39
+51,8661 Luster Avenue,Kota Kinabalu,Competitive,9,44.33,2023-03-10T23:59,2023-03-10,,14,16,375,Sabah,Okay,Kazio,88512,75
+52,7 Old Shore Street,Nong Bua Daeng,Casual,4,21.92,2023-06-01T23:59,2023-06-01,,29,18,205,Sabah,Okay,Edgeclub,0W0,10
+53,7083 Rusk Alley,Shuanghe,Competitive,6,40.01,2023-08-17T23:59,2023-08-17,,26,15,363,Sabah,Okay,Kazio,0W0,79
+54,54851 Banding Parkway,Niort,Casual,3,17.24,2023-02-03T23:59,2023-02-03,,24,14,94,Poitou-Charentes,Okay,Mynte,79049 CEDEX 9,31
+55,3 Red Cloud Trail,Dampit Satu,Competitive,3,22.46,2023-08-30T23:59,2023-08-30,,24,28,254,Poitou-Charentes,Okay,Tazz,U3U,42
+56,6 Brickson Park Alley,Wenping,Competitive,9,34.1,2023-03-04T23:59,2023-03-04,,30,15,75,Poitou-Charentes,Okay,Oyondu,U3U,64
+57,4 Butterfield Pass,Mekarsari,Competitive,8,27.14,2023-05-11T23:59,2023-05-11,,18,24,50,Poitou-Charentes,Okay,Yakijo,U3U,84
+58,6398 Petterle Road,Versailles,Casual,4,21.54,2023-09-19T23:59,2023-09-19,,11,20,171,Île-de-France,Okay,Voolia,78014 CEDEX,51
+59,0 Cambridge Alley,Bethanie,Competitive,3,15.01,2023-09-25T23:59,2023-09-25,,20,12,145,Île-de-France,Okay,Wordpedia,U3U,34
+60,0831 Walton Alley,Pregradnaya,Casual,9,38.71,2023-06-11T23:59,2023-06-11,,12,29,82,Île-de-France,Okay,Livetube,369264,83
+61,69 Hallows Trail,Stockholm,Casual,3,48.06,2023-02-17T23:59,2023-02-17,,17,22,56,Stockholm,Okay,Skippad,117 37,50
+62,79490 Dapin Avenue,Cana Chapetón,Casual,2,31.88,2023-12-23T23:59,2023-12-23,,12,17,176,Stockholm,Okay,Quimba,11004,7
+63,5 Delaware Drive,Novozavedennoye,Casual,3,24.84,2023-10-17T23:59,2023-10-17,,20,28,99,Stockholm,Okay,Latz,357813,62
+64,1930 Quincy Way,Zhoinda,Casual,3,21.06,2023-08-05T23:59,2023-08-05,,30,25,104,Stockholm,Okay,Katz,U3U,67
+65,35619 Southridge Junction,Jiantou,Competitive,4,18.33,2023-05-05T23:59,2023-05-05,,20,15,197,Stockholm,Okay,Aibox,U3U,56
+66,466 Golf Hill,Jiaotan,Competitive,2,40.63,2023-08-20T23:59,2023-08-20,,14,18,396,Stockholm,Okay,Twimbo,V3V,65
+67,019 Donald Drive,Guali,Competitive,8,49.19,2023-01-04T23:59,2023-01-04,,23,18,99,Stockholm,Okay,Jabbercube,V3V,45
+68,2 Elmside Court,Bavorov,Competitive,2,43.59,2023-09-19T23:59,2023-09-19,,13,15,100,Stockholm,Okay,Voolia,U3U,33
+69,060 Di Loreto Trail,Bandar-e Māhshahr,Casual,3,31.57,2023-04-18T23:59,2023-04-18,,12,13,291,Stockholm,Okay,Youspan,V3V,24
+70,040 Lakeland Circle,Pong,Competitive,8,33.1,2023-04-21T23:59,2023-04-21,,32,28,364,Stockholm,Okay,Skibox,U3U,62
+71,49 Sugar Court,Lipnica,Competitive,2,29.37,2023-03-21T23:59,2023-03-21,,32,18,148,Stockholm,Okay,Quatz,77-130,9
+72,98 American Ash Drive,Tongyangdao,Casual,4,12.15,2023-10-20T23:59,2023-10-20,,16,17,303,Stockholm,Okay,Zoomdog,V0V,41
+73,2 Mesta Court,Belyy Gorodok,Competitive,8,36.93,2023-09-15T23:59,2023-09-15,,16,18,98,Stockholm,Okay,Twimm,172711,69
+74,6 Tomscot Center,Belém,Casual,2,23.72,2023-04-10T23:59,2023-04-10,,27,17,64,Stockholm,Okay,Browsecat,58255-000,46
+75,4 Rockefeller Way,Hägersten,Casual,1,29.1,2023-09-19T23:59,2023-09-19,,10,27,357,Stockholm,Okay,Skajo,126 41,65
+76,44327 Armistice Point,Markaz Bilād aţ Ţa‘ām,Casual,2,33.65,2023-11-08T23:59,2023-11-08,,15,21,361,Stockholm,Okay,Janyx,V0V,36
+77,50829 Monica Park,Nofoali‘i,Casual,3,19.99,2023-03-10T23:59,2023-03-10,,15,11,200,Stockholm,Okay,Divavu,V0V,62
+78,06053 Veith Junction,Parakanbeusi,Casual,7,16.27,2023-04-12T23:59,2023-04-12,,11,28,111,Stockholm,Okay,Chatterpoint,V0V,54
+79,1093 Darwin Lane,Gushi,Casual,5,39.15,2023-11-13T23:59,2023-11-13,,21,20,108,Stockholm,Okay,Wikibox,V0V,88
+80,0067 Clemons Way,Maliang,Competitive,8,12.7,2023-02-12T23:59,2023-02-12,,10,11,267,Stockholm,Okay,Vidoo,V0V,19
+81,36301 Kinsman Trail,Chengxi,Competitive,6,25.73,2023-11-16T23:59,2023-11-16,,24,17,71,Stockholm,Okay,Babblestorm,V0V,29
+82,06210 Kennedy Drive,Vichy,Competitive,7,13.14,2023-06-11T23:59,2023-06-11,,20,24,184,Auvergne,Okay,Jetwire,03209 CEDEX,46
+83,519 Bluestem Court,New York City,Casual,6,10.01,2023-10-27T23:59,2023-10-27,,14,13,207,New York,Okay,Yodel,10184,28
+84,9 Delaware Court,Dongxiaokou,Competitive,10,33.43,2023-08-12T23:59,2023-08-12,,10,13,105,New York,Okay,Meevee,UOU,51
+85,0025 Washington Point,Zhouji,Casual,9,25.62,2023-02-11T23:59,2023-02-11,,25,19,228,New York,Okay,Jaxnation,UOU,53
+86,1042 Esker Alley,Hudong,Competitive,6,11.2,2023-12-15T23:59,2023-12-15,,23,26,330,New York,Okay,Dynava,UOU,91
+87,94 Monterey Circle,Paris 08,Casual,2,48.84,2023-10-23T23:59,2023-10-23,,19,25,398,Île-de-France,Okay,Browsetype,75419 CEDEX 08,57
+88,37401 Nova Street,Alphen aan den Rijn,Casual,10,31.53,2023-12-17T23:59,2023-12-17,,17,27,70,Provincie Zuid-Holland,Okay,Kare,2409,68
+89,8653 Grim Lane,Ceres,Casual,10,16.45,2023-05-25T23:59,2023-05-25,,15,14,213,Provincie Zuid-Holland,Okay,Trunyx,76300-000,13
+90,92 Blackbird Circle,Zhoukoudian,Casual,2,36.61,2023-04-09T23:59,2023-04-09,,15,24,390,Provincie Zuid-Holland,Okay,Jetpulse,UOU,32
+91,0 Kings Crossing,Amieira do Tejo,Competitive,3,45.27,2023-02-04T23:59,2023-02-04,,25,28,149,Portalegre,Okay,Yamia,6050-107,93
+92,04449 Hanover Trail,Dushanbe,Competitive,8,49.86,2023-05-03T23:59,2023-05-03,,13,20,336,Portalegre,Okay,Edgeclub,UOU,12
+93,886 Sachtjen Hill,Aeka,Competitive,3,26.09,2023-02-17T23:59,2023-02-17,,22,23,248,Portalegre,Okay,Brainsphere,UOU,74
+94,13 Melvin Hill,Sokol,Casual,8,15.5,2023-03-29T23:59,2023-03-29,,17,16,235,Portalegre,Flagged,DabZ,162139,35
+95,5281 Stone Corner Street,Pánormos,Competitive,9,11.3,2023-06-27T23:59,2023-06-27,,14,14,174,Portalegre,Flagged,Thoughtstorm,UOU,47
+96,8 Mayfield Avenue,Kuaidamao,Competitive,3,32.78,2023-06-22T23:59,2023-06-22,,18,26,74,Portalegre,Banned,Katz,UOU,32
+97,43 Rowland Center,Stockholm,Casual,1,41.02,2023-07-12T23:59,2023-07-12,,31,13,200,Stockholm,Banned,LiveZ,113 03,14
+98,12 Columbus Plaza,Biscoitos,Casual,3,28.07,2023-04-11T23:59,2023-04-11,,14,12,254,Ilha Terceira,Cancelled,Meetz,9760-055,10
+99,96 Glacier Hill Trail,Pau,Competitive,3,18.74,2023-04-20T23:59,2023-04-20,,15,12,383,Aquitaine,Cancelled,Skyvu,64039 CEDEX,36
+100,45817 Oak Valley Trail,Ialibu,Competitive,5,35.52,2023-08-19T23:59,2023-08-19,,19,21,319,Aquitaine,Cancelled,Twitterlist,UOU,98
