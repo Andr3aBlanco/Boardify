@@ -37,7 +37,7 @@ public class WebSecurityConfiguration {
                 .authorizeRequests((authorizeRequests) ->
                         authorizeRequests.requestMatchers("/register", "/login", "/register/**", "tournaments/view/**").anonymous()
                                 .requestMatchers("/users", "/transactions").hasRole("ADMIN")
-                                .requestMatchers("/tournaments/**", "/pay-entry-fees/**").hasAnyRole("ADMIN", "BASIC", "PREMIUM")
+                                .requestMatchers("/tournaments/**", "/pay-entry-fees/**", "/your-profile").hasAnyRole("ADMIN", "BASIC", "PREMIUM")
 //                                .requestMatchers("/create-tournament").hasAnyRole("ADMIN", "PREMIUM")
                                 .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated()

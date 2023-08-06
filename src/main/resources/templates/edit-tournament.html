@@ -26,14 +26,16 @@
 <body>
 <div th:replace="_navbar.html"></div>
 
-<h1>Edit Tournament</h1>
+
 
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-lg-5">
       <div class="card mt-5">
+        <div class="card-header">
+          <h2 class="text-center">Edit Tournament</h2>
+        </div>
         <div class="card-body">
-          <h2 class="text-center mb-4">Edit Tournament</h2>
           <form th:action="@{'/tournaments/edit'}" method="post" th:object="${tournament}">
             <div th:if="${errorMessage}" class="alert alert-danger">
               <p th:text="${errorMessage}"></p>
