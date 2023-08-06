@@ -32,7 +32,7 @@
 
     <div class="row justify-content-center pb-5 projects-grids">
       <div class="col-lg-12 pb-lg-2 text-center">
-        <h3 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2" style="color: black">Premium Subscription Plans</h3>
+        <h1 class="font-alt font-w-600 letter-spacing-2 text-uppercase title-extra-large-2" style="color: black">Premium Subscription Plans</h1>
         <p class="font-alt mb-0 mt-3 text-xs-large text-uppercase title-medium" style="color: black">Get Premium To Host Tournaments</p>
         <span class="bg-base-color d-inline-block mt-4 sep-line-thick-long"></span>
       </div>
@@ -42,7 +42,7 @@
 
     <div class="row m-lg-0">
       <div th:each="subscription: ${subscriptions}" class="col-md-6 col-lg-6 px-lg-0">
-        <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center">
+        <div class="pricing border-base-color border-top border-extra-thick box-shadow text-center" style="margin:10px">
           <div class="pricing-header bg-black border-base-color border-bottom border-medium-thick px-3 py-4">
             <span class="d-block font-alt letter-spacing-2 text-uppercase text-white title-large"><span th:text="${subscription.duration}"></span> Plan</span>
             <span class="price d-block mt-4 text-white" style="color: white">
